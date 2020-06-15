@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	@author 李进刚
+	@date 2018年3月6日
+	@version 1.0
+	@note 读片会与会人列表
+ -->
+
+<mapper namespace="com.inteall.image.dao.ReadImage_ConfereeDao">
+  <!-- 新建读片会的与会人 -->
+  <insert id="save" parameterType="com.inteall.image.pojo.ReadImage_Conferee">
+    INSERT INTO imagedb.t_readimage_conferee(readimage_conferee_key, readimage_key,
+      sysuser_key, readimage_remark1, readimage_remark2, readimage_remark3)
+    VALUES (#{readimage_conferee_key}, #{readimage_key}, #{sysuser_key},
+      #{readimage_remark1}, #{readimage_remark2}, #{readimage_remark3})
+  </insert>
+  
+  <!-- 批量添加读片会的与会人 -->
+  <insert id="saveList" parameterType="com.inteall.image.pojo.ReadImage_Conferee">
+    INSERT INTO imagedb.t_readimage_conferee(readimage_conferee_key, readimage_key,
+      sysuser_key, readimage_remark1, readimage_remark2, readimage_remark3)
+     values 
+     <foreach collection="list" item="item" index="index" separator="," >  
+      (#{item.readimage_conferee_key}, #{item.readimage_key}, #{item.sysuser_key},
+      #{item.readimage_remark1}, #{item.readimage_remark2}, #{item.readimage_remark3})
+      </foreach>  
+  </insert>
+  
+  <!-- 根据ID删除读片会的与会人 -->
+  <delete id="deleteById" parameterType="com.inteall.image.pojo.ReadImage_Conferee">
+    DELETE FROM imagedb.t_readimage_conferee
+    where readimage_key=#{readimage_key}
+  </delete>
+  
+  <!-- 根据主键查询读片会的与会人 -->
+  <select id="getById" parameterType="com.inteall.image.pojo.ReadImage_Conferee" resultType="com.inteall.image.pojo.ReadImage_Conferee">
+    SELECT readimage_conferee_key, readimage_key, sysuser_key, readimage_remark1,
+      readimage_remark2, readimage_remark3
+    FROM imagedb.t_readimage
+    WHERE readimage_conferee_key=#{readimage_conferee_key}
+  </select>
+  
+  
+  
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.SysUser" >
+    <id column="sysuser_key" property="sysuserKey" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="effect_date" property="effectDate" jdbcType="TIMESTAMP" />
+    <result column="image_num" property="imageNum" jdbcType="BIGINT" />
+    <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="sys_hospital_key" property="sysHospitalKey" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_age" property="userAge" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="CHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="bigant_uid" property="bigantUid" jdbcType="VARCHAR" />
+    <result column="bigant_name" property="bigantName" jdbcType="VARCHAR" />
+    <result column="sys_hospital_key" jdbcType="VARCHAR" property="sysHospitalKey" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="VARCHAR" />
+    <result column="modify_person" property="modifyPerson" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="CHAR" />
+    <result column="del_time" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="del_person" property="delPerson" jdbcType="VARCHAR" />
+    <result column="sysuser_remark1" property="sysuserRemark1" jdbcType="VARCHAR" />
+    <result column="sysuser_remark2" property="sysuserRemark2" jdbcType="VARCHAR" />
+    <result column="sysuser_remark3" property="sysuserRemark3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sysuser.sysuser_key, login_name, password, user_email, user_age, user_sex, user_name, user_phone, 
+    bigant_uid, bigant_name, sys_hospital_key, dept_name, login_ip, effect_date, image_num, 
+    create_time, modify_time, create_person, modify_person, is_del, del_time, del_person, 
+    sysuser_remark1, sysuser_remark2, sysuser_remark3
+  </sql>
+  <!-- 根据读片会主键查询与会人列表 -->
+  <select id="getByReadimageKey" parameterType="com.inteall.image.pojo.ReadImage_Conferee" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sysuser ,(SELECT sysuser_key from t_readimage_conferee WHERE readimage_key=#{readimage_key}) B
+    where sysuser.sysuser_key=B.sysuser_key
+  </select>
+  
+</mapper>

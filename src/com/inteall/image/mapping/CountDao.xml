@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.CountDao" >
+  
+  
+  <select id="getHuiZhenShenQingDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and state = 8 and is_del=0
+    group by date 
+  </select>
+  
+  <select id="getXiangYingHuiZhenDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and commit_target_person = #{sysUserLogin} and state = 8 and is_del=0
+    group by date 
+  </select>
+  
+  <select id="getChuShenDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and primary_audit_login = #{sysUserLogin} and state = 8 and is_del=0
+    group by date
+  </select>
+  
+  <select id="getFuShenDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and ultimate_audit_login = #{sysUserLogin} and state = 8 and is_del=0
+    group by date 
+  </select>
+  
+  <select id="getCreateReadImageDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(readimage_key) count 
+    from t_readimage
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+    group by date 
+  </select>
+  <select id="getEnterReadImageDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(A.readimage_key) count 
+    from t_readimage A,
+    (select readimage_key from t_readimage_conferee where sysuser_key = #{createPerson}) B
+    where A.readimage_key = B.readimage_key and A.create_person != #{createPerson} and A.is_del=0
+    and A.create_time &gt;= #{beginDate} and A.create_time &lt;= #{endDate}
+    group by date 
+  </select>
+  <select id="getCreateVideoDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(video_key) count 
+    from t_video
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+    group by date
+  </select>
+  <select id="getEnterVideoDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(A.video_key) count 
+    from t_video A,
+    (select video_key from t_video_tutorials where sysuser_key = #{createPerson}) B
+    where A.video_key = B.video_key and A.create_person != #{createPerson} and A.is_del=0
+    and A.create_time &gt;= #{beginDate} and A.create_time &lt;= #{endDate}
+    group by date 
+  </select>
+  <select id="getQunTaoLunDayCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(group_meidical_record_key) count 
+    from group_meidical_record 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+    group by date 
+  </select>
+  
+  
+  <select id="getHuiZhenShenQingMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and state = 8 and is_del=0
+    group by date 
+  </select>
+  
+  <select id="getXiangYingHuiZhenMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and commit_target_person = #{sysUserLogin} and state = 8 and is_del=0
+    group by date 
+  </select>
+  
+  <select id="getChuShenMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and primary_audit_login = #{sysUserLogin} and state = 8 and is_del=0
+    group by date
+  </select>
+  
+  <select id="getFuShenMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(case_id) count 
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and ultimate_audit_login = #{sysUserLogin} and state = 8 and is_del=0
+    group by date 
+  </select>
+  
+  <select id="getCreateReadImageMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(readimage_key) count 
+    from t_readimage
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+    group by date 
+  </select>
+  <select id="getEnterReadImageMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(A.readimage_key) count 
+    from t_readimage A,
+    (select readimage_key from t_readimage_conferee where sysuser_key = #{createPerson}) B
+    where A.readimage_key = B.readimage_key and A.create_person != #{createPerson} and A.is_del=0
+    and A.create_time &gt;= #{beginDate} and A.create_time &lt;= #{endDate}
+    group by date 
+  </select>
+  <select id="getCreateVideoMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(video_key) count 
+    from t_video
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+    group by date
+  </select>
+  <select id="getEnterVideoMonCount" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(A.video_key) count 
+    from t_video A,
+    (select video_key from t_video_tutorials where sysuser_key = #{createPerson}) B
+    where A.video_key = B.video_key and A.create_person != #{createPerson} and A.is_del=0
+    and A.create_time &gt;= #{beginDate} and A.create_time &lt;= #{endDate}
+    group by date 
+  </select>
+  <select id="getQunTaoLunMonCount"  resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+    select DATE_FORMAT(create_time,'%Y-%m') date,count(group_meidical_record_key) count 
+    from group_meidical_record 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+    group by date 
+  </select>
+  
+  
+  <select id="getReadCountByCreater" parameterType="java.util.HashMap" resultType="int">
+    select count(readimage_key)
+    from t_readimage
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+  </select>
+  <select id="getVideoCountByCreater" parameterType="java.util.HashMap" resultType="int">
+    select count(video_key)
+    from t_video
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+  </select>
+  <select id="getQunCountByCreater" parameterType="java.util.HashMap" resultType="int">
+    select count(group_meidical_record_key)
+    from group_meidical_record
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and is_del=0
+  </select>
+  <select id="getHuiZhenShengQingCount" parameterType="java.util.HashMap" resultType="int">
+    select count(case_id)
+    
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and create_person = #{createPerson} and state = 8 and is_del=0
+  </select>
+  <select id="getXiangYingHuiZhenCount" parameterType="java.util.HashMap" resultType="int">
+    select count(case_id)
+    
+    from t_consultation 
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and commit_target_person = #{sysUserLogin} and state = 8 and is_del=0
+  </select>
+  <select id="getChuShenCount" parameterType="java.util.HashMap" resultType="int">
+    select count(case_id)
+    from t_consultation
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and primary_audit_login = #{sysUserLogin} and state = 8 and is_del=0
+  </select>
+  <select id="getFuShenCount" parameterType="java.util.HashMap" resultType="int">
+    select count(case_id)
+    from t_consultation
+    where create_time &gt;= #{beginDate} and create_time &lt;= #{endDate}
+    and ultimate_audit_login = #{sysUserLogin} and state = 8 and is_del=0
+  </select>
+  
+</mapper>

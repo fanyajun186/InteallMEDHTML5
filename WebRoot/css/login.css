@@ -1,0 +1,68 @@
+.carousel_div1{
+    background: url(../img/login-bg1.jpg) fixed center center;
+}
+.carousel_div2{
+    background: url(../img/login-bg2.jpg) fixed center center;
+}
+.carousel_div3{
+    background: url(../img/login-bg3.jpg) fixed center center;
+}
+
+
+
+body {
+    overflow: hidden;
+}
+
+/* 设置登录页面背景图片自适应屏幕大小  */
+.carousel_div1,.carousel_div2,.carousel_div3 {
+  position:fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  min-width: 1000px;
+  z-index:0;
+  zoom: 1;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
+}
+
+.video_mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 90;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.login {
+    height: 260px;
+    width: 220px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -150px 0 0 -150px;
+    z-index: 99;
+}
+
+.login h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+
+.login_btn {
+    width: 100%;
+}

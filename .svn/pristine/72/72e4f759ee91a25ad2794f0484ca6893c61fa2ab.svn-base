@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.inteall.image.dao.SysRoleRightDao">
+	<resultMap id="BaseResultMap" type="com.inteall.image.pojo.SysRight" >
+	    <id column="sys_right_key" property="sysRightKey" jdbcType="VARCHAR" />
+	    <result column="right_name" property="rightName" jdbcType="VARCHAR" />
+	    <result column="right_parent" property="rightParent" jdbcType="VARCHAR" />
+	    <result column="url_img" property="urlImg" jdbcType="VARCHAR" />
+	    <result column="right_url" property="rightUrl" jdbcType="VARCHAR" />
+	    <result column="state" property="state" jdbcType="CHAR" />
+	    <result column="create_person" property="createPerson" jdbcType="VARCHAR" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+	    <result column="modify_person" property="modifyPerson" jdbcType="VARCHAR" />
+	    <result column="is_del" property="isDel" jdbcType="CHAR" />
+	    <result column="del_time" property="delTime" jdbcType="TIMESTAMP" />
+	    <result column="del_person" property="delPerson" jdbcType="VARCHAR" />
+	    <result column="sys_right_remark1" property="sysRightRemark1" jdbcType="VARCHAR" />
+	    <result column="sys_right_remark2" property="sysRightRemark2" jdbcType="VARCHAR" />
+	    <result column="sys_right_remark3" property="sysRightRemark3" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List" >
+	    sys_right_key, right_name, right_parent, url_img, right_url, state, create_person, 
+	    create_time, modify_time, modify_person, is_del, del_time, del_person, sys_right_remark1, 
+	    sys_right_remark2, sys_right_remark3
+	</sql>
+	<select id="getRoleRight" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select 
+		<include refid="Base_Column_List" />
+			
+		from sys_right 
+		where sys_right_key in(
+			select sys_right_key from sys_role_right
+	    	where sys_role_key=#{id}
+    	) and is_del=0 order by create_time
+		
+	</select>
+	
+	<delete id="delRoleRight" parameterType="String">
+		delete from sys_role_right where sys_role_key=#{roleid}
+	</delete>
+	
+	<insert id="addRoleRight" parameterType="java.util.List">
+		insert into sys_role_right (sys_role_right_key, sys_right_key, sys_role_key, 
+			create_person, create_time, modify_time, 
+			modify_person, is_del, del_time, 
+			del_person, sys_role_right_remark1, sys_role_right_remark2, 
+			sys_role_right_remark3)
+	    values 
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	      (#{item.sys_role_right_key}, #{item.sys_right_key}, #{item.sys_role_key}, 
+	      #{item.create_person}, #{item.create_time}, #{item.modify_time}, 
+	      #{item.modify_person}, #{item.is_del}, #{item.del_time}, 
+	      #{item.del_person}, #{item.sys_role_right_remark1}, #{item.sys_role_right_remark2}, 
+	      #{item.sys_role_right_remark3})
+    	</foreach>  
+	</insert>
+</mapper>

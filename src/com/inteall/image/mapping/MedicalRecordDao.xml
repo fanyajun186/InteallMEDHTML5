@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.MedicalRecordDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.MedicalRecord" >
+    <id column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+    <result column="patient_key" property="patientKey" jdbcType="VARCHAR" />
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="patient_type" property="patientType" jdbcType="VARCHAR" />
+    <result column="bodypart_code" property="bodypartCode" jdbcType="VARCHAR" />
+    <result column="bodypart_name" property="bodypartName" jdbcType="VARCHAR" />
+    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+    <result column="image_num" property="imageNum" jdbcType="INTEGER" />
+    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+    <result column="print_flag" property="printFlag" jdbcType="BIT" />
+    <result column="film_time" property="filmTime" jdbcType="TIMESTAMP" />
+    <result column="film_num" property="filmNum" jdbcType="VARCHAR" />
+    <result column="print_report" property="printReport" jdbcType="BIT" />
+    <result column="print_time" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="seriesInstanceUID" property="seriesinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_id" property="studyId" jdbcType="VARCHAR" />
+    <result column="series_num" property="seriesNum" jdbcType="INTEGER" />
+    <result column="studyInstanceUID" property="studyinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_time" property="studyTime" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.inteall.image.pojo.MedicalRecord" extends="BaseResultMap" >
+    <result column="patient_history" property="patientHistory" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    medical_record_key, patient_key, patient_name, sex, age, patient_type, bodypart_code, 
+    bodypart_name, hospital, image_num, modality_code, print_flag, film_time, film_num, 
+    print_report, print_time, seriesInstanceUID, study_id, series_num, studyInstanceUID, 
+    study_time, state
+  </sql>
+  <sql id="Blob_Column_List" >
+    patient_history
+  </sql>
+  <select id="getById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from medical_record
+    where studyInstanceUID = #{medicalRecordKey,jdbcType=VARCHAR}
+  </select>
+  <select id="getByImageId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from medical_record
+    where medical_record_key = #{medicalRecordKey,jdbcType=VARCHAR}
+  </select>
+  <select id="getCountByStudy" resultType="Integer" parameterType="java.lang.String" >
+    select count(studyInstanceUID)
+    from medical_record
+    where studyInstanceUID = #{medicalRecordKey,jdbcType=VARCHAR}
+  </select>
+  <insert id="save" parameterType="com.inteall.image.pojo.MedicalRecord" >
+    insert into medical_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="medicalRecordKey != null" >
+        medical_record_key,
+      </if>
+      <if test="patientKey != null" >
+        patient_key,
+      </if>
+      <if test="patientName != null" >
+        patient_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="patientType != null" >
+        patient_type,
+      </if>
+      <if test="bodypartCode != null" >
+        bodypart_code,
+      </if>
+      <if test="bodypartName != null" >
+        bodypart_name,
+      </if>
+      <if test="hospital != null" >
+        hospital,
+      </if>
+      <if test="imageNum != null" >
+        image_num,
+      </if>
+      <if test="modalityCode != null" >
+        modality_code,
+      </if>
+      <if test="printFlag != null" >
+        print_flag,
+      </if>
+      <if test="filmTime != null" >
+        film_time,
+      </if>
+      <if test="filmNum != null" >
+        film_num,
+      </if>
+      <if test="printReport != null" >
+        print_report,
+      </if>
+      <if test="printTime != null" >
+        print_time,
+      </if>
+      <if test="seriesinstanceuid != null" >
+        seriesInstanceUID,
+      </if>
+      <if test="studyId != null" >
+        study_id,
+      </if>
+      <if test="seriesNum != null" >
+        series_num,
+      </if>
+      <if test="studyinstanceuid != null" >
+        studyInstanceUID,
+      </if>
+      <if test="studyTime != null" >
+        study_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="patientHistory != null" >
+        patient_history,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="medicalRecordKey != null" >
+        #{medicalRecordKey,jdbcType=VARCHAR},
+      </if>
+      <if test="patientKey != null" >
+        #{patientKey,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null" >
+        #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="patientType != null" >
+        #{patientType,jdbcType=VARCHAR},
+      </if>
+      <if test="bodypartCode != null" >
+        #{bodypartCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bodypartName != null" >
+        #{bodypartName,jdbcType=VARCHAR},
+      </if>
+      <if test="hospital != null" >
+        #{hospital,jdbcType=VARCHAR},
+      </if>
+      <if test="imageNum != null" >
+        #{imageNum,jdbcType=INTEGER},
+      </if>
+      <if test="modalityCode != null" >
+        #{modalityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="printFlag != null" >
+        #{printFlag,jdbcType=BIT},
+      </if>
+      <if test="filmTime != null" >
+        #{filmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filmNum != null" >
+        #{filmNum,jdbcType=VARCHAR},
+      </if>
+      <if test="printReport != null" >
+        #{printReport,jdbcType=BIT},
+      </if>
+      <if test="printTime != null" >
+        #{printTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="seriesinstanceuid != null" >
+        #{seriesinstanceuid,jdbcType=VARCHAR},
+      </if>
+      <if test="studyId != null" >
+        #{studyId,jdbcType=VARCHAR},
+      </if>
+      <if test="seriesNum != null" >
+        #{seriesNum,jdbcType=INTEGER},
+      </if>
+      <if test="studyinstanceuid != null" >
+        #{studyinstanceuid,jdbcType=VARCHAR},
+      </if>
+      <if test="studyTime != null" >
+        #{studyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="patientHistory != null" >
+        #{patientHistory,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

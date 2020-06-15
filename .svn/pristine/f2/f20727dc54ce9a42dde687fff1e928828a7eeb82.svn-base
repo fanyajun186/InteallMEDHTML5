@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	@author 李进刚
+	@date 2018年3月6日
+	@version 1.0
+	@note 读片会病历列表
+ -->
+
+<mapper namespace="com.inteall.image.dao.ReadImage_RecordDao">
+  <!-- 增加一个病历 -->
+  <insert id="save" parameterType="com.inteall.image.pojo.ReadImage_Record">
+    INSERT INTO imagedb.t_readimage_record(readimage_record_key, readimage_key,
+      record_key, sysuser_key, append_time, readimage_remark1, readimage_remark2,
+      readimage_remark3)
+    VALUES (#{readimage_record_key}, #{readimage_key}, #{record_key},
+      #{sysuser_key}, #{append_time}, #{readimage_remark1}, #{readimage_remark2},
+      #{readimage_remark3})
+  </insert>
+  
+  <!-- 根据ID删除一个病历 -->
+  <delete id="deleteById" parameterType="com.inteall.image.pojo.ReadImage_Record">
+    DELETE FROM imagedb.t_readimage_record
+    WHERE readimage_record_key=#{readimage_record_key}
+  </delete>
+  
+  <!-- 根据读片会ID删除病历 -->
+  <delete id="deleteByReadimageKey" parameterType="com.inteall.image.pojo.ReadImage_Record">
+    DELETE FROM imagedb.t_readimage_record
+    WHERE readimage_key=#{readimage_key}
+  </delete>
+  
+  <!-- 根据主键查询一个病历 -->
+  <select id="getById" parameterType="com.inteall.image.pojo.ReadImage_Record" resultType="com.inteall.image.pojo.ReadImage_Record">
+    SELECT readimage_record_key, readimage_key, record_key, sysuser_key, append_time,
+      readimage_remark1, readimage_remark2, readimage_remark3
+    FROM imagedb.t_readimage_record
+    WHERE readimage_record_key=#{readimage_record_key}
+  </select>
+  <!-- 根据studyid 判断是否关联过该病历 -->
+  <select id="getByStuuid" parameterType="hashmap" resultType="Integer">
+    SELECT count(*)
+    FROM imagedb.t_readimage_record 
+    where record_key =(select medical_record_key from medical_record where studyInstanceUID=#{stuuid} )
+    and readimage_key=#{readimage_key}
+  </select>
+   <select id="getRecordById" parameterType="String" resultType="String">
+		select record_key from t_readimage_record Where record_key=#{record_key} AND readimage_key=#{readimage_key}
+ 	</select>
+  <!-- 根据读片会ID查询病历列表 -->
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.MedicalRecord" >
+    <id column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+    <result column="patient_key" property="patientKey" jdbcType="VARCHAR" />
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="patient_type" property="patientType" jdbcType="VARCHAR" />
+    <result column="bodypart_code" property="bodypartCode" jdbcType="VARCHAR" />
+    <result column="bodypart_name" property="bodypartName" jdbcType="VARCHAR" />
+    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+    <result column="image_num" property="imageNum" jdbcType="INTEGER" />
+    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+    <result column="print_flag" property="printFlag" jdbcType="BIT" />
+    <result column="film_time" property="filmTime" jdbcType="TIMESTAMP" />
+    <result column="film_num" property="filmNum" jdbcType="VARCHAR" />
+    <result column="print_report" property="printReport" jdbcType="BIT" />
+    <result column="print_time" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="seriesInstanceUID" property="seriesinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_id" property="studyId" jdbcType="VARCHAR" />
+    <result column="series_num" property="seriesNum" jdbcType="INTEGER" />
+    <result column="studyInstanceUID" property="studyinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.inteall.image.pojo.MedicalRecord" extends="BaseResultMap" >
+    <result column="patient_history" property="patientHistory" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    distinct(studyInstanceUID),medical_record_key, patient_key, patient_name, sex, age, patient_type, bodypart_code, 
+    bodypart_name, hospital, image_num, modality_code, print_flag, film_time, film_num, 
+    print_report, print_time, seriesInstanceUID, study_id, series_num,  
+    study_time, state
+  </sql>
+  <sql id="Blob_Column_List" >
+    patient_history
+  </sql>
+  <select id="getByReadImageKey" parameterType="com.inteall.image.pojo.ReadImage_Record" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from medical_record,
+
+	(SELECT record_key FROM imagedb.t_readimage_record  WHERE readimage_key=#{readimage_key}) B
+	where medical_record.medical_record_key = B.record_key
+	limit #{curr},#{limit}
+  </select>
+  
+  <select id="getCount" parameterType="com.inteall.image.pojo.ReadImage_Record" resultType="java.lang.Integer">
+  	SELECT count(distinct(record_key)) FROM imagedb.t_readimage_record  WHERE readimage_key=#{readimage_key}
+  </select>
+  <delete id="delByStuuid" parameterType="hashmap" >
+  	delete from t_readimage_record where record_key=#{stuuid} and readimage_key=#{readimagekey}
+  </delete>
+</mapper>

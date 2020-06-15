@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.MessageLogDao" >
+	
+	<!-- 添加发送日志信息 -->
+	<insert id="addMessageInfo" parameterType="hashmap">
+		insert into messageLog (message,sendType,sendTime,recipient,receivePhone,sendState) values
+		(#{message},#{sendType},now(),#{recipient},#{receivePhone},#{sendState})
+	</insert>
+	<!-- 查询日志列表数量 -->
+	<select id="getMessageCount" parameterType="hashmap" resultType="int">
+		select count(0) from messageLog where isDel=0
+		<if test="name_phone!=null and name_phone!='' ">
+			and (recipient like "%"#{name_phone}"%" or receivePhone like "%"#{name_phone}"%")
+		</if>
+		<if test="startTime!=null and startTime!='' and endTime!=null and endTime!='' ">
+			and date_format(sendTime, '%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+		    and date_format(sendTime, '%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+		</if>
+	</select>
+	<!-- 查询日志列表 -->
+	<select id="getMessageList" parameterType="hashmap" resultType="hashmap">
+		select m.*,date_format(m.sendTime, '%Y-%m-%d %T') stime,s.user_name realName from messageLog m 
+		LEFT JOIN sysuser s on s.login_name=m.recipient
+		where m.isDel=0
+		<if test="name_phone!=null and name_phone!='' ">
+			and (m.recipient like "%"#{name_phone}"%" or m.receivePhone like "%"#{name_phone}"%")
+		</if>
+		<if test="startTime!=null and startTime!='' and endTime!=null and endTime!='' ">
+			and date_format(m.sendTime, '%Y-%m-%d') <![CDATA[>=]]>#{startTime}
+		    and date_format(m.sendTime, '%Y-%m-%d') <![CDATA[<=]]>#{endTime}
+		</if>
+		order by m.sendTime desc
+		limit #{start},#{pageSize}
+	</select>
+	<!-- 删除短信日志 -->
+	<update id="delMessageInfo" parameterType="int">
+		update messageLog set isDel=1 where Id=#{infoId}
+	</update>
+	
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inteall.image.dao.NoticeDao">
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.Notice">
+    <id column="noticeId" jdbcType="VARCHAR" property="noticeid" />
+    <result column="noticeName" jdbcType="VARCHAR" property="noticename" />
+    <result column="noticeContent" jdbcType="VARCHAR" property="noticecontent" />
+    <result column="creatTime" jdbcType="TIMESTAMP" property="creattime" />
+    <result column="creatPerson" jdbcType="VARCHAR" property="creatperson" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    noticeId, noticeName, noticeContent, creatTime, creatPerson
+  </sql>
+  <select id="getnoticeById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_notice
+    where noticeId = #{noticeid,jdbcType=VARCHAR}
+  </select>
+  <select id="noticeOne" parameterType="com.inteall.image.pojo.Notice" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+     from t_notice order by creatTime desc LIMIT 1
+  </select>
+  <select id="getNoticeAll" parameterType="Map" resultMap="BaseResultMap">
+    select 
+    noticeId, noticeName, noticeContent,DATE_FORMAT(creatTime,'%Y年%m月%d日 %T') AS creatTimeStr,creatPerson
+    from t_notice
+ 	<where>
+		<if test="noticename!=null and noticename!='' ">
+			and  noticeName  like CONCAT('%', #{noticename}, '%')
+		</if>
+	</where>
+		  order by creatTime desc
+		limit #{curr},#{limit}
+  </select>
+  <select id="getCount" parameterType="com.inteall.image.pojo.Notice" resultType="java.lang.Integer">
+    select count(noticeId) from t_notice
+  </select>
+  <select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_notice
+		<where>
+		    <if test="noticeName!=null and noticeName!='' ">
+			and  noticeName  like CONCAT('%', #{noticeName}, '%')
+			</if>
+		</where>
+  </select>
+  <select id="list" parameterType="Map" resultMap="BaseResultMap">
+		select noticeId, noticeName, noticeContent, DATE_FORMAT(creatTime,'%Y年%m月%d日 %T') AS creatTimeStr, creatPerson  from t_notice
+		<where>
+		    <if test="noticeName!=null and noticeName!='' ">
+			and  noticeName  like CONCAT('%', #{noticeName}, '%')
+			</if>
+		</where>
+		order by creatTime desc
+		<if test="curr!=null and limit!=null">
+			limit #{curr},#{limit}
+		</if>
+	</select>
+  <delete id="delNoticeById" parameterType="java.lang.Integer">
+    delete from t_notice
+    where noticeId = #{noticeid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="add" parameterType="com.inteall.image.pojo.Notice">
+    insert into t_notice (noticeId, noticeName, noticeContent, 
+      creatTime, creatPerson)
+    values (#{noticeid,jdbcType=VARCHAR}, #{noticename,jdbcType=VARCHAR}, #{noticecontent,jdbcType=VARCHAR}, 
+      #{creattime,jdbcType=TIMESTAMP}, #{creatperson,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.inteall.image.pojo.Notice">
+    insert into t_notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="noticeid != null">
+        noticeId,
+      </if>
+      <if test="noticename != null">
+        noticeName,
+      </if>
+      <if test="noticecontent != null">
+        noticeContent,
+      </if>
+      <if test="creattime != null">
+        creatTime,
+      </if>
+      <if test="creatperson != null">
+        creatPerson,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="noticeid != null">
+        #{noticeid,jdbcType=VARCHAR},
+      </if>
+      <if test="noticename != null">
+        #{noticename,jdbcType=VARCHAR},
+      </if>
+      <if test="noticecontent != null">
+        #{noticecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null">
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatperson != null">
+        #{creatperson,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.inteall.image.pojo.Notice">
+    update t_notice
+    <set>
+      <if test="noticename != null">
+        noticeName = #{noticename,jdbcType=VARCHAR},
+      </if>
+      <if test="noticecontent != null">
+        noticeContent = #{noticecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null">
+        creatTime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatperson != null">
+        creatPerson = #{creatperson,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where noticeId = #{noticeid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.Notice">
+    update t_notice
+    set noticeName = #{noticename,jdbcType=VARCHAR},
+      noticeContent = #{noticecontent,jdbcType=VARCHAR},
+      creatTime = #{creattime,jdbcType=TIMESTAMP},
+      creatPerson = #{creatperson,jdbcType=VARCHAR}
+    where noticeId = #{noticeid,jdbcType=VARCHAR}
+  </update>
+</mapper>

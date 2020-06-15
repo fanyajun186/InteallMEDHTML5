@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inteall.image.dao.ZhishikuDao">
+
+	<resultMap type="com.inteall.image.pojo.Zhishiku" id="ZhishikuResult">
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="summary" column="summary"/>
+		<result property="releasePersonId" column="releasePersonId"/>
+		<result property="releasePersonName" column="releasePersonName"/>
+		<result property="releaseDate" column="releaseDate"/>
+		<result property="clickHit" column="clickHit"/>
+		<result property="replyHit" column="replyHit"/>
+		<result property="content" column="content"/>
+		<result property="keyWord" column="keyWord"/>
+		<association property="zhishikuType" column="typeId" select="com.inteall.image.dao.ZhishikuTypeDao.findById"></association>
+		
+	</resultMap>
+	
+	<select id="countList"  resultMap="ZhishikuResult">
+		SELECT DATE_FORMAT(releaseDate,'%Y年%m月') AS releaseDateStr ,COUNT(*) AS ZhishikuCount  FROM t_zhishiku GROUP BY DATE_FORMAT(releaseDate,'%Y年%m月') ORDER BY DATE_FORMAT(releaseDate,'%Y年%m月') DESC;
+	</select>
+	
+	<select id="list" parameterType="Map" resultMap="ZhishikuResult">
+		select id,title,summary,DATE_FORMAT(releaseDate,'%Y年%m月%d日 %T') AS releaseDateStr,clickHit,replyHit,content,keyWord,typeId from t_zhishiku
+		<where>
+		    <if test="title!=null and title!='' ">
+				and title like #{title}
+			</if>
+			<if test="typeId!=null and typeId!='' ">
+				and typeId = #{typeId}
+			</if>
+			<if test="releaseDateStr!=null and releaseDateStr!='' ">
+				and DATE_FORMAT(releaseDate,'%Y年%m月') = #{releaseDateStr}
+			</if>
+		</where>
+		order by releaseDate desc
+		<if test="curr!=null and limit!=null">
+			limit #{curr},#{limit}
+		</if>
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_zhishiku
+		<where>
+		    <if test="title!=null and title!='' ">
+				and title like #{title}
+			</if>
+			<if test="typeId!=null and typeId!='' ">
+				and typeId = #{typeId}
+			</if>
+			<if test="releaseDateStr!=null and releaseDateStr!='' ">
+				and DATE_FORMAT(releaseDate,'%Y年%m月') = #{releaseDateStr}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findById" parameterType="Integer" resultMap="ZhishikuResult">
+		select id,title,summary,DATE_FORMAT(releaseDate,'%Y年%m月%d日 %T') AS releaseDateStr,clickHit,replyHit,releasePersonId,releasePersonName,content,keyWord,typeId from t_zhishiku where id=#{id}
+	</select>
+	
+	<select id="getCount" resultType="java.lang.Integer" parameterType="com.inteall.image.pojo.Zhishiku" >
+	    select 
+	   	count(id)
+	    from t_zhishiku
+	    <where>
+		    <if test="title!=null and title!='' ">
+				and  title  like CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+	</select>
+  
+	<select id="getAll" resultMap="ZhishikuResult" parameterType="com.inteall.image.pojo.Zhishiku" >
+	    select 
+	    id,title,summary,DATE_FORMAT(releaseDate,'%Y年%m月%d日 %T') AS releaseDateStr,releasePersonId,releasePersonName,clickHit,replyHit,content,keyWord,typeId
+	    from t_zhishiku
+	     <where>
+		    <if test="title!=null and title!='' ">
+				and  title  like CONCAT('%', #{title}, '%')
+			</if>
+		</where>
+		  order by releaseDate desc
+		limit #{curr},#{limit}
+	 </select>
+  
+	<update id="update" parameterType="com.inteall.image.pojo.Zhishiku">
+		update t_zhishiku
+		<set>
+			<if test="title!=null and title!='' ">
+				title=#{title},
+			</if>
+			<if test="summary!=null and summary!='' ">
+				summary=#{summary},
+			</if>
+			<if test="content!=null and content!='' ">
+				content=#{content},
+			</if>
+			<if test="zhishikuType.id!=null ">
+				typeId=#{zhishikuType.id},
+			</if>
+			<if test="clickHit!=null ">
+				clickHit=#{clickHit},
+			</if>
+			<if test="replyHit!=null ">
+				replyHit=#{replyHit},
+			</if>
+			<if test="keyWord!=null and keyWord!='' ">
+				keyWord=#{keyWord},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="getLastZhishiku" parameterType="Integer" resultMap="ZhishikuResult">
+		SELECT id,title,summary,DATE_FORMAT(releaseDate,'%Y年%m月%d日 %T') AS releaseDateStr,clickHit,replyHit,content,keyWord,typeId FROM t_zhishiku WHERE id&lt;#{id} ORDER BY id DESC LIMIT 1
+	</select>
+	
+	<select id="getNextZhishiku" parameterType="Integer" resultMap="ZhishikuResult">
+		SELECT id,title,summary,DATE_FORMAT(releaseDate,'%Y年%m月%d日 %T') AS releaseDateStr,clickHit,replyHit,content,keyWord,typeId FROM t_zhishiku WHERE id&gt;#{id} ORDER BY id ASC LIMIT 1
+	</select>
+	
+	
+	<insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.inteall.image.pojo.Zhishiku">
+		insert into t_zhishiku values(null,#{title},#{summary},now(),#{releasePersonId},#{releasePersonName},0,0,#{content},#{zhishikuType.id},#{keyWord})
+	</insert>
+	
+	<delete id="delById" parameterType="Integer">
+		delete from t_zhishiku where id=#{id}
+	</delete>
+	
+	<select id="getZhishikuByTypeId" parameterType="Integer" resultType="Integer">
+		select count(*) from t_zhishiku where typeId=#{typeId}
+	</select>
+</mapper> 

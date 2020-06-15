@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inteall.image.dao.BigAntDao">
+		<!-- 查询用户所在的群ID -->
+		<select id="getGroupInfoByUserId" parameterType="com.inteall.image.pojo.BigAnt" resultType="com.inteall.image.pojo.BigAnt"> 
+			SELECT GROUP_ID FROM hs_group_member WHERE USER_ID=#{user_id}
+		</select>
+		
+		<resultMap id="BaseResultMap" type="com.inteall.image.pojo.BigAntUser" >
+		    <id column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		    <result column="USER_LOGIN" property="userLogin" jdbcType="VARCHAR" />
+		    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		    <result column="USER_STATUS" property="userStatus" jdbcType="INTEGER" />
+		    <result column="USER_SEX" property="userSex" jdbcType="INTEGER" />
+		    <result column="USER_PWD" property="userPwd" jdbcType="VARCHAR" />
+		    <result column="USER_PWD_TYPE" property="userPwdType" jdbcType="INTEGER" />
+		    <result column="USER_IS_SUPER" property="userIsSuper" jdbcType="INTEGER" />
+		    <result column="USER_IS_SYSTEM" property="userIsSystem" jdbcType="INTEGER" />
+		    <result column="USER_BIRTHDAY" property="userBirthday" jdbcType="BIGINT" />
+		    <result column="USER_MOBILE" property="userMobile" jdbcType="VARCHAR" />
+		    <result column="USER_OFFICE_PHONE" property="userOfficePhone" jdbcType="VARCHAR" />
+		    <result column="USER_QQ" property="userQq" jdbcType="VARCHAR" />
+		    <result column="USER_SHORT_NUMBER" property="userShortNumber" jdbcType="VARCHAR" />
+		    <result column="USER_ROOM_NUMBER" property="userRoomNumber" jdbcType="VARCHAR" />
+		    <result column="USER_EMAIL" property="userEmail" jdbcType="VARCHAR" />
+		    <result column="USER_JOB" property="userJob" jdbcType="VARCHAR" />
+		    <result column="USER_JOB_NUMBER" property="userJobNumber" jdbcType="VARCHAR" />
+		    <result column="USER_FIRST_SPELL" property="userFirstSpell" jdbcType="VARCHAR" />
+		    <result column="USER_FULL_SPELL" property="userFullSpell" jdbcType="VARCHAR" />
+		    <result column="USER_POSITION_ID" property="userPositionId" jdbcType="VARCHAR" />
+		    <result column="USER_ORDER_ID" property="userOrderId" jdbcType="INTEGER" />
+		    <result column="USER_CREATE_ID" property="userCreateId" jdbcType="VARCHAR" />
+		    <result column="USER_CREATE_NAME" property="userCreateName" jdbcType="VARCHAR" />
+		    <result column="USER_CREATE_DATE" property="userCreateDate" jdbcType="BIGINT" />
+		    <result column="USER_MODIFY_DATE" property="userModifyDate" jdbcType="BIGINT" />
+		    <result column="USER_MODIFY_ID" property="userModifyId" jdbcType="VARCHAR" />
+		    <result column="USER_MODIFY_NAME" property="userModifyName" jdbcType="VARCHAR" />
+		    <result column="USER_DOMAINID" property="userDomainid" jdbcType="VARCHAR" />
+		    <result column="USER_LOGINADDR" property="userLoginaddr" jdbcType="VARCHAR" />
+		    <result column="USER_LOGINMAC" property="userLoginmac" jdbcType="VARCHAR" />
+		    <result column="USER_NOTE" property="userNote" jdbcType="VARCHAR" />
+		    <result column="USER_PICTURE" property="userPicture" jdbcType="VARCHAR" />
+		    <result column="USER_ADDRESS" property="userAddress" jdbcType="VARCHAR" />
+		    <result column="USER_ADLDAPINFO" property="userAdldapinfo" jdbcType="VARCHAR" />
+		    <result column="USER_EXPIRE" property="userExpire" jdbcType="BIGINT" />
+		    <result column="USER_DEVICE" property="userDevice" jdbcType="VARCHAR" />
+		    <result column="USER_OFFICE_FAX" property="userOfficeFax" jdbcType="VARCHAR" />
+		    <result column="SYNC_ID" property="syncId" jdbcType="VARCHAR" />
+		    <result column="LAST_OFFLINEDATE" property="lastOfflinedate" jdbcType="BIGINT" />
+		    <result column="USER_DEPTID" property="userDeptid" jdbcType="VARCHAR" />
+		  </resultMap>
+		  <sql id="Base_Column_List" >
+		    hs_user.USER_ID, USER_LOGIN, USER_NAME, USER_STATUS, USER_SEX, USER_PWD, USER_PWD_TYPE, USER_IS_SUPER, 
+		    USER_IS_SYSTEM, USER_BIRTHDAY, USER_MOBILE, USER_OFFICE_PHONE, USER_QQ, USER_SHORT_NUMBER, 
+		    USER_ROOM_NUMBER, USER_EMAIL, USER_JOB, USER_JOB_NUMBER, USER_FIRST_SPELL, USER_FULL_SPELL, 
+		    USER_POSITION_ID, USER_ORDER_ID, USER_CREATE_ID, USER_CREATE_NAME, USER_CREATE_DATE, 
+		    USER_MODIFY_DATE, USER_MODIFY_ID, USER_MODIFY_NAME, USER_DOMAINID, USER_LOGINADDR, 
+		    USER_LOGINMAC, USER_NOTE, USER_PICTURE, USER_ADDRESS, USER_ADLDAPINFO, USER_EXPIRE, 
+		    USER_DEVICE, USER_OFFICE_FAX, SYNC_ID, LAST_OFFLINEDATE, USER_DEPTID
+		  </sql>
+		  <select id="getUserByGroupId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		    select 
+		    <include refid="Base_Column_List" />
+		    from hs_user,(select USER_ID from hs_group_member where GROUP_ID = #{groupid}) B
+		    where hs_user.USER_ID = B.USER_ID
+		</select>	
+		
+		
+	 
+      <sql id="Group_Column_List" >
+        A.GROUP_ID, GROUP_NAME, GROUP_DESC, GROUP_TYPE, GROUP_ORDER_ID, GROUP_CREATE_ID, GROUP_CREATE_NAME, 
+        GROUP_CREATE_DATE, GROUP_VISITER_ACE, GROUP_JOIN_ACE, GROUP_TAG, GROUP_PHOTO, GROUP_USERCOUNT, 
+        GROUP_NOTICEID, GROUP_STATUS, GROUP_MODIFY_DATE, GROUP_MODIFY_ID, GROUP_MODIFY_NAME
+      </sql>
+		<select id="getGroupListByLogin" resultType="com.inteall.image.pojo.Group" parameterType="java.lang.String">
+		     select 
+		     <include refid="Group_Column_List" />
+		     from hs_group A,
+		     (select GROUP_ID from hs_group_member where USER_ID=(select USER_ID from hs_user where USER_LOGIN= #{loginName})) B
+		      where A.GROUP_ID = B.GROUP_ID
+		     
+		</select>
+		  <!-- 根据studyid 判断是否关联过该病历 -->
+		  <select id="getByStuuid" parameterType="hashmap" resultType="Integer">
+		    SELECT count(*)
+		    FROM imagedb.group_meidical_record 
+		    where medical_record_key =(select medical_record_key from medical_record where studyInstanceUID=#{stuuid} )
+		    and group_key=#{group_id}
+		  </select>
+		  
+		  <insert id="save" parameterType="com.inteall.image.pojo.GroupMeidicalRecord" >
+		    insert into group_meidical_record
+		    <trim prefix="(" suffix=")" suffixOverrides="," >
+		      <if test="groupMeidicalRecordKey != null" >
+		        group_meidical_record_key,
+		      </if>
+		      <if test="groupKey != null" >
+		        group_key,
+		      </if>
+		      <if test="medicalRecordKey != null" >
+		        medical_record_key,
+		      </if>
+		      <if test="createPerson != null" >
+		        create_person,
+		      </if>
+		      <if test="createTime != null" >
+                create_time,
+              </if>
+		      <if test="modifyTime != null" >
+		        modify_time,
+		      </if>
+		      <if test="modifyPerson != null" >
+		        modify_person,
+		      </if>
+		      <if test="isDel != null" >
+		        is_del,
+		      </if>
+		      <if test="delTime != null" >
+		        del_time,
+		      </if>
+		      <if test="delPerson != null" >
+		        del_person,
+		      </if>
+		      <if test="groupMeidicalRecordRemark1 != null" >
+		        group_meidical_record_remark1,
+		      </if>
+		      <if test="groupMeidicalRecordRemark2 != null" >
+		        group_meidical_record_remark2,
+		      </if>
+		      <if test="groupMeidicalRecordRemark3 != null" >
+		        group_meidical_record_remark3,
+		      </if>
+		    </trim>
+		    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		      <if test="groupMeidicalRecordKey != null" >
+		        #{groupMeidicalRecordKey,jdbcType=VARCHAR},
+		      </if>
+		      <if test="groupKey != null" >
+		        #{groupKey,jdbcType=VARCHAR},
+		      </if>
+		      <if test="medicalRecordKey != null" >
+		        #{medicalRecordKey,jdbcType=VARCHAR},
+		      </if>
+		      <if test="createPerson != null" >
+		        #{createPerson,jdbcType=VARCHAR},
+		      </if>
+		      <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+              </if>
+		      <if test="modifyTime != null" >
+		        #{modifyTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="modifyPerson != null" >
+		        #{modifyPerson,jdbcType=VARCHAR},
+		      </if>
+		      <if test="isDel != null" >
+		        #{isDel,jdbcType=CHAR},
+		      </if>
+		      <if test="delTime != null" >
+		        #{delTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="delPerson != null" >
+		        #{delPerson,jdbcType=VARCHAR},
+		      </if>
+		      <if test="groupMeidicalRecordRemark1 != null" >
+		        #{groupMeidicalRecordRemark1,jdbcType=VARCHAR},
+		      </if>
+		      <if test="groupMeidicalRecordRemark2 != null" >
+		        #{groupMeidicalRecordRemark2,jdbcType=VARCHAR},
+		      </if>
+		      <if test="groupMeidicalRecordRemark3 != null" >
+		        #{groupMeidicalRecordRemark3,jdbcType=VARCHAR},
+		      </if>
+		    </trim>
+		  </insert>
+		  <update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.GroupMeidicalRecord" >
+		    update group_meidical_record
+		    <set >
+		      <if test="groupKey != null" >
+		        group_key = #{groupKey,jdbcType=VARCHAR},
+		      </if>
+		      <if test="medicalRecordKey != null" >
+		        medical_record_key = #{medicalRecordKey,jdbcType=VARCHAR},
+		      </if>
+		      <if test="createPerson != null" >
+		        create_person = #{createPerson,jdbcType=VARCHAR},
+		      </if>
+		      <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+              </if>
+		      <if test="modifyTime != null" >
+		        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="modifyPerson != null" >
+		        modify_person = #{modifyPerson,jdbcType=VARCHAR},
+		      </if>
+		      <if test="isDel != null" >
+		        is_del = #{isDel,jdbcType=CHAR},
+		      </if>
+		      <if test="delTime != null" >
+		        del_time = #{delTime,jdbcType=TIMESTAMP},
+		      </if>
+		      <if test="delPerson != null" >
+		        del_person = #{delPerson,jdbcType=VARCHAR},
+		      </if>
+		      <if test="groupMeidicalRecordRemark1 != null" >
+		        group_meidical_record_remark1 = #{groupMeidicalRecordRemark1,jdbcType=VARCHAR},
+		      </if>
+		      <if test="groupMeidicalRecordRemark2 != null" >
+		        group_meidical_record_remark2 = #{groupMeidicalRecordRemark2,jdbcType=VARCHAR},
+		      </if>
+		      <if test="groupMeidicalRecordRemark3 != null" >
+		        group_meidical_record_remark3 = #{groupMeidicalRecordRemark3,jdbcType=VARCHAR},
+		      </if>
+		    </set>
+		    where group_meidical_record_key = #{groupMeidicalRecordKey,jdbcType=VARCHAR}
+		  </update>
+		  
+		  
+		  <resultMap id="medicalrecordMap" type="com.inteall.image.pojo.MedicalRecord" >
+		    <id column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+		    <result column="patient_key" property="patientKey" jdbcType="VARCHAR" />
+		    <result column="patient_name" property="patientName" jdbcType="VARCHAR" />
+		    <result column="sex" property="sex" jdbcType="VARCHAR" />
+		    <result column="age" property="age" jdbcType="VARCHAR" />
+		    <result column="patient_type" property="patientType" jdbcType="VARCHAR" />
+		    <result column="bodypart_code" property="bodypartCode" jdbcType="VARCHAR" />
+		    <result column="bodypart_name" property="bodypartName" jdbcType="VARCHAR" />
+		    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+		    <result column="image_num" property="imageNum" jdbcType="INTEGER" />
+		    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+		    <result column="print_flag" property="printFlag" jdbcType="BIT" />
+		    <result column="film_time" property="filmTime" jdbcType="TIMESTAMP" />
+		    <result column="film_num" property="filmNum" jdbcType="VARCHAR" />
+		    <result column="print_report" property="printReport" jdbcType="BIT" />
+		    <result column="print_time" property="printTime" jdbcType="TIMESTAMP" />
+		    <result column="seriesInstanceUID" property="seriesinstanceuid" jdbcType="VARCHAR" />
+		    <result column="study_id" property="studyId" jdbcType="VARCHAR" />
+		    <result column="series_num" property="seriesNum" jdbcType="INTEGER" />
+		    <result column="studyInstanceUID" property="studyinstanceuid" jdbcType="VARCHAR" />
+		    <result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+		    <result column="state" property="state" jdbcType="VARCHAR" />
+		  </resultMap>
+		  <resultMap id="medicalrecordMapBLOBs" type="com.inteall.image.pojo.MedicalRecord" extends="medicalrecordMap" >
+		    <result column="patient_history" property="patientHistory" jdbcType="LONGVARCHAR" />
+		  </resultMap>
+		  <sql id="Medical_Base_Column_List" >
+		    distinct(studyInstanceUID),medical_record.medical_record_key, patient_key, patient_name, sex, age, patient_type, bodypart_code, 
+		    bodypart_name, hospital, image_num, modality_code, print_flag, film_time, film_num, 
+		    print_report, print_time, seriesInstanceUID, study_id, series_num,  
+		    study_time, state
+		  </sql>
+		  <sql id="Medical_Blob_Column_List" >
+		    patient_history
+		  </sql>
+		  <select id="getRecordByGroupId" parameterType="hashmap" resultMap="medicalrecordMapBLOBs">
+		    select 
+		    <include refid="Medical_Base_Column_List" />
+		    ,
+		    <include refid="Medical_Blob_Column_List" />
+		    from medical_record,
+		
+			(SELECT medical_record_key FROM imagedb.group_meidical_record  WHERE group_key=#{group_id}) B
+			where medical_record.medical_record_key = B.medical_record_key
+			<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+		  	</if>
+		  	<if test="username != null and username != ''">
+		  		and patient_name  like CONCAT('%', #{username}, '%')
+		  	</if>
+		  	<if test="sex != null and sex != ''">
+		  		and sex = #{sex}
+		  	</if>
+		  	<if test="modality != null and modality != ''">
+		  		and modality_code = #{modality}
+		  	</if>
+			limit #{curr},#{limit}
+		  </select>
+		  
+		  <select id="getMedicalCount" parameterType="hashmap" resultType="Integer">
+		  	select 
+		    count(medical_record.medical_record_key)
+		    from medical_record,
+		
+			(SELECT medical_record_key FROM imagedb.group_meidical_record  WHERE group_key=#{group_id}) B
+			where medical_record.medical_record_key = B.medical_record_key
+			<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+		  	</if>
+		  	<if test="username != null and username != ''">
+		  		and patient_name  like CONCAT('%', #{username}, '%')
+		  	</if>
+		  	<if test="sex != null and sex != ''">
+		  		and sex = #{sex}
+		  	</if>
+		  	<if test="modality != null and modality != ''">
+		  		and modality_code = #{modality}
+		  	</if>
+		  </select>
+		  <resultMap id="GroupMeidicalRecord" type="com.inteall.image.pojo.GroupMeidicalRecord">
+		    <id column="group_meidical_record_key" jdbcType="VARCHAR" property="groupMeidicalRecordKey" />
+		    <result column="group_key" jdbcType="VARCHAR" property="groupKey" />
+		    <result column="medical_record_key" jdbcType="VARCHAR" property="medicalRecordKey" />
+		    <result column="create_person" jdbcType="VARCHAR" property="createPerson" />
+		    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+		    <result column="modify_person" jdbcType="VARCHAR" property="modifyPerson" />
+		    <result column="is_del" jdbcType="CHAR" property="isDel" />
+		    <result column="del_time" jdbcType="TIMESTAMP" property="delTime" />
+		    <result column="del_person" jdbcType="VARCHAR" property="delPerson" />
+		    <result column="group_meidical_record_remark1" jdbcType="VARCHAR" property="groupMeidicalRecordRemark1" />
+		    <result column="group_meidical_record_remark2" jdbcType="VARCHAR" property="groupMeidicalRecordRemark2" />
+		    <result column="group_meidical_record_remark3" jdbcType="VARCHAR" property="groupMeidicalRecordRemark3" />
+		  </resultMap>
+		  <sql id="GroupMeidicalRecord_List">
+		    group_meidical_record_key, group_key, medical_record_key, create_person,create_time, modify_time, 
+		    modify_person, is_del, del_time, del_person, group_meidical_record_remark1, group_meidical_record_remark2, 
+		    group_meidical_record_remark3
+		  </sql>	
+		  <select id="getRecordById" parameterType="String" resultType="String">
+		    select medical_record_key
+		    from group_meidical_record Where medical_record_key=#{medicalRecordKey} AND group_key=#{groupKey}
+		  </select>	 
+</mapper>

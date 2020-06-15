@@ -1,0 +1,38 @@
+body{text-align:left;color:#444;font-size:14px;font-family:"microsoft yahei";}
+img{border:0}
+*{margin:0;padding:0}
+ul{list-style:none}
+.header_l img{height:65px;margin-top:10px}
+select,input,img,select{vertical-align:middle}
+a{text-decoration:none;cursor:pointer;color:#000;font-weight:normal;}
+a:hover{color:#0f91ed}
+
+/* suspend */
+.suspend{width:40px;height:260px;position:fixed;top:300px;right:0;overflow:hidden;z-index:9999;}
+.suspend dl{width:55px;height:260px;border-radius:25px 0 0 25px;padding-left:40px;box-shadow:0 0 5px #e4e8ec;}
+.suspend dl dt{width:40px;height:260px;background-color:#4996e0;position:absolute;top:0;left:0;cursor:pointer;border-radius:10px 0px 0px 10px;}
+.suspend dl dd{background-color:#3E88D5;}
+.suspend dl dd.readimage{width:60px;height:66px;background-color:#3E88D5;}
+.suspend dl dd.readimage a{width:60px;height:66px;display:block;background: #3E88D5 -40px 0;overflow:hidden;}
+.suspend dl dd.readimage a img{padding-top: 8px;padding-left: 3px;}
+.suspend dl dd.quntaolun{width:60px;height:66px;background-color:#3E88D5;}
+.suspend dl dd.quntaolun a{width:60px;height:66px;display:block;background: #3E88D5 -40px -86px;overflow:hidden;}
+.suspend dl dd.quntaolun a img{padding-top: 8px;padding-left: 3px;}
+.suspend dl dd.shoucangjia{width:60px;height:66px;background-color:#3E88D5;}
+.suspend dl dd.shoucangjia a{width:60px;height:66px;display:block;background:#3E88D5 -40px -86px;overflow:hidden;}
+.suspend dl dd.shoucangjia a img{padding-top: 8px;padding-left: 3px;}
+.suspend dl dd.shipinjiaoxue{width:60px;height:66px;background-color:#3E88D5;}
+.suspend dl dd.shipinjiaoxue a{width:60px;height:66px;display:block;background:#3E88D5 -40px -86px;overflow:hidden;}
+.suspend dl dd.shipinjiaoxue a img{padding-top: 8px;padding-left: 3px;}
+.suspend dl dd.geren{width:60px;height:66px;background-color:#3E88D5;}
+.suspend dl dd.geren a{width:60px;height:66px;display:block;background:#3E88D5 -40px -86px;overflow:hidden;}
+.suspend dl dd.geren a img{padding-top: 8px;padding-left: 3px;}
+* html .suspend{position:absolute;left:expression(eval(document.documentElement.scrollRight));top:expression(eval(document.documentElement.scrollTop+200))}
+@charset "utf-8";
+a:hover  img {
+    -webkit-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    transform: scale(0.8);
+    -ms-transform: scale(0.8);
+}
+

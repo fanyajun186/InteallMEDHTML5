@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inteall.image.dao.ZhishikuCommentDao">
+
+	<resultMap type="com.inteall.image.pojo.ZhishikuComment" id="CommentResult">
+		<result property="id" column="id"/>
+		<result property="userIp" column="userIp"/>
+		<result property="content" column="content"/>
+		<result property="commentDate" column="commentDate"/>
+		<result property="commentDateStr" column="commentDateStr"/>
+		<result property="commentPersonId" column="commentPersonId"/>
+		<result property="commentPersonName" column="commentPersonName"/>
+		<association property="zhishiku" column="zhishikuId" select="com.inteall.image.dao.ZhishikuDao.findById"></association>
+	</resultMap>
+	
+	<insert id="add" parameterType="com.inteall.image.pojo.ZhishikuComment">
+		insert into t_zhishiku_comment(id,zhishikuId,userIp,content,commentDate,commentPersonId,commentPersonName)
+		 values(null,#{zhishiku.id},#{userIp},#{content},now(),#{commentPersonId},#{commentPersonName})
+	</insert>
+	
+	<update id="update" parameterType="com.inteall.image.pojo.ZhishikuComment">
+		update t_zhishiku_comment
+		<set>
+			<if test="state!=null">
+				state=#{state},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="list" parameterType="int" resultMap="CommentResult">
+		select id,userIp,content,commentDate,DATE_FORMAT(commentDate,'%Y年%m月%d日 %T') AS commentDateStr,commentPersonId,commentPersonName,zhishikuId from t_zhishiku_comment
+		where zhishikuId=#{id}
+		order by commentDate 
+	</select>
+	
+	<select id="getplAll" parameterType="com.inteall.image.pojo.ZhishikuComment" resultMap="CommentResult">
+		select id,userIp,content,commentDate,DATE_FORMAT(commentDate,'%Y年%m月%d日 %T') AS commentDateStr,commentPersonId,commentPersonName,zhishikuId from t_zhishiku_comment
+		<where>
+		    <if test="content!=null and content!='' ">
+				and  content  like CONCAT('%', #{content}, '%')
+			</if>
+		</where>
+		order by commentDate desc
+		limit #{curr},#{limit}
+	</select>
+	<select id="getCount" parameterType="com.inteall.image.pojo.ZhishikuComment" resultType="java.lang.Integer">
+		select count(*) from t_zhishiku_comment
+		 <where>
+		    <if test="content!=null and content!='' ">
+				and  content  like CONCAT('%', #{content}, '%')
+			</if>
+		</where>
+	</select>
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_zhishiku_comment
+		<where>
+			<if test="state!=null">
+				and state=#{state}
+			</if>
+		</where>
+	</select>
+	
+	
+	<delete id="delplById" parameterType="Integer">
+		delete from t_zhishiku_comment where id=#{id}
+	</delete>
+</mapper> 

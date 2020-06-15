@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.PostProcessingDao">
+	<resultMap id="BaseResultMap" type="com.inteall.image.pojo.PostProcessing">
+		<id column="logid" property="logid" jdbcType="VARCHAR" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="stuuid" property="stuuid" jdbcType="CHAR" />
+		<result column="srsuid" property="srsuid" jdbcType="CHAR" />
+		<result column="imguid" property="imguid" jdbcType="CHAR" />
+		<result column="command" property="command" jdbcType="VARCHAR" />
+		<result column="param01" property="param01" jdbcType="VARCHAR" />
+		<result column="param02" property="param02" jdbcType="VARCHAR" />
+		<result column="param03" property="param03" jdbcType="VARCHAR" />
+		<result column="param04" property="param04" jdbcType="VARCHAR" />
+		<result column="param05" property="param05" jdbcType="VARCHAR" />
+		<result column="param06" property="param06" jdbcType="VARCHAR" />
+		<result column="param07" property="param07" jdbcType="VARCHAR" />
+		<result column="param08" property="param08" jdbcType="VARCHAR" />
+		<result column="param09" property="param09" jdbcType="VARCHAR" />
+		<result column="param10" property="param10" jdbcType="VARCHAR" />
+		<result column="param11" property="param11" jdbcType="VARCHAR" />
+		<result column="param12" property="param12" jdbcType="VARCHAR" />
+		<result column="param13" property="param13" jdbcType="VARCHAR" />
+		<result column="param14" property="param14" jdbcType="VARCHAR" />
+		<result column="param15" property="param15" jdbcType="VARCHAR" />
+		<result column="param16" property="param16" jdbcType="VARCHAR" />
+		<result column="exefile" property="exefile" jdbcType="VARCHAR" />
+		<result column="imagefile" property="imagefile" jdbcType="VARCHAR" />
+		<result column="outputfile" property="outputfile" jdbcType="VARCHAR" />
+		<result column="result" property="result" jdbcType="CHAR" />
+		<result column="remark1" property="remark1" jdbcType="VARCHAR" />
+		<result column="remark2" property="remark2" jdbcType="VARCHAR" />
+		<result column="remark3" property="remark3" jdbcType="VARCHAR" />
+		<result column="remark4" property="remark4" jdbcType="VARCHAR" />
+		<result column="remark5" property="remark5" jdbcType="VARCHAR" />
+		<result column="remark6" property="remark6" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List"> logid, createtime, stuuid, srsuid, imguid, command,
+		param01, param02, param03, param04, param05, param06,
+		param07, param08,
+		param09, param10, param11, param12, param13, param14,
+		param15, param16,
+		exefile, imagefile, outputfile,
+		result, remark1, remark2, remark3,
+		remark4, remark5, remark6
+	</sql>
+	<!-- 根据主键查询一条记录 -->
+	<select id="selectByPrimaryKey" parameterType="String"
+		resultType="com.inteall.image.pojo.PostProcessing">
+		select logid, createtime, stuuid, srsuid, imguid, command,
+		param01, param02, param03, param04, param05, param06, param07,
+		param08, param09, param10, param11, param12, param13, param14,
+		param15, param16, exefile, imagefile, outputfile, result, remark1,
+		remark2, remark3, remark4, remark5, remark6
+		from t_postprocessing
+		where
+		logid = #{logid}
+	</select>
+	<!-- 根据主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="String">
+		delete
+		from
+		t_postprocessing
+		where logid = #{logid}
+	</delete>
+	<!-- 插入一条新记录 -->
+	<insert id="insert" parameterType="com.inteall.image.pojo.PostProcessing">
+		insert into t_postprocessing
+		(logid, createtime, stuuid, srsuid, imguid, command, param01, param02,
+		param03, param04, param05, param06, param07, param08, param09,
+		param10, param11, param12, param13, param14, param15, param16,
+		exefile, imagefile, outputfile, result, remark1, remark2, remark3,
+		remark4, remark5, remark6)
+		values (#{logid}, #{createtime}, #{stuuid},
+		#{srsuid}, #{imguid}, #{command}, #{param01}, #{param02}, #{param03},
+		#{param04}, #{param05}, #{param06}, #{param07}, #{param08},
+		#{param09}, #{param10}, #{param11}, #{param12}, #{param13},
+		#{param14}, #{param15}, #{param16}, #{exefile}, #{imagefile},
+		#{outputfile}, #{result}, #{remark1}, #{remark2}, #{remark3},
+		#{remark4}, #{remark5}, #{remark6})
+	</insert>
+	<!-- 插入一条新记录 -->
+	<insert id="insertSelective" parameterType="com.inteall.image.pojo.PostProcessing">
+		insert into t_postprocessing
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null"> logid,
+			</if>
+			<if test="createtime != null"> createtime,
+			</if>
+			<if test="stuuid != null"> stuuid,
+			</if>
+			<if test="srsuid != null"> srsuid,
+			</if>
+			<if test="imguid != null"> imguid,
+			</if>
+			<if test="command != null"> command,
+			</if>
+			<if test="param01 != null"> param01,
+			</if>
+			<if test="param02 != null"> param02,
+			</if>
+			<if test="param03 != null"> param03,
+			</if>
+			<if test="param04 != null"> param04,
+			</if>
+			<if test="param05 != null"> param05,
+			</if>
+			<if test="param06 != null"> param06,
+			</if>
+			<if test="param07 != null"> param07,
+			</if>
+			<if test="param08 != null"> param08,
+			</if>
+			<if test="param09 != null"> param09,
+			</if>
+			<if test="param10 != null"> param10,
+			</if>
+			<if test="param11 != null"> param11,
+			</if>
+			<if test="param12 != null"> param12,
+			</if>
+			<if test="param13 != null"> param13,
+			</if>
+			<if test="param14 != null"> param14,
+			</if>
+			<if test="param15 != null"> param15,
+			</if>
+			<if test="param16 != null"> param16,
+			</if>
+			<if test="exefile != null"> exefile,
+			</if>
+			<if test="imagefile != null"> imagefile,
+			</if>
+			<if test="outputfile != null"> outputfile,
+			</if>
+			<if test="result != null"> result,
+			</if>
+			<if test="remark1 != null"> remark1,
+			</if>
+			<if test="remark2 != null"> remark2,
+			</if>
+			<if test="remark3 != null"> remark3,
+			</if>
+			<if test="remark4 != null"> remark4,
+			</if>
+			<if test="remark5 != null"> remark5,
+			</if>
+			<if test="remark6 != null"> remark6,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null"> #{logid},
+			</if>
+			<if test="createtime != null"> #{createtime},
+			</if>
+			<if test="stuuid != null"> #{stuuid},
+			</if>
+			<if test="srsuid != null"> #{srsuid},
+			</if>
+			<if test="imguid != null"> #{imguid},
+			</if>
+			<if test="command != null"> #{command},
+			</if>
+			<if test="param01 != null"> #{param01},
+			</if>
+			<if test="param02 != null"> #{param02},
+			</if>
+			<if test="param03 != null"> #{param03},
+			</if>
+			<if test="param04 != null"> #{param04},
+			</if>
+			<if test="param05 != null"> #{param05},
+			</if>
+			<if test="param06 != null"> #{param06},
+			</if>
+			<if test="param07 != null"> #{param07},
+			</if>
+			<if test="param08 != null"> #{param08},
+			</if>
+			<if test="param09 != null"> #{param09},
+			</if>
+			<if test="param10 != null"> #{param10},
+			</if>
+			<if test="param11 != null"> #{param11},
+			</if>
+			<if test="param12 != null"> #{param12},
+			</if>
+			<if test="param13 != null"> #{param13},
+			</if>
+			<if test="param14 != null"> #{param14},
+			</if>
+			<if test="param15 != null"> #{param15},
+			</if>
+			<if test="param16 != null"> #{param16},
+			</if>
+			<if test="exefile != null"> #{exefile},
+			</if>
+			<if test="imagefile != null"> #{imagefile},
+			</if>
+			<if test="outputfile != null"> #{outputfile},
+			</if>
+			<if test="result != null"> #{result},
+			</if>
+			<if test="remark1 != null"> #{remark1},
+			</if>
+			<if test="remark2 != null"> #{remark2},
+			</if>
+			<if test="remark3 != null"> #{remark3},
+			</if>
+			<if test="remark4 != null"> #{remark4},
+			</if>
+			<if test="remark5 != null"> #{remark5},
+			</if>
+			<if test="remark6 != null"> #{remark6},
+			</if>
+		</trim>
+	</insert>
+	<!-- 根据主键修改一条记录 -->
+	<update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.PostProcessing">
+		update t_postprocessing
+		<set>
+			<if test="createtime != null"> createtime = #{createtime},
+			</if>
+			<if test="stuuid != null"> stuuid = #{stuuid},
+			</if>
+			<if test="srsuid != null"> srsuid = #{srsuid},
+			</if>
+			<if test="imguid != null"> imguid = #{imguid},
+			</if>
+			<if test="command != null"> command = #{command},
+			</if>
+			<if test="param01 != null"> param01 = #{param01},
+			</if>
+			<if test="param02 != null"> param02 = #{param02},
+			</if>
+			<if test="param03 != null"> param03 = #{param03},
+			</if>
+			<if test="param04 != null"> param04 = #{param04},
+			</if>
+			<if test="param05 != null"> param05 = #{param05},
+			</if>
+			<if test="param06 != null"> param06 = #{param06},
+			</if>
+			<if test="param07 != null"> param07 = #{param07},
+			</if>
+			<if test="param08 != null"> param08 = #{param08},
+			</if>
+			<if test="param09 != null"> param09 = #{param09},
+			</if>
+			<if test="param10 != null"> param10 = #{param10},
+			</if>
+			<if test="param11 != null"> param11 = #{param11},
+			</if>
+			<if test="param12 != null"> param12 = #{param12},
+			</if>
+			<if test="param13 != null"> param13 = #{param13},
+			</if>
+			<if test="param14 != null"> param14 = #{param14},
+			</if>
+			<if test="param15 != null"> param15 = #{param15},
+			</if>
+			<if test="param16 != null"> param16 = #{param16},
+			</if>
+			<if test="exefile != null"> exefile = #{exefile},
+			</if>
+			<if test="imagefile != null"> imagefile = #{imagefile},
+			</if>
+			<if test="outputfile != null"> outputfile = #{outputfile},
+			</if>
+			<if test="result != null"> result = #{result},
+			</if>
+			<if test="remark1 != null"> remark1 = #{remark1},
+			</if>
+			<if test="remark2 != null"> remark2 = #{remark2},
+			</if>
+			<if test="remark3 != null"> remark3 = #{remark3},
+			</if>
+			<if test="remark4 != null"> remark4 = #{remark4},
+			</if>
+			<if test="remark5 != null"> remark5 = #{remark5},
+			</if>
+			<if test="remark6 != null"> remark6 = #{remark6},
+			</if>
+		</set>
+		where logid = #{logid}
+	</update>
+	<!-- 根据主键修改一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.PostProcessing">
+		update
+		t_postprocessing set createtime = #{createtime,jdbcType=TIMESTAMP},
+		stuuid = #{stuuid}, srsuid = #{srsuid}, imguid = #{imguid}, command =
+		#{command}, param01 = #{param01}, param02 = #{param02}, param03 =
+		#{param03}, param04 = #{param04}, param05 = #{param05}, param06 =
+		#{param06}, param07 = #{param07}, param08 = #{param08}, param09 =
+		#{param09}, param10 = #{param10}, param11 = #{param11}, param12 =
+		#{param12}, param13 = #{param13}, param14 = #{param14}, param15 =
+		#{param15}, param16 = #{param16}, exefile = #{exefile}, imagefile =
+		#{imagefile}, outputfile = #{outputfile}, result = #{result}, remark1
+		= #{remark1}, remark2 = #{remark2}, remark3 = #{remark3}, remark4 =
+		#{remark4}, remark5 = #{remark5}, remark6 = #{remark6}
+		where logid =
+		#{logid}
+	</update>
+	<!-- 根据检查号查询列表 -->
+	<select id="selectByStuuid" parameterType="String" resultMap="BaseResultMap">
+		select logid, createtime, stuuid, srsuid, imguid, command, param01,
+		param02, param03, param04, param05, param06, param07, param08,
+		param09, param10, param11, param12, param13, param14, param15,
+		param16, exefile, imagefile, outputfile, result, remark1, remark2,
+		remark3, remark4, remark5, remark6
+		from t_postprocessing
+		where stuuid = #{stuuid}
+	</select>
+	<!-- 根据序列号查询列表 -->
+	<select id="selectBySrsuid" parameterType="String" resultMap="BaseResultMap">
+		select logid, createtime, stuuid, srsuid, imguid, command, param01,
+		param02, param03, param04, param05, param06, param07, param08,
+		param09, param10, param11, param12, param13, param14, param15,
+		param16, exefile, imagefile, outputfile, result, remark1, remark2,
+		remark3, remark4, remark5, remark6
+		from t_postprocessing
+		where srsuid = #{srsuid}
+	</select>
+</mapper>

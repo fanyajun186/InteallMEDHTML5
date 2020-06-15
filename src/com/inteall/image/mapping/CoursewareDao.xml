@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.CoursewareDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.Courseware" >
+    <id column="courseware_key" property="coursewareKey" jdbcType="VARCHAR" />
+    <result column="courseware_name" property="coursewareName" jdbcType="VARCHAR" />
+    <result column="courseware_desc" property="coursewareDesc" jdbcType="VARCHAR" />
+    <result column="courseware_size" property="coursewareSize" jdbcType="BIGINT" />
+    <result column="courseware_create_time" property="coursewareCreateTime" jdbcType="TIMESTAMP" />
+    <result column="courseware_create_person" property="coursewareCreatePerson" jdbcType="VARCHAR" />
+    <result column="courseware_modify_time" property="coursewareModifyTime" jdbcType="TIMESTAMP" />
+    <result column="courseware_modify_person" property="coursewareModifyPerson" jdbcType="VARCHAR" />
+    <result column="video_turorials_key" property="videoTurorialsKey" jdbcType="INTEGER" />
+    <result column="create_person" property="createPerson" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="modify_person" property="modifyPerson" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="CHAR" />
+    <result column="del_time" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="del_person" property="delPerson" jdbcType="VARCHAR" />
+    <result column="courseware_remark1" property="coursewareRemark1" jdbcType="VARCHAR" />
+    <result column="courseware_remark2" property="coursewareRemark2" jdbcType="VARCHAR" />
+    <result column="courseware_remark3" property="coursewareRemark3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    courseware_key, courseware_name, courseware_desc, courseware_size, courseware_create_time, 
+    courseware_create_person, courseware_modify_time, courseware_modify_person, video_turorials_key, 
+    create_person, create_time, modify_time, modify_person, is_del, del_time, del_person, 
+    courseware_remark1, courseware_remark2, courseware_remark3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from courseware
+    where courseware_key = #{coursewareKey,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from courseware
+    where courseware_key = #{coursewareKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.inteall.image.pojo.Courseware" >
+    insert into courseware (courseware_key, courseware_name, courseware_desc, 
+      courseware_size, courseware_create_time, 
+      courseware_create_person, courseware_modify_time, 
+      courseware_modify_person, video_turorials_key, 
+      create_person, create_time, modify_time, 
+      modify_person, is_del, del_time, 
+      del_person, courseware_remark1, courseware_remark2, 
+      courseware_remark3)
+    values (#{coursewareKey,jdbcType=VARCHAR}, #{coursewareName,jdbcType=VARCHAR}, #{coursewareDesc,jdbcType=VARCHAR}, 
+      #{coursewareSize,jdbcType=BIGINT}, #{coursewareCreateTime,jdbcType=TIMESTAMP}, 
+      #{coursewareCreatePerson,jdbcType=VARCHAR}, #{coursewareModifyTime,jdbcType=TIMESTAMP}, 
+      #{coursewareModifyPerson,jdbcType=VARCHAR}, #{videoTurorialsKey,jdbcType=INTEGER}, 
+      #{createPerson,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{modifyPerson,jdbcType=VARCHAR}, #{isDel,jdbcType=CHAR}, #{delTime,jdbcType=TIMESTAMP}, 
+      #{delPerson,jdbcType=VARCHAR}, #{coursewareRemark1,jdbcType=VARCHAR}, #{coursewareRemark2,jdbcType=VARCHAR}, 
+      #{coursewareRemark3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.inteall.image.pojo.Courseware" >
+    insert into courseware
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="coursewareKey != null" >
+        courseware_key,
+      </if>
+      <if test="coursewareName != null" >
+        courseware_name,
+      </if>
+      <if test="coursewareDesc != null" >
+        courseware_desc,
+      </if>
+      <if test="coursewareSize != null" >
+        courseware_size,
+      </if>
+      <if test="coursewareCreateTime != null" >
+        courseware_create_time,
+      </if>
+      <if test="coursewareCreatePerson != null" >
+        courseware_create_person,
+      </if>
+      <if test="coursewareModifyTime != null" >
+        courseware_modify_time,
+      </if>
+      <if test="coursewareModifyPerson != null" >
+        courseware_modify_person,
+      </if>
+      <if test="videoTurorialsKey != null" >
+        video_turorials_key,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="modifyPerson != null" >
+        modify_person,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="delTime != null" >
+        del_time,
+      </if>
+      <if test="delPerson != null" >
+        del_person,
+      </if>
+      <if test="coursewareRemark1 != null" >
+        courseware_remark1,
+      </if>
+      <if test="coursewareRemark2 != null" >
+        courseware_remark2,
+      </if>
+      <if test="coursewareRemark3 != null" >
+        courseware_remark3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="coursewareKey != null" >
+        #{coursewareKey,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareName != null" >
+        #{coursewareName,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareDesc != null" >
+        #{coursewareDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareSize != null" >
+        #{coursewareSize,jdbcType=BIGINT},
+      </if>
+      <if test="coursewareCreateTime != null" >
+        #{coursewareCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coursewareCreatePerson != null" >
+        #{coursewareCreatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareModifyTime != null" >
+        #{coursewareModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coursewareModifyPerson != null" >
+        #{coursewareModifyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="videoTurorialsKey != null" >
+        #{videoTurorialsKey,jdbcType=INTEGER},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPerson != null" >
+        #{modifyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null" >
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delPerson != null" >
+        #{delPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareRemark1 != null" >
+        #{coursewareRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareRemark2 != null" >
+        #{coursewareRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareRemark3 != null" >
+        #{coursewareRemark3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.Courseware" >
+    update courseware
+    <set >
+      <if test="coursewareName != null" >
+        courseware_name = #{coursewareName,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareDesc != null" >
+        courseware_desc = #{coursewareDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareSize != null" >
+        courseware_size = #{coursewareSize,jdbcType=BIGINT},
+      </if>
+      <if test="coursewareCreateTime != null" >
+        courseware_create_time = #{coursewareCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coursewareCreatePerson != null" >
+        courseware_create_person = #{coursewareCreatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareModifyTime != null" >
+        courseware_modify_time = #{coursewareModifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="coursewareModifyPerson != null" >
+        courseware_modify_person = #{coursewareModifyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="videoTurorialsKey != null" >
+        video_turorials_key = #{videoTurorialsKey,jdbcType=INTEGER},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPerson != null" >
+        modify_person = #{modifyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null" >
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delPerson != null" >
+        del_person = #{delPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareRemark1 != null" >
+        courseware_remark1 = #{coursewareRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareRemark2 != null" >
+        courseware_remark2 = #{coursewareRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="coursewareRemark3 != null" >
+        courseware_remark3 = #{coursewareRemark3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where courseware_key = #{coursewareKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.Courseware" >
+    update courseware
+    set courseware_name = #{coursewareName,jdbcType=VARCHAR},
+      courseware_desc = #{coursewareDesc,jdbcType=VARCHAR},
+      courseware_size = #{coursewareSize,jdbcType=BIGINT},
+      courseware_create_time = #{coursewareCreateTime,jdbcType=TIMESTAMP},
+      courseware_create_person = #{coursewareCreatePerson,jdbcType=VARCHAR},
+      courseware_modify_time = #{coursewareModifyTime,jdbcType=TIMESTAMP},
+      courseware_modify_person = #{coursewareModifyPerson,jdbcType=VARCHAR},
+      video_turorials_key = #{videoTurorialsKey,jdbcType=INTEGER},
+      create_person = #{createPerson,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modify_person = #{modifyPerson,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=CHAR},
+      del_time = #{delTime,jdbcType=TIMESTAMP},
+      del_person = #{delPerson,jdbcType=VARCHAR},
+      courseware_remark1 = #{coursewareRemark1,jdbcType=VARCHAR},
+      courseware_remark2 = #{coursewareRemark2,jdbcType=VARCHAR},
+      courseware_remark3 = #{coursewareRemark3,jdbcType=VARCHAR}
+    where courseware_key = #{coursewareKey,jdbcType=VARCHAR}
+  </update>
+  <select id="getAll" parameterType="com.inteall.image.pojo.Courseware" resultMap="BaseResultMap" >
+		select 
+			    courseware_key,courseware_name,courseware_desc,courseware_size,courseware_create_time,
+				courseware_create_person,courseware_modify_time,courseware_modify_person,video_turorials_key,
+				create_person,create_time,modify_time,modify_person,is_del,del_time,del_person,
+				courseware_remark1,courseware_remark2,courseware_remark3
+		from  courseware 
+		
+	</select>
+  
+</mapper>

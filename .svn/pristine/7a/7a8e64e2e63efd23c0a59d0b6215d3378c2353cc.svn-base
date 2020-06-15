@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.ModalityDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.Modality" >
+    <id column="modality_key" property="modalityKey" jdbcType="VARCHAR" />
+    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+    <result column="modality_desc" property="modalityDesc" jdbcType="VARCHAR" />
+    <result column="modality_name" property="modalityName" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="INTEGER" />
+    <result column="report_model_file" property="reportModelFile" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    modality_key, modality_code, modality_desc, modality_name, order_no, report_model_file
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from modality
+    where modality_key = #{modalityKey,jdbcType=VARCHAR}
+  </select>
+  <select id="getmodalityName" resultType="String" >
+  select distinct modality_name from modality where modality_name is not null
+  </select>
+  
+  <select id="getAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from modality
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from modality
+    where modality_key = #{modalityKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.inteall.image.pojo.Modality" >
+    insert into modality (modality_key, modality_code, modality_desc, 
+      modality_name, order_no, report_model_file
+      )
+    values (#{modalityKey,jdbcType=VARCHAR}, #{modalityCode,jdbcType=VARCHAR}, #{modalityDesc,jdbcType=VARCHAR}, 
+      #{modalityName,jdbcType=VARCHAR}, #{orderNo,jdbcType=INTEGER}, #{reportModelFile,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.inteall.image.pojo.Modality" >
+    insert into modality
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="modalityKey != null" >
+        modality_key,
+      </if>
+      <if test="modalityCode != null" >
+        modality_code,
+      </if>
+      <if test="modalityDesc != null" >
+        modality_desc,
+      </if>
+      <if test="modalityName != null" >
+        modality_name,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="reportModelFile != null" >
+        report_model_file,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="modalityKey != null" >
+        #{modalityKey,jdbcType=VARCHAR},
+      </if>
+      <if test="modalityCode != null" >
+        #{modalityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modalityDesc != null" >
+        #{modalityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="modalityName != null" >
+        #{modalityName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="reportModelFile != null" >
+        #{reportModelFile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.Modality" >
+    update modality
+    <set >
+      <if test="modalityCode != null" >
+        modality_code = #{modalityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modalityDesc != null" >
+        modality_desc = #{modalityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="modalityName != null" >
+        modality_name = #{modalityName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=INTEGER},
+      </if>
+      <if test="reportModelFile != null" >
+        report_model_file = #{reportModelFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where modality_key = #{modalityKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.Modality" >
+    update modality
+    set modality_code = #{modalityCode,jdbcType=VARCHAR},
+      modality_desc = #{modalityDesc,jdbcType=VARCHAR},
+      modality_name = #{modalityName,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=INTEGER},
+      report_model_file = #{reportModelFile,jdbcType=VARCHAR}
+    where modality_key = #{modalityKey,jdbcType=VARCHAR}
+  </update>
+</mapper>

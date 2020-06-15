@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inteall.image.dao.MedicalLogDao">
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.MedicalLog">
+    <id column="sysLog_key" jdbcType="VARCHAR" property="syslogKey" />
+    <result column="bodypart_name" jdbcType="VARCHAR" property="bodypartName" />
+    <result column="logClass" jdbcType="VARCHAR" property="logclass" />
+    <result column="logIp" jdbcType="VARCHAR" property="logip" />
+    <result column="logTime" jdbcType="TIMESTAMP" property="logtime" />
+    <result column="logType" jdbcType="VARCHAR" property="logtype" />
+    <result column="logUser" jdbcType="VARCHAR" property="loguser" />
+    <result column="logUser_code" jdbcType="VARCHAR" property="loguserCode" />
+    <result column="modality_code" jdbcType="VARCHAR" property="modalityCode" />
+    <result column="patient_id" jdbcType="VARCHAR" property="patientId" />
+    <result column="patient_key" jdbcType="VARCHAR" property="patientKey" />
+    <result column="medical_record_key" jdbcType="VARCHAR" property="medicalRecordKey" />
+    <result column="study_id" jdbcType="VARCHAR" property="studyId" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+    <result column="create_person" jdbcType="VARCHAR" property="createPerson" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="modify_person" jdbcType="VARCHAR" property="modifyPerson" />
+    <result column="is_del" jdbcType="CHAR" property="isDel" />
+    <result column="del_time" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="del_person" jdbcType="VARCHAR" property="delPerson" />
+    <result column="sysLog_remark1" jdbcType="VARCHAR" property="syslogRemark1" />
+    <result column="sysLog_remark2" jdbcType="VARCHAR" property="syslogRemark2" />
+    <result column="sysLog_remark3" jdbcType="VARCHAR" property="syslogRemark3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sysLog_key, bodypart_name, logClass, logIp, logTime, logType, logUser, logUser_code, 
+    modality_code, patient_id, patient_key, medical_record_key, study_id, patient_name, 
+    create_person, create_time, modify_time, modify_person, is_del, del_time, del_person, 
+    sysLog_remark1, sysLog_remark2, sysLog_remark3
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from medical_log
+    where sysLog_key = #{syslogKey,jdbcType=VARCHAR}
+  </select>
+  <!-- distinct(study_id)  com.inteall.image.pojo.MedicalLog -->
+  <select id="getCount" parameterType="hashmap" resultType="java.lang.Integer">
+  	SELECT count(0) FROM imagedb.medical_log  WHERE study_id=#{studyId}
+  </select>
+   <select id="getByStuuid" parameterType="hashmap" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from medical_log
+	where study_id = #{studyId} Order By logTime Desc
+	limit #{start},#{pageSize}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from medical_log
+    where sysLog_key = #{syslogKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="save" parameterType="com.inteall.image.pojo.MedicalLog">
+    insert into medical_log (sysLog_key, bodypart_name, logClass, 
+      logIp, logTime, logType, 
+      logUser, logUser_code, modality_code, 
+      patient_id, patient_key, medical_record_key, 
+      study_id, patient_name, create_person, 
+      create_time, modify_time, modify_person, 
+      is_del, del_time, del_person, 
+      sysLog_remark1, sysLog_remark2, sysLog_remark3
+      )
+    values (#{syslogKey,jdbcType=VARCHAR}, #{bodypartName,jdbcType=VARCHAR}, #{logclass,jdbcType=VARCHAR}, 
+      #{logip,jdbcType=VARCHAR}, #{logtime,jdbcType=TIMESTAMP}, #{logtype,jdbcType=VARCHAR}, 
+      #{loguser,jdbcType=VARCHAR}, #{loguserCode,jdbcType=VARCHAR}, #{modalityCode,jdbcType=VARCHAR}, 
+      #{patientId,jdbcType=VARCHAR}, #{patientKey,jdbcType=VARCHAR}, #{medicalRecordKey,jdbcType=VARCHAR}, 
+      #{studyId,jdbcType=VARCHAR}, #{patientName,jdbcType=VARCHAR}, #{createPerson,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyPerson,jdbcType=VARCHAR}, 
+      #{isDel,jdbcType=CHAR}, #{delTime,jdbcType=TIMESTAMP}, #{delPerson,jdbcType=VARCHAR}, 
+      #{syslogRemark1,jdbcType=VARCHAR}, #{syslogRemark2,jdbcType=VARCHAR}, #{syslogRemark3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.inteall.image.pojo.MedicalLog">
+    insert into medical_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="syslogKey != null">
+        sysLog_key,
+      </if>
+      <if test="bodypartName != null">
+        bodypart_name,
+      </if>
+      <if test="logclass != null">
+        logClass,
+      </if>
+      <if test="logip != null">
+        logIp,
+      </if>
+      <if test="logtime != null">
+        logTime,
+      </if>
+      <if test="logtype != null">
+        logType,
+      </if>
+      <if test="loguser != null">
+        logUser,
+      </if>
+      <if test="loguserCode != null">
+        logUser_code,
+      </if>
+      <if test="modalityCode != null">
+        modality_code,
+      </if>
+      <if test="patientId != null">
+        patient_id,
+      </if>
+      <if test="patientKey != null">
+        patient_key,
+      </if>
+      <if test="medicalRecordKey != null">
+        medical_record_key,
+      </if>
+      <if test="studyId != null">
+        study_id,
+      </if>
+      <if test="patientName != null">
+        patient_name,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="modifyPerson != null">
+        modify_person,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="delTime != null">
+        del_time,
+      </if>
+      <if test="delPerson != null">
+        del_person,
+      </if>
+      <if test="syslogRemark1 != null">
+        sysLog_remark1,
+      </if>
+      <if test="syslogRemark2 != null">
+        sysLog_remark2,
+      </if>
+      <if test="syslogRemark3 != null">
+        sysLog_remark3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="syslogKey != null">
+        #{syslogKey,jdbcType=VARCHAR},
+      </if>
+      <if test="bodypartName != null">
+        #{bodypartName,jdbcType=VARCHAR},
+      </if>
+      <if test="logclass != null">
+        #{logclass,jdbcType=VARCHAR},
+      </if>
+      <if test="logip != null">
+        #{logip,jdbcType=VARCHAR},
+      </if>
+      <if test="logtime != null">
+        #{logtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logtype != null">
+        #{logtype,jdbcType=VARCHAR},
+      </if>
+      <if test="loguser != null">
+        #{loguser,jdbcType=VARCHAR},
+      </if>
+      <if test="loguserCode != null">
+        #{loguserCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modalityCode != null">
+        #{modalityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientKey != null">
+        #{patientKey,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalRecordKey != null">
+        #{medicalRecordKey,jdbcType=VARCHAR},
+      </if>
+      <if test="studyId != null">
+        #{studyId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null">
+        #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPerson != null">
+        #{modifyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null">
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delPerson != null">
+        #{delPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="syslogRemark1 != null">
+        #{syslogRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="syslogRemark2 != null">
+        #{syslogRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="syslogRemark3 != null">
+        #{syslogRemark3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.MedicalLog">
+    update medical_log
+    <set>
+      <if test="bodypartName != null">
+        bodypart_name = #{bodypartName,jdbcType=VARCHAR},
+      </if>
+      <if test="logclass != null">
+        logClass = #{logclass,jdbcType=VARCHAR},
+      </if>
+      <if test="logip != null">
+        logIp = #{logip,jdbcType=VARCHAR},
+      </if>
+      <if test="logtime != null">
+        logTime = #{logtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logtype != null">
+        logType = #{logtype,jdbcType=VARCHAR},
+      </if>
+      <if test="loguser != null">
+        logUser = #{loguser,jdbcType=VARCHAR},
+      </if>
+      <if test="loguserCode != null">
+        logUser_code = #{loguserCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modalityCode != null">
+        modality_code = #{modalityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        patient_id = #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientKey != null">
+        patient_key = #{patientKey,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalRecordKey != null">
+        medical_record_key = #{medicalRecordKey,jdbcType=VARCHAR},
+      </if>
+      <if test="studyId != null">
+        study_id = #{studyId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null">
+        patient_name = #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPerson != null">
+        modify_person = #{modifyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null">
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delPerson != null">
+        del_person = #{delPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="syslogRemark1 != null">
+        sysLog_remark1 = #{syslogRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="syslogRemark2 != null">
+        sysLog_remark2 = #{syslogRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="syslogRemark3 != null">
+        sysLog_remark3 = #{syslogRemark3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sysLog_key = #{syslogKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.MedicalLog">
+    update medical_log
+    set bodypart_name = #{bodypartName,jdbcType=VARCHAR},
+      logClass = #{logclass,jdbcType=VARCHAR},
+      logIp = #{logip,jdbcType=VARCHAR},
+      logTime = #{logtime,jdbcType=TIMESTAMP},
+      logType = #{logtype,jdbcType=VARCHAR},
+      logUser = #{loguser,jdbcType=VARCHAR},
+      logUser_code = #{loguserCode,jdbcType=VARCHAR},
+      modality_code = #{modalityCode,jdbcType=VARCHAR},
+      patient_id = #{patientId,jdbcType=VARCHAR},
+      patient_key = #{patientKey,jdbcType=VARCHAR},
+      medical_record_key = #{medicalRecordKey,jdbcType=VARCHAR},
+      study_id = #{studyId,jdbcType=VARCHAR},
+      patient_name = #{patientName,jdbcType=VARCHAR},
+      create_person = #{createPerson,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      modify_person = #{modifyPerson,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=CHAR},
+      del_time = #{delTime,jdbcType=TIMESTAMP},
+      del_person = #{delPerson,jdbcType=VARCHAR},
+      sysLog_remark1 = #{syslogRemark1,jdbcType=VARCHAR},
+      sysLog_remark2 = #{syslogRemark2,jdbcType=VARCHAR},
+      sysLog_remark3 = #{syslogRemark3,jdbcType=VARCHAR}
+    where sysLog_key = #{syslogKey,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.SysHospitalDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.SysHospital" >
+    <id column="sys_hospital_key" property="sysHospitalKey" jdbcType="VARCHAR" />
+    <result column="hosp_name" property="hospName" jdbcType="VARCHAR" />
+    <result column="hosp_sname" property="hospSname" jdbcType="VARCHAR" />
+    <result column="hosp_class" property="hospClass" jdbcType="CHAR" />
+    <result column="hosp_level" property="hospLevel" jdbcType="CHAR" />
+    <result column="hosp_occ" property="hospOcc" jdbcType="VARCHAR" />
+    <result column="hosp_add_pr" property="hospAddPr" jdbcType="VARCHAR" />
+    <result column="hosp_add_cy" property="hospAddCy" jdbcType="VARCHAR" />
+    <result column="hosp_add_qx" property="hospAddQx" jdbcType="VARCHAR" />
+    <result column="hosp_add" property="hospAdd" jdbcType="VARCHAR" />
+    <result column="hosp_post_code" property="hospPostCode" jdbcType="VARCHAR" />
+    <result column="hosp_ad" property="hospAd" jdbcType="VARCHAR" />
+    <result column="hosp_lp" property="hospLp" jdbcType="VARCHAR" />
+    <result column="hosp_user" property="hospUser" jdbcType="VARCHAR" />
+    <result column="hosp_tel" property="hospTel" jdbcType="VARCHAR" />
+    <result column="hosp_mobile" property="hospMobile" jdbcType="VARCHAR" />
+    <result column="is_center" property="isCenter" jdbcType="TINYINT" />
+    <result column="hosp_email" property="hospEmail" jdbcType="VARCHAR" />
+    <result column="hosp_about" property="hospAbout" jdbcType="VARCHAR" />
+    <result column="create_person" property="createPerson" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_person" property="modifyPerson" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="CHAR" />
+    <result column="del_person" property="delPerson" jdbcType="VARCHAR" />
+    <result column="del_time" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="hosp_remark1" property="hospRemark1" jdbcType="VARCHAR" />
+    <result column="hosp_remark2" property="hospRemark2" jdbcType="VARCHAR" />
+    <result column="hosp_remark3" property="hospRemark3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sys_hospital_key, hosp_name, hosp_sname, hosp_class, hosp_level, hosp_occ, hosp_add_pr, 
+    hosp_add_cy, hosp_add_qx, hosp_add, hosp_post_code, hosp_ad, hosp_lp, hosp_user, 
+    hosp_tel, hosp_mobile, is_center, hosp_email, hosp_about, create_person, create_time, 
+    modify_person, modify_time, is_del, del_person, del_time, hosp_remark1, hosp_remark2, 
+    hosp_remark3
+  </sql>
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_hospital
+    where sys_hospital_key = #{sysHospitalKey,jdbcType=VARCHAR} and is_del=0
+  </select>
+  <select id="getAll" resultMap="BaseResultMap" parameterType="com.inteall.image.pojo.SysHospital" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_hospital
+    where  is_del=0
+    <if test="hospName != null and hospName != ''">
+        and hosp_name like CONCAT('%', #{hospName}, '%')
+    </if>
+   
+	limit #{curr},#{limit}
+  </select>
+  <select id="getHospital" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_hospital
+    where  is_del=0
+  </select>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="com.inteall.image.pojo.SysHospital" >
+    select 
+   	count(sys_hospital_key)
+    from sys_hospital
+    where  is_del=0
+    <if test="hospName != null and hospName != ''">
+        and hosp_name like CONCAT('%', #{hospName}, '%')
+    </if>
+  </select>
+  <update id="delById" parameterType="java.lang.String" >
+    update sys_hospital set is_del=1
+    where sys_hospital_key = #{sysHospitalKey,jdbcType=VARCHAR}
+  </update>
+  <insert id="save" parameterType="com.inteall.image.pojo.SysHospital" >
+    insert into sys_hospital (sys_hospital_key, hosp_name, hosp_sname, 
+      hosp_class, hosp_level, hosp_occ, 
+      hosp_add_pr, hosp_add_cy, hosp_add_qx, 
+      hosp_add, hosp_post_code, hosp_ad, 
+      hosp_lp, hosp_user, hosp_tel, 
+      hosp_mobile, is_center, hosp_email, 
+      hosp_about, create_person, create_time, 
+      modify_person, modify_time, is_del, 
+      del_person, del_time, hosp_remark1, 
+      hosp_remark2, hosp_remark3)
+    values (#{sysHospitalKey,jdbcType=VARCHAR}, #{hospName,jdbcType=VARCHAR}, #{hospSname,jdbcType=VARCHAR}, 
+      #{hospClass,jdbcType=CHAR}, #{hospLevel,jdbcType=CHAR}, #{hospOcc,jdbcType=VARCHAR}, 
+      #{hospAddPr,jdbcType=VARCHAR}, #{hospAddCy,jdbcType=VARCHAR}, #{hospAddQx,jdbcType=VARCHAR}, 
+      #{hospAdd,jdbcType=VARCHAR}, #{hospPostCode,jdbcType=VARCHAR}, #{hospAd,jdbcType=VARCHAR}, 
+      #{hospLp,jdbcType=VARCHAR}, #{hospUser,jdbcType=VARCHAR}, #{hospTel,jdbcType=VARCHAR}, 
+      #{hospMobile,jdbcType=VARCHAR}, #{isCenter,jdbcType=TINYINT}, #{hospEmail,jdbcType=VARCHAR}, 
+      #{hospAbout,jdbcType=VARCHAR}, #{createPerson,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyPerson,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=CHAR}, 
+      #{delPerson,jdbcType=VARCHAR}, #{delTime,jdbcType=TIMESTAMP}, #{hospRemark1,jdbcType=VARCHAR}, 
+      #{hospRemark2,jdbcType=VARCHAR}, #{hospRemark3,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateById" parameterType="com.inteall.image.pojo.SysHospital" >
+    update sys_hospital
+    <set >
+      <if test="hospName != null" >
+        hosp_name = #{hospName,jdbcType=VARCHAR},
+      </if>
+      <if test="hospSname != null" >
+        hosp_sname = #{hospSname,jdbcType=VARCHAR},
+      </if>
+      <if test="hospClass != null" >
+        hosp_class = #{hospClass,jdbcType=CHAR},
+      </if>
+      <if test="hospLevel != null" >
+        hosp_level = #{hospLevel,jdbcType=CHAR},
+      </if>
+      <if test="hospOcc != null" >
+        hosp_occ = #{hospOcc,jdbcType=VARCHAR},
+      </if>
+      <if test="hospAddPr != null" >
+        hosp_add_pr = #{hospAddPr,jdbcType=VARCHAR},
+      </if>
+      <if test="hospAddCy != null" >
+        hosp_add_cy = #{hospAddCy,jdbcType=VARCHAR},
+      </if>
+      <if test="hospAddQx != null" >
+        hosp_add_qx = #{hospAddQx,jdbcType=VARCHAR},
+      </if>
+      <if test="hospAdd != null" >
+        hosp_add = #{hospAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="hospPostCode != null" >
+        hosp_post_code = #{hospPostCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hospAd != null" >
+        hosp_ad = #{hospAd,jdbcType=VARCHAR},
+      </if>
+      <if test="hospLp != null" >
+        hosp_lp = #{hospLp,jdbcType=VARCHAR},
+      </if>
+      <if test="hospUser != null" >
+        hosp_user = #{hospUser,jdbcType=VARCHAR},
+      </if>
+      <if test="hospTel != null" >
+        hosp_tel = #{hospTel,jdbcType=VARCHAR},
+      </if>
+      <if test="hospMobile != null" >
+        hosp_mobile = #{hospMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="isCenter != null" >
+        is_center = #{isCenter,jdbcType=TINYINT},
+      </if>
+      <if test="hospEmail != null" >
+        hosp_email = #{hospEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="hospAbout != null" >
+        hosp_about = #{hospAbout,jdbcType=VARCHAR},
+      </if>
+      <if test="createPerson != null" >
+        create_person = #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyPerson != null" >
+        modify_person = #{modifyPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delPerson != null" >
+        del_person = #{delPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="delTime != null" >
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hospRemark1 != null" >
+        hosp_remark1 = #{hospRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="hospRemark2 != null" >
+        hosp_remark2 = #{hospRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="hospRemark3 != null" >
+        hosp_remark3 = #{hospRemark3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sys_hospital_key = #{sysHospitalKey,jdbcType=VARCHAR}
+  </update>
+</mapper>

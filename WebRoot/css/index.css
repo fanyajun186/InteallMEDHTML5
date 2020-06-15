@@ -1,0 +1,344 @@
+@charset "utf-8";
+body{
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+.inteall-menu-div{
+    position: absolute;
+    width: 250px;
+    height: auto;
+    top:40px;
+    left:0px;
+    background: #393D49;
+    box-shadow: 1px 2px 10px #333;
+    border-radius: 0px 0px 8px 0px;
+    display: none;
+    z-index: 9999;
+}
+.inteall-menu-img{
+    width: 25px;
+    height: 25px;
+}
+/*
+* 顶部标题
+*/
+.inteall-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: #30343e;
+    color: white;
+    font-size: 14px;
+    line-height: 40px;
+    vertical-align: top;
+}
+/*
+*顶部左边（按钮+公司名称）
+*/
+.inteall-header-left{
+    position: absolute;
+    top: 0px;
+    width: 250px;
+    height: 40px;
+    line-height: 40px;
+    background: #393D49;
+    text-align: left;
+    z-index: 999;
+}
+/*
+*顶部左边（按钮）
+*/
+.inteall-header-logo{
+    display: inline-block;
+    width: 18px;
+    /*height: 18px;*/
+    padding-left: 15px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+/*
+*顶部左边（公司名称）
+*/
+.inteall-header-title{
+    display: inline-block;
+    color: white;
+    /* margin-top: 2px; */
+    /*height: 40px;*/
+    /*line-height: 42px;*/
+    padding-left: 10px;
+    vertical-align: middle;
+}
+.inteall-header-title:hover{
+    color: #4480ba;
+}
+
+/*
+*主界面
+*/
+.inteall-layout-admin {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /*overflow: hidden;*/
+    padding: 0px;
+    margin: 0px;
+}
+.inteall-layout-admin #larry-body {
+    /*top: 0px;
+    left: 0px;
+    height: 100%;
+    margin: 0px;
+    border: none !important;
+    margin-left: 0px;*/
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 0px;
+}
+.inteall-body {
+    background: #F2F2F2;
+    overflow: auto;
+}
+/*
+*主题 tab页
+*/
+.inteall-body .layui-tab {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    border-left: none;
+    background: #F1F2F7;
+    overflow: hidden;
+}
+/*
+*tab页标签（宽度、背景颜色）
+*/
+ul.layui-tab-title {
+    max-width: calc(100% - 600px);
+    min-width:105px;
+    height: 40px;
+    position: absolute;
+    top: 0px;
+    left: 291px;
+    overflow-x: hidden;
+    /*background: #30343e;
+    border-bottom: 1px solid #393D49;*/
+}
+/*
+*tab页标签文字颜色
+*/
+ul.layui-tab-title li:hover{
+    color: #4480ba;
+}
+ul.layui-tab-title li {
+    color: #fff
+}
+
+.layui-tab .inteall-title-box {
+    width: 100%;
+    height: 40px;
+    background: #23262E;
+    position: relative;
+    /*margin-top: -1px;
+    border-bottom: 1px solid #393D49;*/
+}
+
+.layui-tab .inteall-title-box .key-press {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.layui-tab .inteall-title-box .key-press i {
+    font-weight: 500;
+    color: #eee;
+    font-size: 14px;
+    line-height: 44px;
+}
+
+.layui-tab .inteall-title-box .key-press i:hover {
+    color: #4480ba;
+}
+
+/*
+* 跳转到最左边
+*/
+.layui-tab .inteall-title-box .go-left {
+    position: absolute;
+    top: 0px;
+    left: 250px;
+    background: #30343e;
+}
+
+ul.layui-tab-title {
+    max-width: calc(100% - 660px);
+    min-width:94px;
+    height: 40px;
+    position: absolute;
+    top: 0px;
+    left: 291px;
+    overflow-y: hidden;
+    z-index: 1000;
+    
+    /*background: #30343e;
+    border-bottom: 1px solid #393D49;*/
+}
+ul.layui-tab-title li:hover{
+    color: #4480ba;
+}
+ul.layui-tab-title li {
+    /*background: #30343e;*/
+    color: #fff
+}
+/*
+* 右边工具栏
+*/
+.layui-tab .inteall-title-box .title-right {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0px;
+    right: 250px;
+    background: #30343e;
+}
+
+/*
+* 跳转到最右边
+*/
+.layui-tab .inteall-title-box  .go-right {
+    position: absolute;
+    top: 0px;
+    right:260px;
+    background: #30343e;
+}
+
+.layui-tab .inteall-title-box .title-right .key-press:hover {
+    background: #f2f2f2;
+}
+
+/*
+* 常用操作
+*/
+.layui-tab .inteall-title-box .title-right .often {
+    width: 95px;
+    position: absolute;
+    top: 0px;
+    left: 50px;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.layui-tab .inteall-title-box .title-right .often:hover {
+    background: #f2f2f2;
+    color: #333333;
+}
+
+.layui-tab .inteall-title-box .title-right .often ul.layui-nav {
+    display: block;
+    width: 95px;
+    height: 100%;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.layui-tab .inteall-title-box .title-right .often ul.layui-nav li.layui-nav-item {
+    width: 95px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    top: 0px;
+    left: 0px;
+}
+
+.layui-tab .inteall-title-box .title-right .often ul.layui-nav li.layui-nav-item a.top {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    line-height: 40px;
+    text-align: center;
+}
+.often ul.layui-nav li.layui-nav-item a.top i {
+    display: inline-block;
+    width: 30px;
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    color: #FFF;
+    background: #30343e;
+}
+.often ul.layui-nav li.layui-nav-item a.top:hover i {
+    color: #FF784E;
+}
+.often ul.layui-nav li.layui-nav-item a.top cite {
+    display: inline-block;
+    width: 85px;
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top: 0px;
+    left: 35px;
+    text-align: left;
+    background:#30343e;
+    color: #fff;
+}
+
+.often ul.layui-nav li.layui-nav-item a.top:hover cite {
+     color: #FF784E;
+}
+/*
+* 控制第一个tab的删除按钮不显示
+*/
+ul.layui-tab-title li:nth-child(1) .layui-tab-close {
+    display: none;
+}
+
+/*
+*顶部右边（通知、用户、退出等）
+*/
+.inteall-header-right {
+    position: absolute;
+    width:370px;
+    height: 40px;
+    line-height: 40px;
+    top: 0px;
+    right:0px;
+    background: #393D49;
+    color: red;
+    z-index: 999;
+    text-align: left;
+}
+
+.inteall-content{
+   position: fixed;
+	width:100%;
+	height: calc(100% - 40px);
+    height: -moz-calc(100% - 40px);
+  	height: -webkit-calc(100% - 40px);
+    top: 40px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border: 0px;
+    overflow-y:auto
+}
+
+/*
+* 滚动条样式
+*/
+::-webkit-scrollbar{width:10px;background-color:#e1e5ea}
+::-webkit-scrollbar-thumb{background-color:#c3cad4;border-radius:10px;border:2px solid #e1e5ea;}
+::-webkit-scrollbar-thumb:hover{background-color:#aab1bc;}
+::-webkit-scrollbar-thumb:active{border:0;border-radius:0;background-color:#737ed7}
+::-webkit-scrollbar-thumb:window-inactive{background-color:#4c97da}

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.PersonToPersonDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.PersonToPerson" >
+    <id column="person_to_person_key" property="personToPersonKey" jdbcType="VARCHAR" />
+    <result column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+    <result column="target_person" property="targetPerson" jdbcType="VARCHAR" />
+    <result column="create_person" property="createPerson" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="medicalrecordMap" type="com.inteall.image.pojo.PersonToPerson" >
+    <id column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+    <result column="patient_key" property="patientKey" jdbcType="VARCHAR" />
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="patient_type" property="patientType" jdbcType="VARCHAR" />
+    <result column="bodypart_code" property="bodypartCode" jdbcType="VARCHAR" />
+    <result column="bodypart_name" property="bodypartName" jdbcType="VARCHAR" />
+    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+    <result column="image_num" property="imageNum" jdbcType="INTEGER" />
+    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+    <result column="print_flag" property="printFlag" jdbcType="BIT" />
+    <result column="film_time" property="filmTime" jdbcType="TIMESTAMP" />
+    <result column="film_num" property="filmNum" jdbcType="VARCHAR" />
+    <result column="print_report" property="printReport" jdbcType="BIT" />
+    <result column="print_time" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="seriesInstanceUID" property="seriesinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_id" property="studyId" jdbcType="VARCHAR" />
+    <result column="series_num" property="seriesNum" jdbcType="INTEGER" />
+    <result column="studyInstanceUID" property="studyinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="medicalrecordMapBLOBs" type="com.inteall.image.pojo.PersonToPerson" extends="medicalrecordMap" >
+    <result column="patient_history" property="patientHistory" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Medical_Base_Column_List" >
+    studyInstanceUID,B.medical_record_key, patient_key, patient_name, sex, age, patient_type, bodypart_code, 
+    bodypart_name, hospital, B.image_num, modality_code, print_flag, film_time, film_num, 
+    print_report, print_time, seriesInstanceUID, study_id, series_num,  
+    study_time, state
+  </sql>
+  <sql id="Medical_Blob_Column_List" >
+    patient_history
+  </sql>
+  <sql id="Base_Column_List" >
+    person_to_person_key, medical_record_key, target_person, create_person, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_person_to_person
+    where person_to_person_key = #{personToPersonKey,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getRecord" resultMap="medicalrecordMapBLOBs" parameterType="hashmap" >
+    select 
+    <include refid="Medical_Base_Column_List" />
+    ,
+    <include refid="Medical_Blob_Column_List" />
+    ,C.user_name createName,A.create_time createTime,D.user_name beShareName
+    from t_person_to_person A,medical_record B,sysuser C,sysuser D
+    where A.medical_record_key = B.medical_record_key
+    and A.create_person = C.sysuser_key
+    and A.target_person = D.login_name
+    <if test="state==1 ">
+        and A.create_person = #{userId}
+    </if>
+    <if test="state==2 ">
+        and A.target_person = #{userLogin}
+    </if>
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+        <![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d') >=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        <![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+      and B.patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+       and B.sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+       and B.modality_code = #{modality}
+    </if>
+    order by A.create_time desc
+    limit #{curr},#{limit}
+  </select>
+  <select id="getMedicalCount" resultType="int" parameterType="hashmap" >
+    select 
+    count(person_to_person_key)
+    from t_person_to_person A,medical_record B
+    where A.medical_record_key = B.medical_record_key
+    <if test="state==1 ">
+        and A.create_person = #{userId}
+    </if>
+    <if test="state==2 ">
+        and A.target_person = #{userLogin}
+    </if>
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+        <![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        <![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+      and B.patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+       and B.sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+       and B.modality_code = #{modality}
+    </if>
+    
+  </select>
+  <insert id="getSaveSharePerson" parameterType="com.inteall.image.pojo.PersonToPerson" >
+    insert into t_person_to_person
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="personToPersonKey != null" >
+        person_to_person_key,
+      </if>
+      <if test="medicalRecordKey != null" >
+        medical_record_key,
+      </if>
+      <if test="targetPerson != null" >
+        target_person,
+      </if>
+      <if test="createPerson != null" >
+        create_person,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="personToPersonKey != null" >
+        #{personToPersonKey,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalRecordKey != null" >
+        #{medicalRecordKey,jdbcType=VARCHAR},
+      </if>
+      <if test="targetPerson != null" >
+        #{targetPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createPerson != null" >
+        #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+ -->
+<mapper namespace="com.inteall.image.dao.CollectionMedicalRecordDao">
+	<resultMap type="com.inteall.image.pojo.CollectionMedicalRecord" id="medicalRecordList">
+			<id column="collection_medical_record_key" jdbcType="VARCHAR" property="collection_medical_record_key" />
+		    <result column="collection_key" jdbcType="VARCHAR" property="collection_key" />
+		    <result column="report_key" jdbcType="VARCHAR" property="report_key" />
+		    <result column="medical_record_key" jdbcType="VARCHAR" property="medical_record_key" />
+		    <result column="create_person" jdbcType="VARCHAR" property="create_person" />
+		    <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+		    <result column="modify_time" jdbcType="TIMESTAMP" property="modify_time" />
+		    <result column="modify_person" jdbcType="VARCHAR" property="modify_person" />
+		    <result column="is_del" jdbcType="CHAR" property="is_del" />
+		    <result column="del_time" jdbcType="TIMESTAMP" property="del_time" />
+		    <result column="del_person" jdbcType="VARCHAR" property="del_person" />
+		    <result column="collection_medical_record_remark1" jdbcType="VARCHAR" property="collection_medical_record_remark1" />
+		    <result column="collection_medical_record_remark2" jdbcType="VARCHAR" property="collection_medical_record_remark2" />
+		    <result column="collection_medical_record_remark3" jdbcType="VARCHAR" property="collection_medical_record_remark3" />
+	</resultMap>
+	<sql id="Base_Column_List1">
+    collection_medical_record_key, collection_key, report_key, medical_record_key, create_person, 
+    create_time, modify_time, modify_person, is_del, del_time, del_person, collection_medical_record_remark1, 
+    collection_medical_record_remark2, collection_medical_record_remark3
+  </sql>
+ 	 <select id="getRecordById" parameterType="String" resultType="String">
+		select medical_record_key from collection_medical_record Where medical_record_key=#{medical_record_key} AND collection_key=#{collection_key}
+ 	</select>
+	<select id="getcollectionMedicalRecordById" resultMap="medicalRecordList" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List1" />
+    from collection_medical_record
+    where medical_record_key = #{medicalRecordKey,jdbcType=VARCHAR} and collection_key=#{collectionKey,jdbcType=VARCHAR}
+  </select>
+	<!-- 根据studyid 判断是否关联过该病历 -->
+  <select id="getByStuuid" parameterType="hashmap" resultType="Integer">
+    SELECT count(*)
+    FROM imagedb.collection_medical_record 
+    where medical_record_key =(select medical_record_key from medical_record where studyInstanceUID=#{stuuid} )
+    and collection_key=#{collection_key}
+  </select>
+	<update id="update" parameterType="com.inteall.image.pojo.CollectionMedicalRecord">
+	UPDATE collection_medical_record 
+	<set>
+		<if test="collection_key != null">collection_key=#{collection_key},</if>
+		<if test="report_key != null">report_key=#{report_key},</if>
+		<if test="create_person != null">create_person=#{create_person},</if>
+		<if test="create_time != null">create_time=#{create_time},</if>
+		<if test="modify_time != null">modify_time=#{modify_time},</if>
+		<if test="modify_person != null">modify_person=#{modify_person},</if>
+		<if test="is_del != null">is_del=#{is_del},</if>
+		<if test="del_time != null">del_time=#{del_time},</if>
+		<if test="del_person != null">del_person=#{del_person},</if>
+		<if test="collection_medical_record_remark1 != null">collection_medical_record_remark1=#{collection_medical_record_remark1},</if>
+		<if test="collection_medical_record_remark2 != null">collection_medical_record_remark2=#{collection_medical_record_remark2},</if>
+		<if test="collection_medical_record_remark3 != null">collection_medical_record_remark3=#{collection_medical_record_remark3},</if>
+		
+	</set>
+	where collection_medical_record_key = #{collection_medical_record_key} and medical_record_key = #{medical_record_key}
+	
+	</update>
+	
+	<update id="updateBycollectionKey" parameterType="com.inteall.image.pojo.CollectionMedicalRecord">
+	UPDATE collection_medical_record 
+	<set>
+		<if test="medical_record_key != null">medical_record_key = #{medical_record_key},</if>
+		<if test="report_key != null">report_key=#{report_key},</if>
+		<if test="create_person != null">create_person=#{create_person},</if>
+		<if test="create_time != null">create_time=#{create_time},</if>
+		<if test="modify_time != null">modify_time=#{modify_time},</if>
+		<if test="modify_person != null">modify_person=#{modify_person},</if>
+		<if test="is_del != null">is_del=#{is_del},</if>
+		<if test="del_time != null">del_time=#{del_time},</if>
+		<if test="del_person != null">del_person=#{del_person},</if>
+		<if test="collection_medical_record_remark1 != null">collection_medical_record_remark1=#{collection_medical_record_remark1},</if>
+		<if test="collection_medical_record_remark2 != null">collection_medical_record_remark2=#{collection_medical_record_remark2},</if>
+		<if test="collection_medical_record_remark3 != null">collection_medical_record_remark3=#{collection_medical_record_remark3},</if>
+		
+	</set>
+	where	collection_key=#{collection_key}
+	
+	</update>
+	
+	<insert id="insertCollectionMedicalRecord" parameterType="com.inteall.image.pojo.CollectionMedicalRecord">
+		INSERT INTO collection_medical_record
+			(collection_medical_record_key,collection_key,medical_record_key,create_person,
+			create_time,modify_time,modify_person,is_del,del_time,del_person,
+			collection_medical_record_remark1,collection_medical_record_remark2,
+			collection_medical_record_remark3)
+		VALUES 
+			(#{collection_medical_record_key},#{collection_key},#{medical_record_key},#{create_person},
+			#{create_time},#{modify_time},#{modify_person},#{is_del},#{del_time},#{del_person},
+			#{collection_medical_record_remark1},#{collection_medical_record_remark2},
+			#{collection_medical_record_remark3})
+					
+	</insert>
+	
+	<insert id="insertMedicalRecord" parameterType="com.inteall.image.pojo.MedicalRecord">
+		INSERT INTO medical_record
+			(medical_record_key,patient_key,patient_name,sex,age,patient_history,patient_type,
+			bodypart_code,bodypart_name,hospital,image_num,modality_code,print_flag,film_time,
+			film_num,print_report,print_time,seriesInstanceUID,study_id,series_num,studyInstanceUID,
+			study_time,state)
+		VALUES
+			(#{medical_record_key},#{patient_key},#{patient_name},#{sex},#{age},#{patient_history},#{patient_type},
+			#{bodypart_code},#{bodypart_name},#{hospital},#{image_num},#{modality_code},#{print_flag},#{film_time},
+			#{film_num},#{print_report},#{print_time},#{seriesInstanceUID},#{study_id},#{series_num},#{studyInstanceUID},
+			#{study_time},#{state})		
+	</insert>
+	<!-- 根据ID查询病历列表 -->
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.CollectionMedicalRecord" >
+    <id column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+    <result column="patient_key" property="patientKey" jdbcType="VARCHAR" />
+    <result column="report_key" property="report_key" jdbcType="VARCHAR" />
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="patient_type" property="patientType" jdbcType="VARCHAR" />
+    <result column="bodypart_code" property="bodypartCode" jdbcType="VARCHAR" />
+    <result column="bodypart_name" property="bodypartName" jdbcType="VARCHAR" />
+    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+    <result column="image_num" property="imageNum" jdbcType="INTEGER" />
+    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+    <result column="print_flag" property="printFlag" jdbcType="BIT" />
+    <result column="film_time" property="filmTime" jdbcType="TIMESTAMP" />
+    <result column="film_num" property="filmNum" jdbcType="VARCHAR" />
+    <result column="print_report" property="printReport" jdbcType="BIT" />
+    <result column="print_time" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="seriesInstanceUID" property="seriesinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_id" property="studyId" jdbcType="VARCHAR" />
+    <result column="series_num" property="seriesNum" jdbcType="INTEGER" />
+    <result column="studyInstanceUID" property="studyinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.inteall.image.pojo.CollectionMedicalRecord" extends="BaseResultMap" >
+    <result column="patient_history" property="patientHistory" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    distinct(studyInstanceUID),medical_record.medical_record_key,B.report_key, patient_key, patient_name, sex, age, patient_type, bodypart_code, 
+    bodypart_name, hospital, image_num, modality_code, print_flag, film_time, film_num, 
+    print_report, print_time, seriesInstanceUID, study_id, series_num,  
+    study_time, state
+  </sql>
+  <sql id="Blob_Column_List" >
+    patient_history
+  </sql>
+  <select id="getByCollectionKey" parameterType="com.inteall.image.pojo.CollectionMedicalRecord" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from medical_record,
+	(SELECT medical_record_key,report_key FROM imagedb.collection_medical_record  WHERE collection_key=#{collection_key})B
+	where medical_record.medical_record_key = B.medical_record_key
+	<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+		  	</if>
+		  	<if test="username != null and username != ''">
+		  		and patient_name  like CONCAT('%', #{username}, '%')
+		  	</if>
+		  	<if test="sex != null and sex != ''">
+		  		and sex = #{sex}
+		  	</if>
+		  	<if test="modality != null and modality != ''">
+		  		and modality_code = #{modality}
+		  	</if>
+			limit #{curr},#{limit}
+  </select>
+  <select id="getCount" parameterType="com.inteall.image.pojo.CollectionMedicalRecord" resultType="java.lang.Integer">
+  	select 
+		    count(medical_record.medical_record_key)
+		    from medical_record,
+		
+			(SELECT medical_record_key FROM imagedb.collection_medical_record  WHERE collection_key=#{collection_key}) B
+			where medical_record.medical_record_key = B.medical_record_key
+  	<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+		  	</if>
+		  	<if test="username != null and username != ''">
+		  		and patient_name  like CONCAT('%', #{username}, '%')
+		  	</if>
+		  	<if test="sex != null and sex != ''">
+		  		and sex = #{sex}
+		  	</if>
+		  	<if test="modality != null and modality != ''">
+		  		and modality_code = #{modality}
+		  	</if>
+  </select>
+  <delete id="delByStuuid" parameterType="hashmap" >
+  	delete from collection_medical_record where medical_record_key=#{stuuid} and collection_key=#{collection_key}
+  </delete>
+</mapper>

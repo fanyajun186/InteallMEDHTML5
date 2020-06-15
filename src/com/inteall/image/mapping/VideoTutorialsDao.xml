@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.VideoTutorialsDao" >
+	<!-- 批量添加视频教学的人数 -->
+  <insert id="saveList" parameterType="com.inteall.image.pojo.VideoTutorials">
+    INSERT INTO imagedb.t_video_tutorials(video_tutorials_key, video_key,
+      sysuser_key, video_tutorials_remark1, video_tutorials_remark2, video_tutorials_remark3)
+     values 
+     <foreach collection="list" item="item" index="index" separator="," >  
+      (#{item.videoTutorialsKey}, #{item.videoKey}, #{item.sysuserKey},
+      #{item.videoTutorialsRemark1}, #{item.videoTutorialsRemark2}, #{item.videoTutorialsRemark3})
+      </foreach>  
+  </insert>
+    <!-- 根据ID删除读片会的与会人 -->
+  <delete id="deleteById" parameterType="com.inteall.image.pojo.VideoTutorials">
+    DELETE FROM imagedb.t_video_tutorials
+    where video_key=#{videoKey}
+  </delete>
+   <resultMap id="BaseResultMap" type="com.inteall.image.pojo.SysUser" >
+    <id column="sysuser_key" property="sysuserKey" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="effect_date" property="effectDate" jdbcType="TIMESTAMP" />
+    <result column="image_num" property="imageNum" jdbcType="BIGINT" />
+    <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="sys_hospital_key" property="sysHospitalKey" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_age" property="userAge" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="CHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="bigant_uid" property="bigantUid" jdbcType="VARCHAR" />
+    <result column="bigant_name" property="bigantName" jdbcType="VARCHAR" />
+    <result column="sys_hospital_key" jdbcType="VARCHAR" property="sysHospitalKey" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="VARCHAR" />
+    <result column="modify_person" property="modifyPerson" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="CHAR" />
+    <result column="del_time" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="del_person" property="delPerson" jdbcType="VARCHAR" />
+    <result column="sysuser_remark1" property="sysuserRemark1" jdbcType="VARCHAR" />
+    <result column="sysuser_remark2" property="sysuserRemark2" jdbcType="VARCHAR" />
+    <result column="sysuser_remark3" property="sysuserRemark3" jdbcType="VARCHAR" />
+  </resultMap>
+   <sql id="Base_Column_List" >
+    sysuser.sysuser_key, login_name, password, user_email, user_age, user_sex, user_name, user_phone, 
+    bigant_uid, bigant_name, sys_hospital_key, dept_name, login_ip, effect_date, image_num, 
+    create_time, modify_time, create_person, modify_person, is_del, del_time, del_person, 
+    sysuser_remark1, sysuser_remark2, sysuser_remark3
+  </sql>
+  <!-- 根据视频教学主键查询与会人列表 -->
+  <select id="getByVideoKey" parameterType="com.inteall.image.pojo.VideoTutorials" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sysuser ,(SELECT sysuser_key from t_video_tutorials WHERE video_key=#{videoKey}) B
+    where sysuser.sysuser_key=B.sysuser_key
+  </select>
+</mapper>

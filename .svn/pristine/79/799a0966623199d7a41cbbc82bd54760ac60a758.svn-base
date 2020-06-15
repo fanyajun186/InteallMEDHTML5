@@ -1,0 +1,16 @@
+{"code":0,
+"msg":"",
+"count":10,
+"data":[
+{"id":10000,"username":"user-0","sex":"女","city":"0","sign":"病史-0","experience":"CT","logins":24,"wealth":82830700,"classify":"2017-10-10","score":"韩明君"},
+{"id":10001,"username":"user-1","sex":"男","city":"1","sign":"病史-1","experience":"CT","logins":58,"wealth":64928690,"classify":"2017-10-10","score":"韩明君"},
+{"id":10002,"username":"user-2","sex":"女","city":"2","sign":"病史-2","experience":"CT","logins":77,"wealth":6298078,"classify":"2017-10-10","score":"韩明君"},
+{"id":10003,"username":"user-3","sex":"女","city":"3","sign":"病史-3","experience":"CT","logins":157,"wealth":37117017,"classify":"2017-10-10","score":"韩明君"},
+{"id":10004,"username":"user-4","sex":"男","city":"4","sign":"病史-4","experience":"CT","logins":51,"wealth":76263262,"classify":"2017-10-10","score":"韩明君"},
+{"id":10005,"username":"user-5","sex":"女","city":"5","sign":"病史-5","experience":"CT","logins":68,"wealth":60344147,"classify":"2017-10-10","score":"韩明君"},
+{"id":10006,"username":"user-6","sex":"女","city":"6","sign":"病史-6","experience":"CT","logins":37,"wealth":57768166,"classify":"2017-10-10","score":"韩明君"},
+{"id":10007,"username":"user-7","sex":"男","city":"7","sign":"病史-7","experience":"CT","logins":150,"wealth":82030578,"classify":"2017-10-10","score":"韩明君"},
+{"id":10008,"username":"user-8","sex":"男","city":"8","sign":"病史-8","experience":"CT","logins":133,"wealth":16503371,"classify":"2017-10-10","score":"韩明君"},
+{"id":10009,"username":"user-9","sex":"女","city":"9","sign":"病史-9","experience":"CT","logins":25,"wealth":86801934,"classify":"2017-10-10","score":"韩明君"}
+
+]}

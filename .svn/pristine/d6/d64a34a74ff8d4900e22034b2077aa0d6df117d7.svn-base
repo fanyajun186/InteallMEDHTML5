@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.CommitteeIntroductionDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.CommitteeIntroduction" >
+    <id column="committeeId" property="committeeid" jdbcType="VARCHAR" />
+    <result column="committeeName" property="committeename" jdbcType="VARCHAR" />
+    <result column="committeeImage" property="committeeimage" jdbcType="VARCHAR" />
+    <result column="committeeIntroduction" property="committeeintroduction" jdbcType="VARCHAR" />
+    <result column="committeeGoodAt" property="committeegoodat" jdbcType="VARCHAR" />
+    <result column="isShow" property="isshow" jdbcType="CHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="createPersonId" property="createpersonid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    committeeId, committeeName, committeeImage, committeeIntroduction, committeeGoodAt, 
+    isShow, createTime, createPersonId
+  </sql>
+  <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_committee_introduction
+    where committeeId = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="delById" parameterType="java.lang.String" >
+    delete from t_committee_introduction
+    where committeeId = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="save" parameterType="com.inteall.image.pojo.CommitteeIntroduction" >
+    insert into t_committee_introduction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="committeeid != null" >
+        committeeId,
+      </if>
+      <if test="committeename != null" >
+        committeeName,
+      </if>
+      <if test="committeeimage != null" >
+        committeeImage,
+      </if>
+      <if test="committeeintroduction != null" >
+        committeeIntroduction,
+      </if>
+      <if test="committeegoodat != null" >
+        committeeGoodAt,
+      </if>
+      <if test="isshow != null" >
+        isShow,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+      <if test="createpersonid != null" >
+        createPersonId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="committeeid != null" >
+        #{committeeid,jdbcType=VARCHAR},
+      </if>
+      <if test="committeename != null" >
+        #{committeename,jdbcType=VARCHAR},
+      </if>
+      <if test="committeeimage != null" >
+        #{committeeimage,jdbcType=VARCHAR},
+      </if>
+      <if test="committeeintroduction != null" >
+        #{committeeintroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="committeegoodat != null" >
+        #{committeegoodat,jdbcType=VARCHAR},
+      </if>
+      <if test="isshow != null" >
+        #{isshow,jdbcType=CHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createpersonid != null" >
+        #{createpersonid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.inteall.image.pojo.CommitteeIntroduction" >
+    update t_committee_introduction
+    <set >
+      <if test="committeename != null" >
+        committeeName = #{committeename,jdbcType=VARCHAR},
+      </if>
+      <if test="committeeimage != null" >
+        committeeImage = #{committeeimage,jdbcType=VARCHAR},
+      </if>
+      <if test="committeeintroduction != null" >
+        committeeIntroduction = #{committeeintroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="committeegoodat != null" >
+        committeeGoodAt = #{committeegoodat,jdbcType=VARCHAR},
+      </if>
+      <if test="isshow != null" >
+        isShow = #{isshow,jdbcType=CHAR},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createpersonid != null" >
+        createPersonId = #{createpersonid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where committeeId = #{committeeid,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getCountCommittee" parameterType="hashmap" resultType="int">
+    SELECT count(*)
+    FROM imagedb.t_committee_introduction 
+    <where>
+        <if test="name != null" >
+        committeeName like CONCAT('%', #{name}, '%')
+        </if>
+    </where>
+  </select>
+  <select id="getCommittee" parameterType="hashmap" resultType="com.inteall.image.pojo.CommitteeIntroduction">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM imagedb.t_committee_introduction 
+    <where>
+        <if test="name != null" >
+        committeeName  like CONCAT('%', #{name}, '%')
+        </if>
+    </where>
+    order by createTime desc
+    limit #{curr},#{limit}
+  </select>
+  <select id="findShow" resultType="com.inteall.image.pojo.CommitteeIntroduction">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM imagedb.t_committee_introduction 
+    where isshow='1'
+    order by createTime desc
+  </select>
+</mapper>

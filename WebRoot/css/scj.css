@@ -1,0 +1,26 @@
+/* scj.css */
+@charset "utf-8";
+body {
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+}
+.body_bg {
+    background: #393D49;
+    border-top: 1px solid #23262E;
+    color: #fff;
+}
+ .layui-scj-bg {
+ 	background-color: #30343e;
+ 	border: 1px solid #23262E;
+ 	border-radius: 4px; 
+ }
+ .layui-elem-field legend {
+ 	margin-left: 0px;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    width: 95.91%;
+    font-weight: 300;
+    border-bottom: 1px solid #23262e;
+ }

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.WPACSStudysDao">
+		<resultMap id="BaseResultMap" type="com.inteall.image.pojo.WPACSStudys">
+				<id column="stuuid" property="stuuid" jdbcType="CHAR" />
+				<result column="accessno" property="accessno" jdbcType="CHAR" />
+				<result column="stuid" property="stuid" jdbcType="CHAR" />
+				<result column="studate" property="studate" jdbcType="CHAR" />
+				<result column="studesc" property="studesc" jdbcType="VARCHAR" />
+				<result column="modality" property="modality" jdbcType="VARCHAR" />
+				<result column="pid" property="pid" jdbcType="VARCHAR" />
+				<result column="pname" property="pname" jdbcType="VARCHAR" />
+				<result column="gender" property="gender" jdbcType="CHAR" />
+				<result column="dob" property="dob" jdbcType="CHAR" />
+				<result column="age" property="age" jdbcType="CHAR" />
+				<result column="srcaet" property="srcaet" jdbcType="VARCHAR" />
+		</resultMap>
+		<sql id="Base_Column_List"> stuuid, accessno, stuid, studate, studesc, modality, pid, pname, gender, dob, age, srcaet
+		</sql>
+		<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+				select
+				<include refid="Base_Column_List" />
+				from studys where stuuid = #{stuuid,jdbcType=CHAR}
+		</select>
+		<delete id="deleteByPrimaryKey" parameterType="java.lang.String"> delete from studys where stuuid = #{stuuid,jdbcType=CHAR}
+		</delete>
+		<insert id="insert" parameterType="com.inteall.image.pojo.WPACSStudys"> insert into studys (stuuid, accessno, stuid, studate, studesc, modality, pid, pname,
+				gender, dob, age, srcaet) values (#{stuuid,jdbcType=CHAR}, #{accessno,jdbcType=CHAR}, #{stuid,jdbcType=CHAR},
+				#{studate,jdbcType=CHAR}, #{studesc,jdbcType=VARCHAR}, #{modality,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR},
+				#{pname,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{dob,jdbcType=CHAR}, #{age,jdbcType=CHAR}, #{srcaet,jdbcType=VARCHAR})
+		</insert>
+		<insert id="insertSelective" parameterType="com.inteall.image.pojo.WPACSStudys">
+				insert into studys
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+						<if test="stuid != null"> stuuid,
+						</if>
+						<if test="accessno != null"> accessno,
+						</if>
+						<if test="stuuid != null"> stuid,
+						</if>
+						<if test="studate != null"> studate,
+						</if>
+						<if test="studesc != null"> studesc,
+						</if>
+						<if test="modality != null"> modality,
+						</if>
+						<if test="pid != null"> pid,
+						</if>
+						<if test="pname != null"> pname,
+						</if>
+						<if test="gender != null"> gender,
+						</if>
+						<if test="dob != null"> dob,
+						</if>
+						<if test="age != null"> age,
+						</if>
+						<if test="srcaet != null"> srcaet,
+						</if>
+				</trim>
+				<trim prefix="values (" suffix=")" suffixOverrides=",">
+						<if test="stuid != null"> #{stuuid,jdbcType=CHAR},
+						</if>
+						<if test="accessno != null"> #{accessno,jdbcType=CHAR},
+						</if>
+						<if test="stuuid != null"> #{stuid,jdbcType=CHAR},
+						</if>
+						<if test="studate != null"> #{studate,jdbcType=CHAR},
+						</if>
+						<if test="studesc != null"> #{studesc,jdbcType=VARCHAR},
+						</if>
+						<if test="modality != null"> #{modality,jdbcType=VARCHAR},
+						</if>
+						<if test="pid != null"> #{pid,jdbcType=VARCHAR},
+						</if>
+						<if test="pname != null"> #{pname,jdbcType=VARCHAR},
+						</if>
+						<if test="gender != null"> #{gender,jdbcType=CHAR},
+						</if>
+						<if test="dob != null"> #{dob,jdbcType=CHAR},
+						</if>
+						<if test="age != null"> #{age,jdbcType=CHAR},
+						</if>
+						<if test="srcaet != null"> #{srcaet,jdbcType=VARCHAR},
+						</if>
+				</trim>
+		</insert>
+		<update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.WPACSStudys">
+				update studys
+				<set>
+						<if test="accessno != null"> accessno = #{accessno,jdbcType=CHAR},
+						</if>
+						<if test="stuid != null"> stuid = #{stuid,jdbcType=CHAR},
+						</if>
+						<if test="studate != null"> studate = #{studate,jdbcType=CHAR},
+						</if>
+						<if test="studesc != null"> studesc = #{studesc,jdbcType=VARCHAR},
+						</if>
+						<if test="modality != null"> modality = #{modality,jdbcType=VARCHAR},
+						</if>
+						<if test="pid != null"> pid = #{pid,jdbcType=VARCHAR},
+						</if>
+						<if test="pname != null"> pname = #{pname,jdbcType=VARCHAR},
+						</if>
+						<if test="gender != null"> gender = #{gender,jdbcType=CHAR},
+						</if>
+						<if test="dob != null"> dob = #{dob,jdbcType=CHAR},
+						</if>
+						<if test="age != null"> age = #{age,jdbcType=CHAR},
+						</if>
+						<if test="srcaet != null"> srcaet = #{srcaet,jdbcType=VARCHAR},
+						</if>
+				</set>
+				where stuuid = #{stuuid,jdbcType=CHAR}
+		</update>
+		<update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.WPACSStudys"> update studys set accessno = #{accessno,jdbcType=CHAR}, stuid =
+				#{stuid,jdbcType=CHAR}, studate = #{studate,jdbcType=CHAR}, studesc = #{studesc,jdbcType=VARCHAR}, modality =
+				#{modality,jdbcType=VARCHAR}, pid = #{pid,jdbcType=VARCHAR}, pname = #{pname,jdbcType=VARCHAR}, gender =
+				#{gender,jdbcType=CHAR}, dob = #{dob,jdbcType=CHAR}, age = #{age,jdbcType=CHAR}, srcaet = #{srcaet,jdbcType=VARCHAR}
+				where stuuid = #{stuuid,jdbcType=CHAR}
+		</update>
+</mapper>

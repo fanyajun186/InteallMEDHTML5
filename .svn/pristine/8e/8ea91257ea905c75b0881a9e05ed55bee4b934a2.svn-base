@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.ConsultationCommentDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.ConsultationComment" >
+    <id column="comment_key" property="commentKey" jdbcType="VARCHAR" />
+    <result column="caseid" property="caseId" jdbcType="VARCHAR" />
+    <result column="image_comment_result" property="imageCommentResult" jdbcType="VARCHAR" />
+    <result column="image_comment_item" property="imageCommentItem" jdbcType="VARCHAR" />
+    <result column="image_comment_create_person" property="imageCommentCreatePerson" jdbcType="VARCHAR" />
+    <result column="image_comment_create_time" property="imageCommentCreateTime" jdbcType="TIMESTAMP" />
+    <result column="image_comment_update_person" property="imageCommentUpdatePerson" jdbcType="VARCHAR" />
+    <result column="image_comment_update_time" property="imageCommentUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="report_comment_result" property="reportCommentResult" jdbcType="VARCHAR" />
+    <result column="report_comment_item" property="reportCommentItem" jdbcType="VARCHAR" />
+    <result column="report_comment_create_person" property="reportCommentCreatePerson" jdbcType="VARCHAR" />
+    <result column="report_comment_create_time" property="reportCommentCreateTime" jdbcType="TIMESTAMP" />
+    <result column="report_comment_update_person" property="reportCommentUpdatePerson" jdbcType="VARCHAR" />
+    <result column="report_comment_update_time" property="reportCommentUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.inteall.image.pojo.ConsultationCommentWithBLOBs" extends="BaseResultMap" >
+    <result column="image_comment_content" property="imageCommentContent" jdbcType="LONGVARCHAR" />
+    <result column="report_comment_content" property="reportCommentContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    comment_key,caseid, image_comment_result, image_comment_item, image_comment_create_person, 
+    image_comment_create_time, image_comment_update_person, image_comment_update_time, 
+    report_comment_result, report_comment_item, report_comment_create_person, report_comment_create_time, 
+    report_comment_update_person, report_comment_update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    image_comment_content, report_comment_content
+  </sql>
+  <select id="getById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_consultation_comment
+    where caseid = #{caseid,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.inteall.image.pojo.ConsultationCommentWithBLOBs" >
+    insert into t_consultation_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentKey != null" >
+        comment_key,
+      </if>
+      <if test="caseId != null" >
+        caseid,
+      </if>
+      <if test="imageCommentResult != null" >
+        image_comment_result,
+      </if>
+      <if test="imageCommentItem != null" >
+        image_comment_item,
+      </if>
+      <if test="imageCommentCreatePerson != null" >
+        image_comment_create_person,
+      </if>
+      <if test="imageCommentCreateTime != null" >
+        image_comment_create_time,
+      </if>
+      <if test="imageCommentUpdatePerson != null" >
+        image_comment_update_person,
+      </if>
+      <if test="imageCommentUpdateTime != null" >
+        image_comment_update_time,
+      </if>
+      <if test="reportCommentResult != null" >
+        report_comment_result,
+      </if>
+      <if test="reportCommentItem != null" >
+        report_comment_item,
+      </if>
+      <if test="reportCommentCreatePerson != null" >
+        report_comment_create_person,
+      </if>
+      <if test="reportCommentCreateTime != null" >
+        report_comment_create_time,
+      </if>
+      <if test="reportCommentUpdatePerson != null" >
+        report_comment_update_person,
+      </if>
+      <if test="reportCommentUpdateTime != null" >
+        report_comment_update_time,
+      </if>
+      <if test="imageCommentContent != null" >
+        image_comment_content,
+      </if>
+      <if test="reportCommentContent != null" >
+        report_comment_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentKey != null" >
+        #{commentKey,jdbcType=VARCHAR},
+      </if>
+      <if test="caseId != null" >
+        #{caseId,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentResult != null" >
+        #{imageCommentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentItem != null" >
+        #{imageCommentItem,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentCreatePerson != null" >
+        #{imageCommentCreatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentCreateTime != null" >
+        #{imageCommentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageCommentUpdatePerson != null" >
+        #{imageCommentUpdatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentUpdateTime != null" >
+        #{imageCommentUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommentResult != null" >
+        #{reportCommentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentItem != null" >
+        #{reportCommentItem,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentCreatePerson != null" >
+        #{reportCommentCreatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentCreateTime != null" >
+        #{reportCommentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommentUpdatePerson != null" >
+        #{reportCommentUpdatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentUpdateTime != null" >
+        #{reportCommentUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageCommentContent != null" >
+        #{imageCommentContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reportCommentContent != null" >
+        #{reportCommentContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateById" parameterType="com.inteall.image.pojo.ConsultationCommentWithBLOBs" >
+    update t_consultation_comment
+    <set >
+       <if test="caseId != null" >
+        caseid = #{caseId,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentResult != null" >
+        image_comment_result = #{imageCommentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentItem != null" >
+        image_comment_item = #{imageCommentItem,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentCreatePerson != null" >
+        image_comment_create_person = #{imageCommentCreatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentCreateTime != null" >
+        image_comment_create_time = #{imageCommentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageCommentUpdatePerson != null" >
+        image_comment_update_person = #{imageCommentUpdatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="imageCommentUpdateTime != null" >
+        image_comment_update_time = #{imageCommentUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommentResult != null" >
+        report_comment_result = #{reportCommentResult,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentItem != null" >
+        report_comment_item = #{reportCommentItem,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentCreatePerson != null" >
+        report_comment_create_person = #{reportCommentCreatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentCreateTime != null" >
+        report_comment_create_time = #{reportCommentCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommentUpdatePerson != null" >
+        report_comment_update_person = #{reportCommentUpdatePerson,jdbcType=VARCHAR},
+      </if>
+      <if test="reportCommentUpdateTime != null" >
+        report_comment_update_time = #{reportCommentUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageCommentContent != null" >
+        image_comment_content = #{imageCommentContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="reportCommentContent != null" >
+        report_comment_content = #{reportCommentContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comment_key = #{commentKey,jdbcType=VARCHAR}
+  </update>
+</mapper>

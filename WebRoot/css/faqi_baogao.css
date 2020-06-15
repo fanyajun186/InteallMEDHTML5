@@ -1,0 +1,181 @@
+/* faqi-baogao.css*/
+@charset "utf-8";
+body{
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+.body_bg {
+    background: #393D49;
+    color: #fff;
+}
+
+.layui-input {
+	height: 30px;
+	padding-left: 12px;
+	background-color: #424652;
+	background-color: rgba(255,255,255,.03);
+	border: 1px solid #23262e;
+	color: #fff;
+	font-size: 12px;
+}
+
+.layui-input-bg {
+    background: #30343e;
+    border: 1px solid #23262E;
+    border-radius: 4px;
+}
+
+.layui-tab-input-bg {
+    background: #30343e;
+    /* border: 1px solid #23262e; */
+    border-top: 0px;
+    /* border-radius: 4px; */
+}
+
+/*
+* table list 列表
+*/
+.layui-table {
+	width: 100%;
+	color: #ccc;
+}
+.layui-table tbody tr:hover,.layui-table thead tr,.layui-table-click,.layui-table-header,.layui-table-hover,.layui-table-mend,.layui-table-patch,.layui-table-tool,.layui-table[lay-even] tr:nth-child(even) {
+	background-color: #393D49;
+}
+
+.layui-table td,.layui-table th,.layui-table-fixed-r,.layui-table-header,.layui-table-page,.layui-table-tips-main,.layui-table-tool,.layui-table-view,.layui-table[lay-skin=line],.layui-table[lay-skin=row] {
+	/*border-width: 1px;
+	border-style: solid;*/
+	border-color: #23262E;
+}
+.layui-table-view .layui-table td,.layui-table-view .layui-table th {
+	border-top: none;
+	border-left: none;
+}
+.layui-table tr {
+	background-color: #30343e;
+}
+/*
+* page 分页
+*/
+.layui-table-page {
+	position: relative;
+	width: 100%;
+	padding: 7px 7px;
+	border: 1px solid #23262e;
+	border-width: 1px 0 0;
+	height: 41px;
+	font-size: 12px
+}
+
+.layui-laypage a,.layui-laypage span {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	vertical-align: middle;
+	padding: 0 15px;
+	height: 28px;
+	line-height: 28px;
+	margin: 0 -1px 5px 0;
+	background-color: #fff;
+	color: #ccc;
+	font-size: 12px
+}
+.layui-laypage input {
+	width: 40px !important;
+	color: #ccc;
+	background-color: #393D49;
+	border: 1px solid #23262e;
+}
+.layui-laypage button {
+    margin-left: 10px;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #fff;
+	background-color: #1e9fff;
+	border: 1px solid #1e9fff;
+}
+.layui-table-page select {
+	height: 18px;
+	background-color: #393d49;
+	color: #ccc;
+	border: 1px solid #23262e;
+}
+
+/*
+* 报告审核输入框上下间距
+*/
+.layui-form-label {
+	padding: 5px 15px;
+}
+.layui-input:hover,.layui-textarea:hover {
+	border-color: #1E9FFF !important;
+}
+
+.layui-input:focus,.layui-textarea:focus {
+	border-color: #1E9FFF !important
+}
+
+.layui-layedit {
+	border-color: #30343e;
+    background-color: rgba(255,255,255,.05);
+}
+.layui-layedit-tool {
+	border-bottom-color: #30343e;
+}
+.layui-layedit-tool .layui-icon {
+	color: #ccc;
+}
+.layui-layedit-tool .layui-icon:hover {
+	color: #1E9FFF
+}
+
+.layui-layedit-tool .layui-icon:active {
+	color: #1E9FFF
+}
+
+/*
+* bingli 病例
+*/
+.layui-elem-field legend {
+	margin-left: 0px;
+	margin-bottom: 15px;
+	padding: 10px;
+	font-size: 16px;
+	width: 98.91%;
+	font-weight: 300;
+	border-bottom: 1px solid #23262e;
+}
+
+
+.layui-btn-group {
+	border: 1px solid #23262e;
+}
+
+/*
+* 读片会的待办事项css
+*/
+.daibanTime{
+	padding:15px;
+	border-bottom: 1px solid #23262e;
+	
+}
+
+.hyName{
+	display:block;
+	width:145px;
+	white-space:nowrap;    
+	overflow:hidden;         
+	text-overflow: ellipsis;    
+	-o-text-overflow:ellipsis;
+	margin-left: 170px;
+	margin-top: -20px;
+	cursor: pointer;
+	 
+}
+
+.daibanTimefocus {
+	background-color: #1e9fff;
+}
+

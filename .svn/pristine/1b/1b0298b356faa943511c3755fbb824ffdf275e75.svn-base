@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace="com.inteall.image.dao.CollectionDao">
+	<resultMap id="BaseResultMap" type="com.inteall.image.pojo.Collection" >
+    <id column="collection_key" property="collection_key" jdbcType="VARCHAR" />
+    <result column="collection_name" property="collection_name" jdbcType="VARCHAR" />
+    <result column="parent_key" property="parent_key" jdbcType="VARCHAR" />
+    <result column="isParent" property="isParent" jdbcType="VARCHAR" />
+    <result column="order_person" property="order_person" jdbcType="VARCHAR" />
+    <result column="create_time" property="create_time" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modify_time" jdbcType="TIMESTAMP" />
+    <result column="del_time" property="del_time" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="is_del" jdbcType="CHAR" />
+    <result column="create_person" property="create_person" jdbcType="VARCHAR" />
+    <result column="modify_person" property="modify_person" jdbcType="VARCHAR" />
+    <result column="del_person" property="del_person" jdbcType="VARCHAR" />
+    <result column="collection_remark1" property="collection_remark1" jdbcType="VARCHAR" />
+    <result column="collection_remark2" property="collection_remark2" jdbcType="VARCHAR" />
+    <result column="collection_remark3" property="collection_remark3" jdbcType="VARCHAR" />
+  </resultMap>
+	<select id="getById" parameterType="String" resultType="com.inteall.image.pojo.Collection">
+		select 
+			   collection_key,collection_name,parent_key,isParent,order_person,create_time,
+			   modify_time,del_time,is_del,create_person,modify_person,del_person,
+			   collection_remark1,collection_remark2,collection_remark3 
+		from  collection 
+		where collection_key=#{id} and is_del=0
+	</select>
+	<select id="getAll" parameterType="String" resultType="com.inteall.image.pojo.Collection">
+		select 
+			   collection_key,collection_name,parent_key,isParent,order_person,create_time,
+			   modify_time,del_time,is_del,create_person,modify_person,del_person,
+			   collection_remark1,collection_remark2,collection_remark3 
+		from  collection 
+		where is_del=0 and create_person=#{createId} Order By collection_name
+	</select>
+	<select id="getParentKeyCollection" parameterType="String" resultType="com.inteall.image.pojo.Collection">
+		select 
+			   collection_key,collection_name,parent_key,isParent,order_person,create_time,
+			   modify_time,del_time,is_del,create_person,modify_person,del_person,
+			   collection_remark1,collection_remark2,collection_remark3 
+		from  collection
+		where is_del=0 and parent_key=#{collectionKey}
+	</select>
+	<select id="getCollectionName" parameterType="String" resultType="com.inteall.image.pojo.Collection">
+		select 
+		collection_name
+		from  collection
+		where is_del=0 and collection_key=#{collectionKey}
+	</select>
+	<insert id="insertCollection" parameterType="com.inteall.image.pojo.Collection">
+		insert into collection 
+				(collection_key,collection_name,parent_key,isParent,order_person,create_time,
+				modify_time,del_time,is_del,create_person,modify_person,del_person,
+				collection_remark1,collection_remark2,collection_remark3) 
+		VALUES(#{collection_key},#{collection_name},#{parent_key},#{isParent},#{order_person},
+			   #{create_time},#{modify_time},#{del_time},#{is_del},#{create_person},
+			   #{modify_person},#{del_person},#{collection_remark1},#{collection_remark2},
+			   #{collection_remark3}) 
+					
+	</insert>
+	<update id="delCollection" parameterType="com.inteall.image.pojo.Collection" >
+    update collection 
+			<set>
+			<if test="is_del != null">is_del=#{is_del},</if>
+			<if test="del_time != null">del_time=#{del_time},</if>
+			<if test="del_person != null">del_person=#{del_person},</if>
+			</set>
+	where  collection_key=#{collection_key} or parent_key=#{collection_key}
+  </update>
+	<update id="update" parameterType="com.inteall.image.pojo.Collection">
+	update collection 
+			<set>
+			<if test="collection_name != null">collection_name=#{collection_name},</if>
+			<if test="parent_key != null">parent_key=#{parent_key},</if>
+			<if test="isParent != null">isParent=#{isParent},</if>
+			<if test="order_person != null">order_person=#{order_person},</if>
+			<if test="create_time != null">create_time=#{create_time},</if>
+			<if test="modify_time != null">modify_time=#{modify_time},</if>
+			<if test="del_time != null">del_time=#{del_time},</if>
+			<if test="is_del != null">is_del=#{is_del},</if>
+			<if test="create_person != null">create_person=#{create_person},</if>
+			<if test="modify_person != null">modify_person=#{modify_person},</if>
+			<if test="del_person != null">del_person=#{del_person},</if>
+			<if test="collection_remark1 != null">collection_remark1=#{collection_remark1},</if>
+			<if test="collection_remark2 != null">collection_remark2=#{collection_remark2},</if>
+			<if test="collection_remark3 != null">collection_remark3=#{collection_remark3},</if>
+			</set>
+	where  collection_key=#{collection_key}
+	</update>
+</mapper>

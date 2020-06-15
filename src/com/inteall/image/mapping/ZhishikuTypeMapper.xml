@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inteall.image.dao.ZhishikuTypeDao">
+
+	<resultMap type="com.inteall.image.pojo.ZhishikuType" id="ZhishikuTypeResult">
+		<result property="id" column="id"/>
+		<result property="typeName" column="typeName"/>
+		<result property="orderNo" column="orderNo"/>
+		<result property="parentId" column="parentId"/>
+		<result property="isParent" column="isParent"/>
+	</resultMap>
+	
+	<select id="countList" resultMap="ZhishikuTypeResult">
+		SELECT t2.id,t2.typeName,COUNT(t1.id) AS zhishikuCount FROM t_zhishiku t1 RIGHT JOIN t_zhishikutype t2 ON t1.typeId=t2.id GROUP BY t2.typeName order by t2.orderNo;
+	</select>
+	
+	<select id="findById" parameterType="Integer" resultMap="ZhishikuTypeResult">
+		select * from t_zhishikutype where id=#{id}
+	</select>
+	
+	<select id="list" parameterType="Map" resultMap="ZhishikuTypeResult">
+		select * from t_zhishikutype
+		
+	</select>
+	
+	<select id="parentlist" parameterType="Map" resultMap="ZhishikuTypeResult">
+        select * from t_zhishikutype
+        where isParent='1'
+    </select>
+    <select id="childlistByparentId" parameterType="Map" resultMap="ZhishikuTypeResult">
+        select * from t_zhishikutype
+        where parentId=#{isParent}
+    </select>
+    <select id="childlist" parameterType="Map" resultMap="ZhishikuTypeResult">
+        select * from t_zhishikutype
+        where isParent='0'
+    </select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_zhishikutype
+	</select>
+	
+	<insert id="add" parameterType="com.inteall.image.pojo.ZhishikuType">
+		insert into t_zhishikutype(id,typeName,parentId,isParent) values(null,#{typeName},#{parentId},#{isParent});
+	</insert>
+	
+	<update id="update" parameterType="com.inteall.image.pojo.ZhishikuType">
+		update t_zhishikutype
+		<set>
+			<if test="typeName!=null and typeName!='' ">
+				typeName=#{typeName},
+			</if>
+			<if test="orderNo!=null ">
+				orderNo=#{orderNo},
+			</if>
+			<if test="parentId ">
+                parentId=#{parentId},
+            </if>
+            <if test="isParent ">
+                isParent=#{isParent},
+            </if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		delete from t_zhishikutype where id=#{id}
+	</delete>
+	
+	<select id="getCountParentByName" parameterType="Map" resultType="int">
+        select count(*) from t_zhishikutype
+        where isParent='1' 
+        <if test="name!=null and name!=''">
+        and typeName like CONCAT('%', #{name}, '%')
+        </if>
+    </select>
+    <select id="getParentByName" parameterType="Map" resultMap="ZhishikuTypeResult">
+        select * from t_zhishikutype
+        where isParent='1' and typeName like CONCAT('%', #{name}, '%')
+        <if test="curr!=null and limit!=null">
+            limit #{curr},#{limit}
+        </if>
+    </select>
+    <select id="getCountChild" parameterType="Map" resultType="int">
+        select count(*) from t_zhishikutype
+        where isParent='0' 
+        <if test="name!=null and name!=''">
+        and typeName like CONCAT('%', #{name}, '%')
+        </if>
+        <if test="parentId!=null and parentId!=''">
+        and parentId =#{parentId}
+        </if>
+    </select>
+    <select id="getChild" parameterType="Map" resultMap="ZhishikuTypeResult">
+        select * from t_zhishikutype
+        where isParent='0' 
+        <if test="name!=null and name!=''">
+        and typeName like CONCAT('%', #{name}, '%')
+        </if>
+        <if test="parentId!=null and parentId!=''">
+        and parentId =#{parentId}
+        </if>
+        <if test="curr!=null and limit!=null">
+            limit #{curr},#{limit}
+        </if>
+    </select>
+    <select id="getById" parameterType="Map" resultMap="ZhishikuTypeResult">
+        select * from t_zhishikutype where id=#{id}
+    </select>
+</mapper> 

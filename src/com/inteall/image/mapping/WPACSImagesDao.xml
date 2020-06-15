@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.WPACSImagesDao">
+		<resultMap id="BaseResultMap" type="com.inteall.image.pojo.WPACSImages">
+				<id column="imguid" property="imguid" jdbcType="CHAR" />
+				<result column="imgno" property="imgno" jdbcType="CHAR" />
+				<result column="clsuid" property="clsuid" jdbcType="CHAR" />
+				<result column="srsuid" property="srsuid" jdbcType="CHAR" />
+				<result column="stuuid" property="stuuid" jdbcType="CHAR" />
+				<result column="fpath" property="fpath" jdbcType="VARCHAR" />
+				<result column="acqno" property="acqno" jdbcType="CHAR" />
+				<result column="vurl" property="vurl" jdbcType="VARCHAR" />
+		</resultMap>
+		<sql id="Base_Column_List"> imguid, imgno, clsuid, srsuid, stuuid, fpath, acqno, vurl
+		</sql>
+		<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+				select
+				<include refid="Base_Column_List" />
+				from images where imguid = #{imguid,jdbcType=CHAR}
+		</select>
+		<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		    delete from images where imguid = #{imguid,jdbcType=CHAR}
+		</delete>
+		<insert id="insert" parameterType="com.inteall.image.pojo.WPACSImages">
+		    insert into images (imguid, imgno, clsuid, srsuid, stuuid, fpath, acqno, vurl)
+				values (#{imguid,jdbcType=CHAR}, #{imgno,jdbcType=CHAR}, #{clsuid,jdbcType=CHAR}, #{srsuid,jdbcType=CHAR},
+				#{stuuid,jdbcType=CHAR}, #{fpath,jdbcType=VARCHAR}, #{acqno,jdbcType=CHAR}, #{vurl,jdbcType=VARCHAR})
+		</insert>
+		<insert id="insertSelective" parameterType="com.inteall.image.pojo.WPACSImages">
+				insert into images
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+						<if test="imguid != null"> imguid,
+						</if>
+						<if test="imgno != null"> imgno,
+						</if>
+						<if test="clsuid != null"> clsuid,
+						</if>
+						<if test="srsuid != null"> srsuid,
+						</if>
+						<if test="stuuid != null"> stuuid,
+						</if>
+						<if test="fpath != null"> fpath,
+						</if>
+						<if test="acqno != null"> acqno,
+						</if>
+						<if test="vurl != null"> vurl,
+						</if>
+				</trim>
+				<trim prefix="values (" suffix=")" suffixOverrides=",">
+						<if test="imguid != null"> #{imguid,jdbcType=CHAR},
+						</if>
+						<if test="imgno != null"> #{imgno,jdbcType=CHAR},
+						</if>
+						<if test="clsuid != null"> #{clsuid,jdbcType=CHAR},
+						</if>
+						<if test="srsuid != null"> #{srsuid,jdbcType=CHAR},
+						</if>
+						<if test="stuuid != null"> #{stuuid,jdbcType=CHAR},
+						</if>
+						<if test="fpath != null"> #{fpath,jdbcType=VARCHAR},
+						</if>
+						<if test="acqno != null"> #{acqno,jdbcType=CHAR},
+						</if>
+						<if test="vurl != null"> #{vurl,jdbcType=VARCHAR},
+						</if>
+				</trim>
+		</insert>
+		<update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.WPACSImages">
+				update images
+				<set>
+						<if test="imgno != null"> imgno = #{imgno,jdbcType=CHAR},
+						</if>
+						<if test="clsuid != null"> clsuid = #{clsuid,jdbcType=CHAR},
+						</if>
+						<if test="srsuid != null"> srsuid = #{srsuid,jdbcType=CHAR},
+						</if>
+						<if test="stuuid != null"> stuuid = #{stuuid,jdbcType=CHAR},
+						</if>
+						<if test="fpath != null"> fpath = #{fpath,jdbcType=VARCHAR},
+						</if>
+						<if test="acqno != null"> acqno = #{acqno,jdbcType=CHAR},
+						</if>
+						<if test="vurl != null"> vurl = #{vurl,jdbcType=VARCHAR},
+						</if>
+				</set>
+				where imguid = #{imguid,jdbcType=CHAR}
+		</update>
+		<update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.WPACSImages"> update images set imgno = #{imgno,jdbcType=CHAR}, clsuid =
+				#{clsuid,jdbcType=CHAR}, srsuid = #{srsuid,jdbcType=CHAR}, stuuid = #{stuuid,jdbcType=CHAR}, fpath =
+				#{fpath,jdbcType=VARCHAR}, acqno = #{acqno,jdbcType=CHAR}, vurl = #{vurl,jdbcType=VARCHAR} where imguid =
+				#{imguid,jdbcType=CHAR}
+		</update>
+		<!-- 根据序列号查询影像文件列表 -->
+		<select id="selectBySrsUID" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select <include refid="Base_Column_List" />
+        from images where srsuid = #{srsuid, jdbcType=CHAR}
+        order by imgno
+        </select>
+        
+        <!-- 删除本检查下除本序列以外的其它序列，之下的所有影像文件 -->
+    	<!-- 转义字符：&lt; <,&gt; >,&lt;&gt; <>,&amp; &,&apos; ',&quot; " -->
+    	<delete id="deleteByExcept" parameterType="com.inteall.image.pojo.WPACSImages">
+		    delete from images
+		    where stuuid = #{stuuid, jdbcType=CHAR} AND srsuid &lt;&gt; #{srsuid,jdbcType=CHAR}
+		</delete>
+</mapper>

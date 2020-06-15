@@ -1,0 +1,36 @@
+/* readimage.css*/
+@charset "utf-8";
+body{
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+.body_bg {
+    background: #393D49;
+    color: #fff;
+}
+.layui-riCalendar-bg {
+	background-color: #30343e;
+    border: 1px solid #23262E;
+    border-radius: 4px;
+}
+.layui-elem-field legend {
+	margin-left: 0px !important;
+    margin-bottom: 0px !important;
+    padding: 10px;
+    font-size: 16px;
+    width: 95.7% !important;
+    font-weight: 300;
+    border-bottom: 1px solid #23262E;
+}
+
+
+/*
+* 读片会添加日程信息
+*/
+.layui-input-block {
+    margin-left: 102px !important;
+}
+.layui-input, .layui-textarea {
+    width: 99% !important
+}

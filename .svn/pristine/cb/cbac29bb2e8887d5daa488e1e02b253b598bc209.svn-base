@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.VideoMedicalRecordDao" >
+  <resultMap id="medicalRecordList" type="com.inteall.image.pojo.VideoMedicalRecord" >
+    <id column="video_medical_record_key" property="videoMedicalRecordKey" jdbcType="VARCHAR" />
+    <result column="video_key" property="videoKey" jdbcType="VARCHAR" />
+    <result column="record_key" property="recordKey" jdbcType="VARCHAR" />
+    <result column="sysuser_key" property="sysuserKey" jdbcType="VARCHAR" />
+    <result column="append_time" property="appendTime" jdbcType="TIMESTAMP" />
+    <result column="video_medical_record_remark1" property="videoMedicalRecordRemark1" jdbcType="VARCHAR" />
+    <result column="video_medical_record_remark2" property="videoMedicalRecordRemark2" jdbcType="VARCHAR" />
+    <result column="video_medical_record_remark3" property="videoMedicalRecordRemark3" jdbcType="VARCHAR" />
+  </resultMap>
+  	<!-- 根据ID查询病历列表 -->
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.MedicalRecord" >
+    <id column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+    <result column="patient_key" property="patientKey" jdbcType="VARCHAR" />
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="patient_type" property="patientType" jdbcType="VARCHAR" />
+    <result column="bodypart_code" property="bodypartCode" jdbcType="VARCHAR" />
+    <result column="bodypart_name" property="bodypartName" jdbcType="VARCHAR" />
+    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+    <result column="image_num" property="imageNum" jdbcType="INTEGER" />
+    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+    <result column="print_flag" property="printFlag" jdbcType="BIT" />
+    <result column="film_time" property="filmTime" jdbcType="TIMESTAMP" />
+    <result column="film_num" property="filmNum" jdbcType="VARCHAR" />
+    <result column="print_report" property="printReport" jdbcType="BIT" />
+    <result column="print_time" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="seriesInstanceUID" property="seriesinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_id" property="studyId" jdbcType="VARCHAR" />
+    <result column="series_num" property="seriesNum" jdbcType="INTEGER" />
+    <result column="studyInstanceUID" property="studyinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_time" property="studyTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.inteall.image.pojo.MedicalRecord" extends="BaseResultMap" >
+    <result column="patient_history" property="patientHistory" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    distinct(studyInstanceUID),medical_record.medical_record_key, patient_key, patient_name, sex, age, patient_type, bodypart_code, 
+    bodypart_name, hospital, image_num, modality_code, print_flag, film_time, film_num, 
+    print_report, print_time, seriesInstanceUID, study_id, series_num,  
+    study_time, state
+  </sql>
+  <sql id="Blob_Column_List" >
+    patient_history
+  </sql>
+  <select id="getCount" parameterType="com.inteall.image.pojo.VideoMedicalRecord" resultType="java.lang.Integer">
+  	SELECT count(distinct(record_key)) FROM imagedb.t_video_medical_record  WHERE video_key=#{videoKey}
+  </select>
+    <!-- 根据读片会ID删除病历 -->
+  <delete id="deleteByVideoKey" parameterType="com.inteall.image.pojo.VideoMedicalRecord">
+    DELETE FROM imagedb.t_video_medical_record
+    WHERE video_key=#{videoKey}
+  </delete>
+  <!-- 根据studyid 判断是否关联过该病历 -->
+  <select id="getByStuuid" parameterType="hashmap" resultType="Integer">
+    SELECT count(*)
+    FROM imagedb.t_video_medical_record 
+    where record_key =(select medical_record_key from medical_record where studyInstanceUID=#{stuuid} )
+    and video_key=#{videokey}
+  </select>
+  <!-- 增加一个病历 -->
+  <insert id="save" parameterType="com.inteall.image.pojo.VideoMedicalRecord">
+    INSERT INTO imagedb.t_video_medical_record(video_medical_record_key, video_key,
+      record_key, sysuser_key, append_time, video_medical_record_remark1, video_medical_record_remark2,
+      video_medical_record_remark3)
+    VALUES (#{videoMedicalRecordKey}, #{videoKey}, #{recordKey},
+      #{sysuserKey}, #{appendTime}, #{videoMedicalRecordRemark1}, #{videoMedicalRecordRemark2},
+      #{videoMedicalRecordRemark3})
+  </insert>
+  <delete id="delByStuuid" parameterType="hashmap" >
+  	delete from t_video_medical_record where record_key=#{stuuid} and video_key=#{videoKey}
+  </delete>
+  <select id="getRecordByVideoKey" parameterType="com.inteall.image.pojo.VideoMedicalRecord" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from medical_record,
+	(SELECT record_key FROM imagedb.t_video_medical_record  WHERE video_key=#{videoKey})B
+	where medical_record.medical_record_key = B.record_key
+	<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+		  	</if>
+		  	<if test="username != null and username != ''">
+		  		and patient_name  like CONCAT('%', #{username}, '%')
+		  	</if>
+		  	<if test="sex != null and sex != ''">
+		  		and sex = #{sex}
+		  	</if>
+		  	<if test="modality != null and modality != ''">
+		  		and modality_code = #{modality}
+		  	</if>
+			limit #{curr},#{limit}
+  </select>
+  <select id="getRecordCount" parameterType="com.inteall.image.pojo.VideoMedicalRecord" resultType="java.lang.Integer">
+  	select 
+		    count(medical_record.medical_record_key)
+		    from medical_record,
+		
+			(SELECT record_key FROM imagedb.t_video_medical_record  WHERE video_key=#{videoKey}) B
+			where medical_record.medical_record_key = B.record_key
+  	<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+				<![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+		  	</if>
+		  	<if test="username != null and username != ''">
+		  		and patient_name  like CONCAT('%', #{username}, '%')
+		  	</if>
+		  	<if test="sex != null and sex != ''">
+		  		and sex = #{sex}
+		  	</if>
+		  	<if test="modality != null and modality != ''">
+		  		and modality_code = #{modality}
+		  	</if>
+  </select>
+  <select id="getRecordById" parameterType="String" resultType="String">
+		    select record_key from t_video_medical_record Where record_key=#{recordKey} AND video_key=#{videoKey}
+ </select>	
+</mapper>

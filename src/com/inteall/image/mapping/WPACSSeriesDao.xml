@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.WPACSSeriesDao">
+		<resultMap id="BaseResultMap" type="com.inteall.image.pojo.WPACSSeries">
+				<id column="srsuid" property="srsuid" jdbcType="CHAR" />
+				<result column="srsid" property="srsid" jdbcType="CHAR" />
+				<result column="srsdesc" property="srsdesc" jdbcType="VARCHAR" />
+				<result column="modality" property="modality" jdbcType="VARCHAR" />
+				<result column="stuuid" property="stuuid" jdbcType="CHAR" />
+		</resultMap>
+		<sql id="Base_Column_List"> srsuid, srsid, srsdesc, modality, stuuid
+		</sql>
+		<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+				select
+				<include refid="Base_Column_List" />
+				from series where srsuid = #{srsuid,jdbcType=CHAR}
+		</select>
+		<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		    delete from series where srsuid = #{srsuid,jdbcType=CHAR}
+		</delete>
+		<insert id="insert" parameterType="com.inteall.image.pojo.WPACSSeries">
+		    insert into series (srsuid, srsid, srsdesc, modality, stuuid) values
+				(#{srsuid,jdbcType=CHAR}, #{srsid,jdbcType=CHAR}, #{srsdesc,jdbcType=VARCHAR}, #{modality,jdbcType=VARCHAR},
+				#{stuuid,jdbcType=CHAR})
+		</insert>
+		<insert id="insertSelective" parameterType="com.inteall.image.pojo.WPACSSeries">
+				insert into series
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+						<if test="srsuid != null"> srsuid,
+						</if>
+						<if test="srsid != null"> srsid,
+						</if>
+						<if test="srsdesc != null"> srsdesc,
+						</if>
+						<if test="modality != null"> modality,
+						</if>
+						<if test="stuuid != null"> stuuid,
+						</if>
+				</trim>
+				<trim prefix="values (" suffix=")" suffixOverrides=",">
+						<if test="srsuid != null"> #{srsuid,jdbcType=CHAR},
+						</if>
+						<if test="srsid != null"> #{srsid,jdbcType=CHAR},
+						</if>
+						<if test="srsdesc != null"> #{srsdesc,jdbcType=VARCHAR},
+						</if>
+						<if test="modality != null"> #{modality,jdbcType=VARCHAR},
+						</if>
+						<if test="stuuid != null"> #{stuuid,jdbcType=CHAR},
+						</if>
+				</trim>
+		</insert>
+		<update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.WPACSSeries">
+				update series
+				<set>
+						<if test="srsid != null"> srsid = #{srsid,jdbcType=CHAR},
+						</if>
+						<if test="srsdesc != null"> srsdesc = #{srsdesc,jdbcType=VARCHAR},
+						</if>
+						<if test="modality != null"> modality = #{modality,jdbcType=VARCHAR},
+						</if>
+						<if test="stuuid != null"> stuuid = #{stuuid,jdbcType=CHAR},
+						</if>
+				</set>
+				where srsuid = #{srsuid,jdbcType=CHAR}
+		</update>
+		<update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.WPACSSeries">
+		    update series set srsid = #{srsid,jdbcType=CHAR}, srsdesc =
+				#{srsdesc,jdbcType=VARCHAR}, modality = #{modality,jdbcType=VARCHAR}, stuuid = #{stuuid,jdbcType=CHAR} where srsuid =
+				#{srsuid,jdbcType=CHAR}
+		</update>
+		<!-- 根据检查号查询最大的序列号 -->
+		<select id="getMaxSrsuidByStuuid" resultType="java.lang.String" parameterType="java.lang.String">
+        select max(srsid) maxsrsid
+        from series
+        where stuuid = #{stuuid, jdbcType=CHAR}
+    	</select>
+    	<!-- 删除本检查下除本序列以外的其它序列 -->
+    	<!-- 转义字符：&lt; <,&gt; >,&lt;&gt; <>,&amp; &,&apos; ',&quot; " -->
+    	<delete id="deleteByExcept" parameterType="com.inteall.image.pojo.WPACSSeries">
+		    delete from series
+		    where stuuid = #{stuuid, jdbcType=CHAR} AND srsuid &lt;&gt; #{srsuid,jdbcType=CHAR}
+		</delete>
+</mapper>

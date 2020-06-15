@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inteall.image.dao.InterventionConfereeDao">
+<!-- 批量添加会诊的与会人 -->
+  <insert id="saveList" parameterType="com.inteall.image.pojo.InterventionConferee">
+     insert into imagedb.intervention_conferee (intervention_conferee_key, intervention_key, 
+      sysuser_key, intervention_remark1, intervention_remark2, 
+      intervention_remark3)
+      values
+     <foreach collection="list" item="item" index="index" separator="," >  
+     (#{item.interventionConfereeKey}, #{item.interventionKey}, #{item.sysuserKey},
+      #{item.interventionRemark1}, #{item.interventionRemark2}, #{item.interventionRemark3})
+      </foreach>  
+  </insert>
+  <!-- 根据ID删除会诊的与会人 -->
+  <delete id="deleteById" parameterType="com.inteall.image.pojo.InterventionConferee">
+    DELETE FROM imagedb.intervention_conferee
+    where intervention_key=#{interventionKey}
+  </delete>
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.InterventionConferee">
+    <id column="intervention_conferee_key" jdbcType="VARCHAR" property="interventionConfereeKey" />
+    <result column="intervention_key" jdbcType="VARCHAR" property="interventionKey" />
+    <result column="sysuser_key" jdbcType="VARCHAR" property="sysuserKey" />
+    <result column="intervention_remark1" jdbcType="VARCHAR" property="interventionRemark1" />
+    <result column="intervention_remark2" jdbcType="VARCHAR" property="interventionRemark2" />
+    <result column="intervention_remark3" jdbcType="VARCHAR" property="interventionRemark3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    intervention_conferee_key, intervention_key, sysuser_key, intervention_remark1, intervention_remark2, intervention_remark3
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from intervention_conferee
+    where intervention_conferee_key = #{interventionConfereeKey,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from intervention_conferee
+    where intervention_conferee_key = #{interventionConfereeKey,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.inteall.image.pojo.InterventionConferee">
+    insert into intervention_conferee (intervention_conferee_key, intervention_key, sysuser_key, 
+      intervention_remark1, intervention_remark2, intervention_remark3
+      )
+    values (#{interventionConfereeKey,jdbcType=VARCHAR}, #{interventionKey,jdbcType=VARCHAR}, #{sysuserKey,jdbcType=VARCHAR}, 
+      #{interventionRemark1,jdbcType=VARCHAR}, #{interventionRemark2,jdbcType=VARCHAR}, #{interventionRemark3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.inteall.image.pojo.InterventionConferee">
+    insert into intervention_conferee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="interventionConfereeKey != null">
+        intervention_conferee_key,
+      </if>
+      <if test="interventionKey != null">
+        intervention_key,
+      </if>
+      <if test="sysuserKey != null">
+        sysuser_key,
+      </if>
+      <if test="interventionRemark1 != null">
+        intervention_remark1,
+      </if>
+      <if test="interventionRemark2 != null">
+        intervention_remark2,
+      </if>
+      <if test="interventionRemark3 != null">
+        intervention_remark3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="interventionConfereeKey != null">
+        #{interventionConfereeKey,jdbcType=VARCHAR},
+      </if>
+      <if test="interventionKey != null">
+        #{interventionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="sysuserKey != null">
+        #{sysuserKey,jdbcType=VARCHAR},
+      </if>
+      <if test="interventionRemark1 != null">
+        #{interventionRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="interventionRemark2 != null">
+        #{interventionRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="interventionRemark3 != null">
+        #{interventionRemark3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.inteall.image.pojo.InterventionConferee">
+    update intervention_conferee
+    <set>
+      <if test="interventionKey != null">
+        intervention_key = #{interventionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="sysuserKey != null">
+        sysuser_key = #{sysuserKey,jdbcType=VARCHAR},
+      </if>
+      <if test="interventionRemark1 != null">
+        intervention_remark1 = #{interventionRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="interventionRemark2 != null">
+        intervention_remark2 = #{interventionRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="interventionRemark3 != null">
+        intervention_remark3 = #{interventionRemark3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where intervention_conferee_key = #{interventionConfereeKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.inteall.image.pojo.InterventionConferee">
+    update intervention_conferee
+    set intervention_key = #{interventionKey,jdbcType=VARCHAR},
+      sysuser_key = #{sysuserKey,jdbcType=VARCHAR},
+      intervention_remark1 = #{interventionRemark1,jdbcType=VARCHAR},
+      intervention_remark2 = #{interventionRemark2,jdbcType=VARCHAR},
+      intervention_remark3 = #{interventionRemark3,jdbcType=VARCHAR}
+    where intervention_conferee_key = #{interventionConfereeKey,jdbcType=VARCHAR}
+  </update>
+    <resultMap id="sysuser" type="com.inteall.image.pojo.SysUser" >
+    <id column="sysuser_key" property="sysuserKey" jdbcType="VARCHAR" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="effect_date" property="effectDate" jdbcType="TIMESTAMP" />
+    <result column="image_num" property="imageNum" jdbcType="BIGINT" />
+    <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="sys_hospital_key" property="sysHospitalKey" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_age" property="userAge" jdbcType="VARCHAR" />
+    <result column="user_sex" property="userSex" jdbcType="CHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="bigant_uid" property="bigantUid" jdbcType="VARCHAR" />
+    <result column="bigant_name" property="bigantName" jdbcType="VARCHAR" />
+    <result column="sys_hospital_key" jdbcType="VARCHAR" property="sysHospitalKey" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="create_person" property="createPerson" jdbcType="VARCHAR" />
+    <result column="modify_person" property="modifyPerson" jdbcType="VARCHAR" />
+    <result column="is_del" property="isDel" jdbcType="CHAR" />
+    <result column="del_time" property="delTime" jdbcType="TIMESTAMP" />
+    <result column="del_person" property="delPerson" jdbcType="VARCHAR" />
+    <result column="sysuser_remark1" property="sysuserRemark1" jdbcType="VARCHAR" />
+    <result column="sysuser_remark2" property="sysuserRemark2" jdbcType="VARCHAR" />
+    <result column="sysuser_remark3" property="sysuserRemark3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_User_List" >
+    sysuser.sysuser_key, login_name, password, user_email, user_age, user_sex, user_name, user_phone, 
+    bigant_uid, bigant_name, sys_hospital_key, dept_name, login_ip, effect_date, image_num, 
+    create_time, modify_time, create_person, modify_person, is_del, del_time, del_person, 
+    sysuser_remark1, sysuser_remark2, sysuser_remark3
+  </sql>
+     <!-- 根据会诊主键查询与会人列表 -->
+  <select id="getByInterventionKey" parameterType="com.inteall.image.pojo.ReadImage_Conferee" resultMap="sysuser">
+    select
+    <include refid="Base_User_List" />
+    from sysuser ,(SELECT sysuser_key from intervention_conferee WHERE intervention_key=#{interventionKey}) B
+    where sysuser.sysuser_key=B.sysuser_key
+  </select>
+</mapper>

@@ -1,0 +1,1112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inteall.image.dao.ConsultationDao" >
+  <resultMap id="BaseResultMap" type="com.inteall.image.pojo.Consultation" >
+    <id column="case_id" jdbcType="VARCHAR" property="caseId" />
+    <result column="image_id" jdbcType="VARCHAR" property="imageId" />
+    <result column="report_id" jdbcType="VARCHAR" property="reportId" />
+    <result column="state" jdbcType="CHAR" property="state" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="create_person" jdbcType="VARCHAR" property="createPerson" />
+    <result column="create_person_name" jdbcType="VARCHAR" property="createPersonName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="commit_time" jdbcType="TIMESTAMP" property="commitTime" />
+    <result column="commit_type" jdbcType="CHAR" property="commitType" />
+    <result column="group_id" jdbcType="VARCHAR" property="groupId" />
+    <result column="commit_target_person" jdbcType="VARCHAR" property="commitTargetPerson" />
+    <result column="is_accept" jdbcType="CHAR" property="isAccept" />
+    <result column="accept_person_name" jdbcType="VARCHAR" property="acceptPersonName" />
+    <result column="accept_person_login" jdbcType="VARCHAR" property="acceptPersonLogin" />
+    <result column="accept_time" jdbcType="TIMESTAMP" property="acceptTime" />
+    <result column="reject_time" jdbcType="TIMESTAMP" property="rejectTime" />
+    <result column="report_commit_time" jdbcType="TIMESTAMP" property="reportCommitTime" />
+    <result column="primary_audit_name" jdbcType="VARCHAR" property="primaryAuditName" />
+    <result column="primary_audit_login" jdbcType="VARCHAR" property="primaryAuditLogin" />
+    <result column="primary_time" jdbcType="TIMESTAMP" property="primaryTime" />
+    <result column="primary_suggestion" jdbcType="CHAR" property="primarySuggestion" />
+    <result column="primary_reject_time" jdbcType="TIMESTAMP" property="primaryRejectTime" />
+    <result column="ultimate_audit_name" jdbcType="VARCHAR" property="ultimateAuditName" />
+    <result column="ultimate_audit_login" jdbcType="VARCHAR" property="ultimateAuditLogin" />
+    <result column="ultimate_time" jdbcType="TIMESTAMP" property="ultimateTime" />
+    <result column="ultimate_suggestion" jdbcType="CHAR" property="ultimateSuggestion" />
+    <result column="ultimate_reject_time" jdbcType="TIMESTAMP" property="ultimateRejectTime" />
+    <result column="consultation_type" jdbcType="CHAR" property="consultationType" />
+    <result column="zoom_key" jdbcType="VARCHAR" property="zoomKey" />
+    <result column="minute" jdbcType="INTEGER" property="minute" />
+    <result column="is_del" jdbcType="CHAR" property="isDel" />
+    <result column="del_time" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="consultation_remark1" jdbcType="VARCHAR" property="consultationRemark1" />
+    <result column="consultation_remark2" jdbcType="VARCHAR" property="consultationRemark2" />
+    <result column="consultation_remark3" jdbcType="VARCHAR" property="consultationRemark3" />
+    <result column="consultation_remark4" jdbcType="VARCHAR" property="consultationRemark4" />
+    <result column="consultation_remark5" jdbcType="VARCHAR" property="consultationRemark5" />
+    <result column="consultation_remark6" jdbcType="VARCHAR" property="consultationRemark6" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.inteall.image.pojo.ConsultationWithBLOBs">
+    <result column="commit_request" jdbcType="LONGVARCHAR" property="commitRequest" />
+    <result column="reject_reason" jdbcType="LONGVARCHAR" property="rejectReason" />
+    <result column="primary_reject" jdbcType="LONGVARCHAR" property="primaryReject" />
+    <result column="ultimate_reject" jdbcType="LONGVARCHAR" property="ultimateReject" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    case_id, image_id, report_id, state, modify_time, create_person, create_time, commit_time, 
+    commit_type, group_id, commit_target_person, is_accept, accept_person_name, accept_person_login, 
+    accept_time, reject_time,report_commit_time, primary_audit_name, primary_audit_login, primary_time, 
+    primary_suggestion, primary_reject_time, ultimate_audit_name, ultimate_audit_login, 
+    ultimate_time, ultimate_suggestion, ultimate_reject_time, consultation_type, zoom_key, 
+    minute, is_del, del_time, consultation_remark1, consultation_remark2, consultation_remark3, 
+    consultation_remark4, consultation_remark5, consultation_remark6
+  </sql>
+  <sql id="Blob_Column_List">
+    commit_request, reject_reason, primary_reject, ultimate_reject
+  </sql>
+  <select id="getConsulTationById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_consultation
+    where case_id = #{caseId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getStateByStuuid" parameterType="java.lang.String" resultType="java.lang.String">
+  	select state 
+  	from t_consultation 
+  	where image_id = 
+  		(select medical_record_key 
+  		from medical_record 
+  		where studyInstanceUID = #{stuuid,jdbcType=VARCHAR}
+  		) and create_person = #{userid,jdbcType=VARCHAR}
+  </select>
+ 
+   <insert id="save" parameterType="com.inteall.image.pojo.ConsultationWithBLOBs">
+    insert into t_consultation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="caseId != null">
+        case_id,
+      </if>
+      <if test="imageId != null">
+        image_id,
+      </if>
+      <if test="reportId != null">
+        report_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="modifyTime != null">
+        modify_time,
+      </if>
+      <if test="createPerson != null">
+        create_person,
+      </if>
+      <if test="createPersonName != null">
+        create_person_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="commitTime != null">
+        commit_time,
+      </if>
+      <if test="commitType != null">
+        commit_type,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="commitTargetPerson != null">
+        commit_target_person,
+      </if>
+      <if test="isAccept != null">
+        is_accept,
+      </if>
+      <if test="acceptPersonName != null">
+        accept_person_name,
+      </if>
+      <if test="acceptPersonLogin != null">
+        accept_person_login,
+      </if>
+      <if test="acceptTime != null">
+        accept_time,
+      </if>
+      <if test="rejectTime != null">
+        reject_time,
+      </if>
+      <if test="reportCommitTime != null">
+        report_commit_time,
+      </if>
+      <if test="primaryAuditName != null">
+        primary_audit_name,
+      </if>
+      <if test="primaryAuditLogin != null">
+        primary_audit_login,
+      </if>
+      <if test="primaryTime != null">
+        primary_time,
+      </if>
+      <if test="primarySuggestion != null">
+        primary_suggestion,
+      </if>
+      <if test="primaryRejectTime != null">
+        primary_reject_time,
+      </if>
+      <if test="ultimateAuditName != null">
+        ultimate_audit_name,
+      </if>
+      <if test="ultimateAuditLogin != null">
+        ultimate_audit_login,
+      </if>
+      <if test="ultimateTime != null">
+        ultimate_time,
+      </if>
+      <if test="ultimateSuggestion != null">
+        ultimate_suggestion,
+      </if>
+      <if test="ultimateRejectTime != null">
+        ultimate_reject_time,
+      </if>
+      <if test="consultationType != null">
+        consultation_type,
+      </if>
+      <if test="zoomKey != null">
+        zoom_key,
+      </if>
+      <if test="minute != null">
+        minute,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="delTime != null">
+        del_time,
+      </if>
+      <if test="consultationRemark1 != null">
+        consultation_remark1,
+      </if>
+      <if test="consultationRemark2 != null">
+        consultation_remark2,
+      </if>
+      <if test="consultationRemark3 != null">
+        consultation_remark3,
+      </if>
+      <if test="consultationRemark4 != null">
+        consultation_remark4,
+      </if>
+      <if test="consultationRemark5 != null">
+        consultation_remark5,
+      </if>
+      <if test="consultationRemark6 != null">
+        consultation_remark6,
+      </if>
+      <if test="commitRequest != null">
+        commit_request,
+      </if>
+      <if test="rejectReason != null">
+        reject_reason,
+      </if>
+      <if test="primaryReject != null">
+        primary_reject,
+      </if>
+      <if test="ultimateReject != null">
+        ultimate_reject,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="caseId != null">
+        #{caseId,jdbcType=VARCHAR},
+      </if>
+      <if test="imageId != null">
+        #{imageId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null">
+        #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="modifyTime != null">
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createPersonName != null">
+        #{createPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitTime != null">
+        #{commitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitType != null">
+        #{commitType,jdbcType=CHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="commitTargetPerson != null">
+        #{commitTargetPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isAccept != null">
+        #{isAccept,jdbcType=CHAR},
+      </if>
+      <if test="acceptPersonName != null">
+        #{acceptPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptPersonLogin != null">
+        #{acceptPersonLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectTime != null">
+        #{rejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommitTime != null">
+        #{reportCommitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primaryAuditName != null">
+        #{primaryAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryAuditLogin != null">
+        #{primaryAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryTime != null">
+        #{primaryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primarySuggestion != null">
+        #{primarySuggestion,jdbcType=CHAR},
+      </if>
+      <if test="primaryRejectTime != null">
+        #{primaryRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateAuditName != null">
+        #{ultimateAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateAuditLogin != null">
+        #{ultimateAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateTime != null">
+        #{ultimateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateSuggestion != null">
+        #{ultimateSuggestion,jdbcType=CHAR},
+      </if>
+      <if test="ultimateRejectTime != null">
+        #{ultimateRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationType != null">
+        #{consultationType,jdbcType=CHAR},
+      </if>
+      <if test="zoomKey != null">
+        #{zoomKey,jdbcType=VARCHAR},
+      </if>
+      <if test="minute != null">
+        #{minute,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null">
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationRemark1 != null">
+        #{consultationRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark2 != null">
+        #{consultationRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark3 != null">
+        #{consultationRemark3,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark4 != null">
+        #{consultationRemark4,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark5 != null">
+        #{consultationRemark5,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark6 != null">
+        #{consultationRemark6,jdbcType=VARCHAR},
+      </if>
+      <if test="commitRequest != null">
+        #{commitRequest,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="rejectReason != null">
+        #{rejectReason,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="primaryReject != null">
+        #{primaryReject,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ultimateReject != null">
+        #{ultimateReject,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByCaseId" parameterType="com.inteall.image.pojo.ConsultationWithBLOBs">
+    update t_consultation
+    <set>
+      <if test="imageId != null">
+        image_id = #{imageId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null">
+        report_id = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createPersonName!=null and createPersonName!='' ">
+      	create_person_name = #{createPersonName,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitTime != null">
+        commit_time = #{commitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitType != null">
+        commit_type = #{commitType,jdbcType=CHAR},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="commitTargetPerson != null">
+        commit_target_person = #{commitTargetPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isAccept != null">
+        is_accept = #{isAccept,jdbcType=CHAR},
+      </if>
+      <if test="acceptPersonName != null">
+        accept_person_name = #{acceptPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptPersonLogin != null">
+        accept_person_login = #{acceptPersonLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectTime != null">
+        reject_time = #{rejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommitTime != null">
+        report_commit_time = #{reportCommitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primaryAuditName != null">
+        primary_audit_name = #{primaryAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryAuditLogin != null">
+        primary_audit_login = #{primaryAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryTime != null">
+        primary_time = #{primaryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primarySuggestion != null">
+        primary_suggestion = #{primarySuggestion,jdbcType=CHAR},
+      </if>
+      <if test="primaryRejectTime != null">
+        primary_reject_time = #{primaryRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateAuditName != null">
+        ultimate_audit_name = #{ultimateAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateAuditLogin != null">
+        ultimate_audit_login = #{ultimateAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateTime != null">
+        ultimate_time = #{ultimateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateSuggestion != null">
+        ultimate_suggestion = #{ultimateSuggestion,jdbcType=CHAR},
+      </if>
+      <if test="ultimateRejectTime != null">
+        ultimate_reject_time = #{ultimateRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationType != null">
+        consultation_type = #{consultationType,jdbcType=CHAR},
+      </if>
+      <if test="zoomKey != null">
+        zoom_key = #{zoomKey,jdbcType=VARCHAR},
+      </if>
+      <if test="minute != null">
+        minute = #{minute,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null">
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationRemark1 != null">
+        consultation_remark1 = #{consultationRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark2 != null">
+        consultation_remark2 = #{consultationRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark3 != null">
+        consultation_remark3 = #{consultationRemark3,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark4 != null">
+        consultation_remark4 = #{consultationRemark4,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark5 != null">
+        consultation_remark5 = #{consultationRemark5,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark6 != null">
+        consultation_remark6 = #{consultationRemark6,jdbcType=VARCHAR},
+      </if>
+      <if test="commitRequest != null">
+        commit_request = #{commitRequest,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="rejectReason != null">
+        reject_reason = #{rejectReason,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="primaryReject != null">
+        primary_reject = #{primaryReject,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ultimateReject != null">
+        ultimate_reject = #{ultimateReject,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where case_id = #{caseId,jdbcType=VARCHAR}
+  </update>
+  <update id="saveById" parameterType="com.inteall.image.pojo.Consultation">
+    update t_consultation
+    <set>
+      <if test="imageId != null">
+        image_id = #{imageId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null">
+        report_id = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitTime != null">
+        commit_time = #{commitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitType != null">
+        commit_type = #{commitType,jdbcType=CHAR},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="commitTargetPerson != null">
+        commit_target_person = #{commitTargetPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isAccept != null">
+        is_accept = #{isAccept,jdbcType=CHAR},
+      </if>
+      <if test="acceptPersonName != null">
+        accept_person_name = #{acceptPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptPersonLogin != null">
+        accept_person_login = #{acceptPersonLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectTime != null">
+        reject_time = #{rejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommitTime != null">
+        report_commit_time = #{reportCommitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primaryAuditName != null">
+        primary_audit_name = #{primaryAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryAuditLogin != null">
+        primary_audit_login = #{primaryAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryTime != null">
+        primary_time = #{primaryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primarySuggestion != null">
+        primary_suggestion = #{primarySuggestion,jdbcType=CHAR},
+      </if>
+      <if test="primaryRejectTime != null">
+        primary_reject_time = #{primaryRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateAuditName != null">
+        ultimate_audit_name = #{ultimateAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateAuditLogin != null">
+        ultimate_audit_login = #{ultimateAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateTime != null">
+        ultimate_time = #{ultimateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateSuggestion != null">
+        ultimate_suggestion = #{ultimateSuggestion,jdbcType=CHAR},
+      </if>
+      <if test="ultimateRejectTime != null">
+        ultimate_reject_time = #{ultimateRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationType != null">
+        consultation_type = #{consultationType,jdbcType=CHAR},
+      </if>
+      <if test="zoomKey != null">
+        zoom_key = #{zoomKey,jdbcType=VARCHAR},
+      </if>
+      <if test="minute != null">
+        minute = #{minute,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null">
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationRemark1 != null">
+        consultation_remark1 = #{consultationRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark2 != null">
+        consultation_remark2 = #{consultationRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark3 != null">
+        consultation_remark3 = #{consultationRemark3,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark4 != null">
+        consultation_remark4 = #{consultationRemark4,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark5 != null">
+        consultation_remark5 = #{consultationRemark5,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark6 != null">
+        consultation_remark6 = #{consultationRemark6,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where case_id = #{caseId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="com.inteall.image.pojo.Consultation">
+    update t_consultation
+    <set>
+      <if test="imageId != null">
+        image_id = #{imageId,jdbcType=VARCHAR},
+      </if>
+      <if test="reportId != null">
+        report_id = #{reportId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="modifyTime != null">
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createPerson != null">
+        create_person = #{createPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitTime != null">
+        commit_time = #{commitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitType != null">
+        commit_type = #{commitType,jdbcType=CHAR},
+      </if>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="commitTargetPerson != null">
+        commit_target_person = #{commitTargetPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="isAccept != null">
+        is_accept = #{isAccept,jdbcType=CHAR},
+      </if>
+      <if test="acceptPersonName != null">
+        accept_person_name = #{acceptPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptPersonLogin != null">
+        accept_person_login = #{acceptPersonLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptTime != null">
+        accept_time = #{acceptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rejectTime != null">
+        reject_time = #{rejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reportCommitTime != null">
+        report_commit_time = #{reportCommitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primaryAuditName != null">
+        primary_audit_name = #{primaryAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryAuditLogin != null">
+        primary_audit_login = #{primaryAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryTime != null">
+        primary_time = #{primaryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="primarySuggestion != null">
+        primary_suggestion = #{primarySuggestion,jdbcType=CHAR},
+      </if>
+      <if test="primaryRejectTime != null">
+        primary_reject_time = #{primaryRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateAuditName != null">
+        ultimate_audit_name = #{ultimateAuditName,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateAuditLogin != null">
+        ultimate_audit_login = #{ultimateAuditLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="ultimateTime != null">
+        ultimate_time = #{ultimateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ultimateSuggestion != null">
+        ultimate_suggestion = #{ultimateSuggestion,jdbcType=CHAR},
+      </if>
+      <if test="ultimateRejectTime != null">
+        ultimate_reject_time = #{ultimateRejectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationType != null">
+        consultation_type = #{consultationType,jdbcType=CHAR},
+      </if>
+      <if test="zoomKey != null">
+        zoom_key = #{zoomKey,jdbcType=VARCHAR},
+      </if>
+      <if test="minute != null">
+        minute = #{minute,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=CHAR},
+      </if>
+      <if test="delTime != null">
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consultationRemark1 != null">
+        consultation_remark1 = #{consultationRemark1,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark2 != null">
+        consultation_remark2 = #{consultationRemark2,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark3 != null">
+        consultation_remark3 = #{consultationRemark3,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark4 != null">
+        consultation_remark4 = #{consultationRemark4,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark5 != null">
+        consultation_remark5 = #{consultationRemark5,jdbcType=VARCHAR},
+      </if>
+      <if test="consultationRemark6 != null">
+        consultation_remark6 = #{consultationRemark6,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where case_id = #{caseId,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap id="medicalrecordMap" type="com.inteall.image.pojo.ConsultationWithBLOBs" >
+  	<id column="case_id" jdbcType="VARCHAR" property="caseId" />
+    <result column="image_id" jdbcType="VARCHAR" property="imageId" />
+    <result column="report_id" jdbcType="VARCHAR" property="reportId" />
+    <result column="state" jdbcType="CHAR" property="state" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="create_person" jdbcType="VARCHAR" property="createPerson" />
+    <result column="create_person_name" jdbcType="VARCHAR" property="createPersonName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="commit_time" jdbcType="TIMESTAMP" property="commitTime" />
+    <result column="commit_type" jdbcType="CHAR" property="commitType" />
+    <result column="group_id" jdbcType="VARCHAR" property="groupId" />
+    <result column="commit_target_person" jdbcType="VARCHAR" property="commitTargetPerson" />
+    <result column="is_accept" jdbcType="CHAR" property="isAccept" />
+    <result column="accept_person_name" jdbcType="VARCHAR" property="acceptPersonName" />
+    <result column="accept_person_login" jdbcType="VARCHAR" property="acceptPersonLogin" />
+    <result column="accept_time" jdbcType="TIMESTAMP" property="acceptTime" />
+    <result column="reject_time" jdbcType="TIMESTAMP" property="rejectTime" />
+    <result column="report_commit_time" jdbcType="TIMESTAMP" property="reportCommitTime" />
+    <result column="primary_audit_name" jdbcType="VARCHAR" property="primaryAuditName" />
+    <result column="primary_audit_login" jdbcType="VARCHAR" property="primaryAuditLogin" />
+    <result column="primary_time" jdbcType="TIMESTAMP" property="primaryTime" />
+    <result column="primary_suggestion" jdbcType="CHAR" property="primarySuggestion" />
+    <result column="primary_reject_time" jdbcType="TIMESTAMP" property="primaryRejectTime" />
+    <result column="ultimate_audit_name" jdbcType="VARCHAR" property="ultimateAuditName" />
+    <result column="ultimate_audit_login" jdbcType="VARCHAR" property="ultimateAuditLogin" />
+    <result column="ultimate_time" jdbcType="TIMESTAMP" property="ultimateTime" />
+    <result column="ultimate_suggestion" jdbcType="CHAR" property="ultimateSuggestion" />
+    <result column="ultimate_reject_time" jdbcType="TIMESTAMP" property="ultimateRejectTime" />
+    <result column="consultation_type" jdbcType="CHAR" property="consultationType" />
+    <result column="zoom_key" jdbcType="VARCHAR" property="zoomKey" />
+    <result column="minute" jdbcType="INTEGER" property="minute" />
+    <result column="is_del" jdbcType="CHAR" property="isDel" />
+    <result column="del_time" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="consultation_remark1" jdbcType="VARCHAR" property="consultationRemark1" />
+    <result column="consultation_remark2" jdbcType="VARCHAR" property="consultationRemark2" />
+    <result column="consultation_remark3" jdbcType="VARCHAR" property="consultationRemark3" />
+    <result column="consultation_remark4" jdbcType="VARCHAR" property="consultationRemark4" />
+    <result column="consultation_remark5" jdbcType="VARCHAR" property="consultationRemark5" />
+    <result column="consultation_remark6" jdbcType="VARCHAR" property="consultationRemark6" />
+    <result column="commit_request" property="commitRequest" jdbcType="LONGVARCHAR" />
+    <result column="reject_reason" property="rejectReason" jdbcType="LONGVARCHAR" />
+    <result column="primary_reject" property="primaryReject" jdbcType="LONGVARCHAR" />
+    <result column="ultimate_reject" property="ultimateReject" jdbcType="LONGVARCHAR" />
+    
+	<result column="medical_record_key" property="medicalRecordKey" jdbcType="VARCHAR" />
+    <result column="patient_key" property="patientKey" jdbcType="VARCHAR" />
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="VARCHAR" />
+    <result column="patient_type" property="patientType" jdbcType="VARCHAR" />
+    <result column="bodypart_code" property="bodypartCode" jdbcType="VARCHAR" />
+    <result column="bodypart_name" property="bodypartName" jdbcType="VARCHAR" />
+    <result column="hospital" property="hospital" jdbcType="VARCHAR" />
+    <result column="image_num" property="imageNum" jdbcType="INTEGER" />
+    <result column="modality_code" property="modalityCode" jdbcType="VARCHAR" />
+    <result column="print_flag" property="printFlag" jdbcType="BIT" />
+    <result column="film_time" property="filmTime" jdbcType="TIMESTAMP" />
+    <result column="film_num" property="filmNum" jdbcType="VARCHAR" />
+    <result column="print_report" property="printReport" jdbcType="BIT" />
+    <result column="print_time" property="printTime" jdbcType="TIMESTAMP" />
+    <result column="seriesInstanceUID" property="seriesinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_id" property="studyId" jdbcType="VARCHAR" />
+    <result column="series_num" property="seriesNum" jdbcType="INTEGER" />
+    <result column="studyInstanceUID" property="studyinstanceuid" jdbcType="VARCHAR" />
+    <result column="study_time" property="studyTime" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="patient_history" property="patientHistory" jdbcType="LONGVARCHAR" />
+   
+  </resultMap>
+  <sql id="Medical_Base_Column_List" >
+    A.case_id,A.image_id,A.report_id,A.state,A.modify_time,A.create_person,A.create_time,A.commit_time,
+    A.commit_type,A.group_id,A.commit_target_person,A.is_accept,A.accept_person_name,A.accept_person_login,
+    A.accept_time,A.reject_time,A.report_commit_time,A.primary_audit_name,A.primary_audit_login,A.primary_time,
+    A.primary_suggestion,A.primary_reject_time,A.ultimate_audit_name,A.ultimate_audit_login,
+    A.ultimate_time,A.ultimate_suggestion,A.ultimate_reject_time,A.consultation_type,A.zoom_key,
+    A.minute,A.is_del,A.del_time,A.consultation_remark1,A.consultation_remark2,A.consultation_remark3,
+    A.consultation_remark4,A.consultation_remark5,A.consultation_remark6,
+    A.commit_request,A.reject_reason,A.primary_reject,A.ultimate_reject,A.create_person_name,
+    
+ 	B.studyInstanceUID,B.medical_record_key, B.patient_key, B.patient_name, B.sex, B.age, B.patient_type, B.bodypart_code, 
+    B.bodypart_name, B.hospital, B.image_num, B.modality_code, B.print_flag, B.film_time, B.film_num, 
+    B.print_report,B.print_time, B.seriesInstanceUID, B.study_id, B.series_num,  
+    B.study_time, B.state, B.patient_history
+  </sql>
+  <select id="getRecordByCreateUser" parameterType="hashmap" resultMap="medicalrecordMap">
+    select 
+    <include refid="Medical_Base_Column_List" />
+
+	from t_consultation A ,medical_record B
+	where B.medical_record_key = A.image_id 
+	and  A.create_person=#{createperson}
+	<if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+		<![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+		<![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+  	</if>
+  	<if test="username != null and username != ''">
+  		and B.patient_name  like CONCAT('%', #{username}, '%')
+  	</if>
+  	<if test="sex != null and sex != ''">
+  		and B.sex = #{sex}
+  	</if>
+  	<if test="modality != null and modality != ''">
+  		and B.modality_code = #{modality}
+  	</if>
+  	<if test="beginState != null and beginState != ''">
+  		and A.state &gt;= #{beginState} 
+  	</if>
+  	<if test="endState != null and endState != ''">
+  		and A.state &lt;= #{endState} 
+  	</if>
+  	<if test="bodyName!=null and bodyName!='' ">
+    	and B.bodypart_name = #{bodyName}	
+    </if>
+    <if test="huizhenState!=null and huizhenState!='' ">
+    	and A.state = #{huizhenState}
+    </if>
+    <if test="uploadStart!=null and uploadStart!='' and uploadEnd!=null and uploadEnd!='' ">
+    	and A.commit_time <![CDATA[>=]]>#{uploadStart}
+    	and A.commit_time <![CDATA[<=]]>#{uploadEnd}
+    </if>
+	limit #{curr},#{limit}
+  </select>
+  
+  <select id="getMedicalCount" parameterType="hashmap" resultType="Integer">
+  	select 
+    count(case_id)
+
+    from t_consultation A ,medical_record B
+    where B.medical_record_key = A.image_id 
+    and  A.create_person=#{createperson}
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+        <![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+        <![CDATA[  and DATE_FORMAT(B.study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+        and B.patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+        and B.sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+        and B.modality_code = #{modality}
+    </if>
+    <if test="beginState != null and beginState != ''">
+        and A.state &gt;= #{beginState} 
+    </if>
+    <if test="endState != null and endState != ''">
+        and A.state &lt;= #{endState} 
+    </if>
+    <if test="bodyName!=null and bodyName!='' ">
+    	and B.bodypart_name = #{bodyName}	
+    </if>
+    <if test="huizhenState!=null and huizhenState!='' ">
+    	and A.state = #{huizhenState}
+    </if>
+    <if test="uploadStart!=null and uploadStart!='' and uploadEnd!=null and uploadEnd!='' ">
+    	and A.commit_time <![CDATA[>=]]>#{uploadStart}
+    	and A.commit_time <![CDATA[<=]]>#{uploadEnd}
+    </if>
+    
+  </select>
+ 
+ <select id="getCountByDoctor" parameterType="hashmap" resultType="Integer">
+    select count(case_id) from t_consultation A,medical_record B
+    where commit_target_person = #{commit_target_person}
+    and  A.image_id = B.medical_record_key 
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+        and patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+        and sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+        and modality_code = #{modality}
+    </if>
+    <if test="beginState != null and beginState != ''">
+        and A.state &gt;= #{beginState} 
+    </if>
+    <if test="endState != null and endState != ''">
+        and A.state &lt;= #{endState} 
+    </if>
+    <if test="bodyName!=null and bodyName!='' ">
+    	and B.bodypart_name = #{bodyName}	
+    </if>
+    <if test="huizhenState!=null and huizhenState!='' ">
+    	and A.state = #{huizhenState}
+    </if>
+    <if test="uploadStart!=null and uploadStart!='' and uploadEnd!=null and uploadEnd!='' ">
+    	and A.commit_time <![CDATA[>=]]>#{uploadStart}
+    	and A.commit_time <![CDATA[<=]]>#{uploadEnd}
+    </if>
+  </select>
+  <select id="getRecordByDoctor" parameterType="hashmap" resultMap="medicalrecordMap">
+    select 
+    <include refid="Medical_Base_Column_List" />
+
+    from t_consultation A ,medical_record B
+    where commit_target_person = #{commit_target_person}
+    and  A.image_id = B.medical_record_key 
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+        and patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+        and sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+        and modality_code = #{modality}
+    </if>
+    <if test="beginState != null and beginState != ''">
+        and A.state &gt;= #{beginState} 
+    </if>
+    <if test="endState != null and endState != ''">
+        and A.state &lt;= #{endState} 
+    </if>
+     <if test="bodyName!=null and bodyName!='' ">
+    	and B.bodypart_name = #{bodyName}	
+    </if>
+    <if test="huizhenState!=null and huizhenState!='' ">
+    	and A.state = #{huizhenState}
+    </if>
+    <if test="uploadStart!=null and uploadStart!='' and uploadEnd!=null and uploadEnd!='' ">
+    	and A.commit_time <![CDATA[>=]]>#{uploadStart}
+    	and A.commit_time <![CDATA[<=]]>#{uploadEnd}
+    </if>
+    limit #{curr},#{limit}
+  </select>
+  
+  
+  <select id="getCountByPrimaryAudit" parameterType="hashmap" resultType="Integer">
+    select count(case_id) from t_consultation A,medical_record B
+    where (primary_audit_login = #{primary_audit_login} or ultimate_audit_login = #{primary_audit_login} )
+    and  A.image_id = B.medical_record_key 
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+        and patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+        and sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+        and modality_code = #{modality}
+    </if>
+    <if test="beginState != null and beginState != ''">
+        and A.state &gt;= #{beginState} 
+    </if>
+    <if test="endState != null and endState != ''">
+        and A.state &lt;= #{endState} 
+    </if>
+    	<if test="bodyName!=null and bodyName!='' ">
+    	and B.bodypart_name = #{bodyName}	
+    </if>
+    <if test="huizhenState!=null and huizhenState!='' ">
+    	and A.state = #{huizhenState}
+    </if>
+    <if test="uploadStart!=null and uploadStart!='' and uploadEnd!=null and uploadEnd!='' ">
+    	and A.commit_time <![CDATA[>=]]>#{uploadStart}
+    	and A.commit_time <![CDATA[<=]]>#{uploadEnd}
+    </if>
+  </select>
+  <select id="getRecordByPrimaryAudit" parameterType="hashmap" resultMap="medicalrecordMap">
+    select 
+    <include refid="Medical_Base_Column_List" />
+
+    from t_consultation A ,medical_record B
+    where (primary_audit_login = #{primary_audit_login} or ultimate_audit_login = #{primary_audit_login} )
+    and  A.image_id = B.medical_record_key 
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+        and patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+        and sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+        and modality_code = #{modality}
+    </if>
+    <if test="beginState != null and beginState != ''">
+        and A.state &gt;= #{beginState} 
+    </if>
+    <if test="endState != null and endState != ''">
+        and A.state &lt;= #{endState} 
+    </if>
+    <if test="bodyName!=null and bodyName!='' ">
+    	and B.bodypart_name = #{bodyName}	
+    </if>
+    <if test="huizhenState!=null and huizhenState!='' ">
+    	and A.state = #{huizhenState}
+    </if>
+    <if test="uploadStart!=null and uploadStart!='' and uploadEnd!=null and uploadEnd!='' ">
+    	and A.commit_time <![CDATA[>=]]>#{uploadStart}
+    	and A.commit_time <![CDATA[<=]]>#{uploadEnd}
+    </if>
+    limit #{curr},#{limit}
+  </select>
+  
+  <select id="getCountByUltimateAudit" parameterType="hashmap" resultType="Integer">
+    select count(case_id) from t_consultation A,medical_record B
+    where ultimate_audit_login = #{ultimate_audit_login}
+    and  A.image_id = B.medical_record_key 
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+        and patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+        and sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+        and modality_code = #{modality}
+    </if>
+    <if test="beginState != null and beginState != ''">
+        and A.state &gt;= #{beginState} 
+    </if>
+    <if test="endState != null and endState != ''">
+        and A.state &lt;= #{endState} 
+    </if>
+  </select>
+  <select id="getRecordByUltimateAudit" parameterType="hashmap" resultMap="medicalrecordMap">
+    select 
+    <include refid="Medical_Base_Column_List" />
+
+    from t_consultation A ,medical_record B
+    where ultimate_audit_login = #{ultimate_audit_login}
+    and  A.image_id = B.medical_record_key 
+    <if test="beginDate != null and beginDate != '' and endDate != null and endDate != ''">
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d')>=  DATE_FORMAT(#{beginDate}, '%Y-%m-%d')   ]]>
+      <![CDATA[  and DATE_FORMAT(study_time, '%Y-%m-%d') <= DATE_FORMAT(#{endDate}, '%Y-%m-%d')    ]]>
+    </if>
+    <if test="username != null and username != ''">
+        and patient_name  like CONCAT('%', #{username}, '%')
+    </if>
+    <if test="sex != null and sex != ''">
+        and sex = #{sex}
+    </if>
+    <if test="modality != null and modality != ''">
+        and modality_code = #{modality}
+    </if>
+    <if test="beginState != null and beginState != ''">
+        and A.state &gt;= #{beginState} 
+    </if>
+    <if test="endState != null and endState != ''">
+        and A.state &lt;= #{endState} 
+    </if>
+    limit #{curr},#{limit}
+  </select>
+   <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_consultation
+    where case_id = #{caseId,jdbcType=VARCHAR} and is_del=0
+  </select>
+   <delete id="delByStuuid" parameterType="hashmap" >
+  	delete from t_consultation where image_id=#{stuuid} and case_id=#{caseId}
+  </delete>
+  <!-- 根据与会人查询读片会 -->
+  <select id="getByConferee" parameterType="com.inteall.image.pojo.ReadImage"  resultMap="BaseResultMap">
+    SELECT 
+    t_consultation.case_id,t_consultation.image_id,t_consultation.report_id,t_consultation.state,t_consultation.modify_time,t_consultation.create_person,t_consultation.create_time,t_consultation.commit_time,t_consultation.
+    commit_type,t_consultation.group_id,t_consultation.commit_target_person,t_consultation.is_accept,t_consultation.accept_person_name,t_consultation.accept_person_login,t_consultation.
+    accept_time,t_consultation.reject_time,report_commit_time,t_consultation.primary_audit_name,t_consultation.primary_audit_login,t_consultation.primary_time,t_consultation.
+    primary_suggestion,t_consultation.primary_reject_time,t_consultation.ultimate_audit_name,t_consultation.ultimate_audit_login,t_consultation.
+    ultimate_time,t_consultation.ultimate_suggestion,t_consultation.ultimate_reject_time,t_consultation.consultation_type, t_consultation.zoom_key, 
+    t_consultation.minute,t_consultation.is_del,t_consultation.del_time, t_consultation.consultation_remark1, t_consultation.consultation_remark2, t_consultation.consultation_remark3, 
+    t_consultation.consultation_remark4, t_consultation.consultation_remark5, t_consultation.consultation_remark6,t_zoom.start_time startTime
+    FROM imagedb.t_consultation, imagedb.t_consultation_conferee,imagedb.t_zoom
+    WHERE t_consultation_conferee.case_id=t_consultation.case_id AND
+      (t_consultation.create_person=#{createPerson} OR t_consultation_conferee.sysuser_key=#{createPerson}) AND
+      t_consultation.is_del='0' and imagedb.t_consultation.zoom_key = imagedb.t_zoom.zoom_key
+    
+  </select>
+  <!-- 获取部位 -->
+  <select id="getbodyPartName" resultType="String">
+  	 select DISTINCT bodypart_name from medical_record where bodypart_name is not null
+  </select>
+  
+   <!-- 保存病史信息 -->
+ <!--  <insert id="addHistoryFile" parameterType="hashmap">
+  	insert into medical_history_file (fileUrl,fileName,uploadTime,uploadPerson) values (#{fileUrl},#{fileName},now(),#{userId})
+  </insert> -->
+
+  
+</mapper>
